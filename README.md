@@ -7,7 +7,7 @@
 
 
 
-**A pseudo-3D engine for Flutter. **
+**A pseudo-3D engine for Flutter.**
 
 This is an alpha version and it might change before release.
 
