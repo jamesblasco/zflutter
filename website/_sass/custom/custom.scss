@@ -1,0 +1,39 @@
+$link-color: $blue-000;
+
+
+
+.code-box {
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap;
+}
+
+
+.code-md {
+    flex-grow: 1; 
+    padding: 0 20px 0 0;
+}
+
+.code-demo {
+    border-radius: 10px; width: 200px; height: 200px;  overflow: hidden;
+}
+
+.code-demo-expanded {
+    border-radius: 10px; width: 600px; height: 400px; overflow: hidden;
+}
+.code-demo-logo {
+    border-radius: 10px; width: 300px; height: 300px; overflow: hidden;
+}
+
+.code-demo-expanded-200 {
+    border-radius: 10px; width: 600px; height: 200px; overflow: hidden;
+}
+
+
+
+.shield-button {
+    margin-left: 8px;
+    height: 28px;
+    overflow: hidden;
+    border-radius: 6px;
+}

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "flutterl10n"
+  },
+  "targets": {
+    "flutterl10n": {
+      "hosting": {
+        "beta": [
+          "zflutterbeta"
+        ]
+      }
+    }
+  }
+}

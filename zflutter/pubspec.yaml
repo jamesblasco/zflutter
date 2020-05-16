@@ -1,0 +1,19 @@
+name: zflutter
+description: A pseudo 3D engine for Flutter
+version: 0.0.2
+homepage: https://z.flutter.gallery/
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  quiver: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "arbl10n"
+  },
+  "targets": {
+    "arbl10n": {
+      "hosting": {
+        "zflutter": [
+          "zflutter"
+        ]
+      }
+    }
+  }
+}
