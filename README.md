@@ -1,12 +1,13 @@
-<img style="height: 100px" src="./logo.png"/>
+<img  height="80px" src="./logo.png"/>
 
 
 # Zflutter
 
-<a  href="https://pub.dev/packages/zflutter"><img  class="shield-button"  src="https://img.shields.io/pub/v/zflutter.svg?logo=flutter&color=blue&style=for-the-badge"/></a>
+<a  href="https://pub.dev/packages/zflutter"><img  class="shield-button"  src="https://img.shields.io/pub/v/zflutter.svg?logo=flutter&color=blue&style=for-the-badge" /></a>
 
 
-ZFlutter is a pseudo-3D engine for Flutter. 
+
+**A pseudo-3D engine for Flutter. **
 
 This is an alpha version and it might change before release.
 
