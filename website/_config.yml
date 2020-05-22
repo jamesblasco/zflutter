@@ -18,14 +18,32 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: ZFluter
+title: "ZFlutter"
 email: jaimeblasco97@gmail.com
+tagline:  A pseudo-3D engine for Flutter
 description: >- # this means to ignore newlines until "baseurl:"
   A Round, flat, designer-friendly pseudo-3D engine for Flutter
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://zflutterbeta.web.app" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jamesblasco
 github_username:  jamesblasco
+
+seo:
+  name: 'ZFlutter'
+
+twitter:
+  username: jamesblasco
+  card: summary
+
+logo: "/assets/images/logo.png"  
+image: "/assets/images/media.png"
+social:
+  name: Jaime blasco
+  links:
+    - https://twitter.com/JamesBlasco
+    - https://www.linkedin.com/in/jaimeblascoandres
+    - https://github.com/jamesblasco
+    - https://jaimeblasco.com
 
 # Build settings
 #theme: minimal-mistakes-jekyll
@@ -42,8 +60,16 @@ aux_links:
 
 ga_tracking: UA-166299976-1
 
-#logo: "/assets/images/logo.png"
 
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      image:
+        path: "/assets/images/media.png"
+        width: 1200
+        height: 630
 
 
 # Exclude from processing.

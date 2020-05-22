@@ -5,6 +5,9 @@ nav_order: 1
 permalink: /docs/getting-started/
 ---
 
+{% include head.html %}
+
+
 # Getting started
 {: .no_toc }
 This page will walk you through how to design, display, and animate a basic 3D model with ZFlutter.

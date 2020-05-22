@@ -1,7 +1,6 @@
 $link-color: $blue-000;
 
 
-
 .code-box {
     display: flex; 
     flex-direction: row; 
@@ -10,9 +9,15 @@ $link-color: $blue-000;
 
 
 .code-md {
+    flex: 1;
     flex-grow: 1; 
     padding: 0 20px 0 0;
 }
+.code-demo-phone{
+    
+    border-radius: 10px; width: 200px; height: 280px; overflow: hidden;
+}
+
 
 .code-demo {
     border-radius: 10px; width: 200px; height: 200px;  overflow: hidden;
@@ -28,6 +33,7 @@ $link-color: $blue-000;
 .code-demo-expanded-200 {
     border-radius: 10px; width: 600px; height: 200px; overflow: hidden;
 }
+
 
 
 

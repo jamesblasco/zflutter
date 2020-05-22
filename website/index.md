@@ -1,12 +1,10 @@
 ---
 # Feel free to add content and custom Front Matter to this file.
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-title: 'Home'
-layout: default
+title: ZFlutter
+layout: home
 nav_order: 0
 ---
-
-
 
 <script type="text/javascript" src="assets/js/redirect.js" ></script>
 
@@ -55,6 +53,11 @@ We like to do things the Flutter way.
 
 This library uses the core concepts of ZDog to build a serie of Widgets, that combined, allow you to create 3D shapes.
 
+
+
+<div  class="code-box">
+<div class="code-md" markdown="1">
+
 Let's see some differences:
 
  - ZFlutter uses widgets, that are inmmutable.
@@ -63,6 +66,20 @@ Let's see some differences:
  - You can use your own widgets in a 3D space. Even a full app!
  - With the power of Flutter you can run ZFlutter on iOS, Android, Mac, Windows, Linux and Web.
 
+
 Interested? 
 Read the next section to [Get Started]({% link getting_started.md %})
+</div>
+<div class="code-demo-phone" markdown="1">  
+
+![a]({% link assets/images/ui3d.gif %})
+</div>
+</div>
+
+
+
+  
+ 
+
+
 

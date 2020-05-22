@@ -29,14 +29,28 @@ permalink: /docs/examples/
 ## Phone
 
 
-<div class="code-demo-expanded">  
+<div class="code-demo-expanded" >  
  <iframe 
    frameborder="no"  
     marginwidth="0" 
     marginheight="0" 
     width="600" 
-    height="378" 
+    height="386" 
      src="../../examples/phone/">
+</iframe>
+</div>
+
+## 3D UI
+
+
+<div class="code-demo-expanded"  style="height:386px">  
+ <iframe 
+   frameborder="no"  
+    marginwidth="0" 
+    marginheight="0" 
+    width="600" 
+    height="386" 
+     src="../../examples/ui_3d/">
 </iframe>
 </div>
 
