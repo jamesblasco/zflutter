@@ -29,8 +29,8 @@ class _FlutterAnimationState extends State<FlutterAnimation>
 
   update() {
     Future.delayed(Duration(seconds: 2), () {
-      if(mounted)
-      animationController.forward(from: 0).whenComplete(() => update());
+      if (mounted)
+        animationController.forward(from: 0).whenComplete(() => update());
     });
   }
 
@@ -104,9 +104,7 @@ class _FlutterAnimationState extends State<FlutterAnimation>
                           scale: ZVector.all(4),
                           child: FlutterAnchor(),
                         ),
-                        ZGroup(
-                          sortMode: SortMode.update,
-                            children: [
+                        ZGroup(sortMode: SortMode.update, children: [
                           ZPositioned(
                             rotate: ZVector.only(y: tau / 2),
                             translate: ZVector.only(z: -50, y: 24, x: 2),
@@ -125,13 +123,11 @@ class _FlutterAnimationState extends State<FlutterAnimation>
                             child: Dash(flight: dash),
                           ),
                         ]),
-                        ZGroup(
-                            sortMode: SortMode.update,
-                            children: [
+                        ZGroup(sortMode: SortMode.update, children: [
                           ZPositioned(
                             rotate: ZVector.only(
                                 y: tau / 2 + tau / 40, x: -tau / 30),
-                            translate: ZVector.only(z: -50, y: -45, x: -75) ,
+                            translate: ZVector.only(z: -50, y: -45, x: -75),
                             child: Dash(flight: 1 - dash),
                           ),
                           ZPositioned(
@@ -147,7 +143,7 @@ class _FlutterAnimationState extends State<FlutterAnimation>
                           ZPositioned(
                             rotate: ZVector.only(
                                 y: tau / 2 - tau / 40, x: tau / 40),
-                            translate: ZVector.only(z: -50, y: -170, x: 50) ,
+                            translate: ZVector.only(z: -50, y: -170, x: 50),
                             child: Dash(flight: dash),
                           )
                         ])

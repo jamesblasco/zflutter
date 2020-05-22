@@ -1,0 +1,24 @@
+[debug] [2020-05-22T11:31:47.299Z] ----------------------------------------------------------------------
+[debug] [2020-05-22T11:31:47.301Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2020-05-22T11:31:47.301Z] CLI Version:   7.0.2
+[debug] [2020-05-22T11:31:47.301Z] Platform:      darwin
+[debug] [2020-05-22T11:31:47.301Z] Node Version:  v10.16.0
+[debug] [2020-05-22T11:31:47.302Z] Time:          Fri May 22 2020 13:31:47 GMT+0200 (GMT+02:00)
+[debug] [2020-05-22T11:31:47.302Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2020-05-22T11:31:47.309Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-22T11:31:47.309Z] > authorizing via signed-in user
+[debug] [2020-05-22T11:31:47.309Z] [iam] checking project flutterl10n for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-05-22T11:31:47.310Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/flutterl10n:testIamPermissions  
+
+[debug] [2020-05-22T11:31:48.111Z] <<< HTTP RESPONSE 200
+[debug] [2020-05-22T11:31:48.115Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/flutterl10n  
+ 
+[debug] [2020-05-22T11:31:48.330Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'flutterl10n'...
+[info] 
+[info] i  deploying hosting
+[debug] [2020-05-22T11:31:48.336Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/zflutter/versions  
+
+[debug] [2020-05-22T11:31:49.948Z] <<< HTTP RESPONSE 200

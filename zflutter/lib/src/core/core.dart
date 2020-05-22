@@ -188,7 +188,7 @@ class ZVector {
 
   ZVector unit() {
     var total = magnitude();
-    return ZVector( x / total, y / total,  z / total);
+    return ZVector(x / total, y / total, z / total);
   }
 
   @override

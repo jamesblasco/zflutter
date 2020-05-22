@@ -1,4 +1,3 @@
-
 import 'package:flutter/rendering.dart';
 
 import '../core.dart';
@@ -27,8 +26,8 @@ class RenderZToBoxAdapter extends RenderZBox
 
   RenderZToBoxAdapter({
     double width,
-    double height,})
-      : _width = width,
+    double height,
+  })  : _width = width,
         _height = height;
 
   @override
@@ -62,7 +61,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
       transformedPath = transformedPath
           .map((e) =>
-          e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
+              e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
           .toList();
     });
 
@@ -127,7 +126,7 @@ class RenderZToBoxAdapter extends RenderZBox
       layer.transform = matrix;
       context.pushLayer(
         layer,
-            (context, _) {
+        (context, _) {
           context.paintChild(child, offset - Offset(width / 2, height / 2));
         },
         Offset.zero,
@@ -135,5 +134,4 @@ class RenderZToBoxAdapter extends RenderZBox
       );
     }
   }
-
 }

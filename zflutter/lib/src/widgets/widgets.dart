@@ -1,5 +1,3 @@
-
-
 export 'drag_detector.dart';
 export 'figures/rect.dart';
 export 'group.dart';

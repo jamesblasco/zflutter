@@ -26,7 +26,7 @@ class ZFighting extends StatelessWidget {
   }
 }
 
-class _Group extends StatelessWidget{
+class _Group extends StatelessWidget {
   final isFixed;
 
   const _Group({Key key, this.isFixed}) : super(key: key);
@@ -50,7 +50,7 @@ class _Group extends StatelessWidget{
             ),
           ),
           if (isFixed)
-          // invisible Shape to counter-balance group z-index
+            // invisible Shape to counter-balance group z-index
             ZPositioned(
               translate: ZVector.only(x: -x, y: d),
               child: ZShape(

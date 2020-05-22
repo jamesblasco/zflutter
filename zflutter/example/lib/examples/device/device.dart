@@ -2,14 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zflutter/zflutter.dart';
 
-
-
-
 class Device extends StatelessWidget {
   final Widget child;
 
   const Device({Key key, this.child}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +135,7 @@ class Device extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(screenRadius),
                 child: SizedBox.fromSize(
-                  size: Size(width, height),
-                  child: Frame(app: child)
-                ),
+                    size: Size(width, height), child: Frame(app: child)),
               ),
             ),
             ZGroup(
@@ -184,8 +178,6 @@ class Device extends StatelessWidget {
   }
 }
 
-
-
 class Frame extends StatelessWidget {
   final Widget app;
 
@@ -197,52 +189,51 @@ class Frame extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FrameThemeData();
     final MediaQueryData mediaQuery = MediaQueryData(
-        size: Size(414, 896),
-        padding: EdgeInsets.only(
-          top: 44,
-          bottom: 34,
-        ),
-        devicePixelRatio: 2,
-      );
-      return FittedBox(
-        child: Material(
-          color: Colors.transparent,
-          child: Builder(builder: (context) {
-            final device = MediaQuery(
-              data: mediaQuery,
-              child: SizedBox.fromSize(
-                  size: mediaQuery.size,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      app,
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        height: 44,
-                        child: _StatusBar(theme: theme),
+      size: Size(414, 896),
+      padding: EdgeInsets.only(
+        top: 44,
+        bottom: 34,
+      ),
+      devicePixelRatio: 2,
+    );
+    return FittedBox(
+      child: Material(
+        color: Colors.transparent,
+        child: Builder(builder: (context) {
+          final device = MediaQuery(
+            data: mediaQuery,
+            child: SizedBox.fromSize(
+                size: mediaQuery.size,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    app,
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 44,
+                      child: _StatusBar(theme: theme),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 8),
+                        height: 4,
+                        width: 140,
+                        decoration: BoxDecoration(
+                            color: theme.statusBarColor,
+                            borderRadius: BorderRadius.circular(4)),
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          height: 4,
-                          width: 140,
-                          decoration: BoxDecoration(
-                              color: theme.statusBarColor,
-                              borderRadius: BorderRadius.circular(4)),
-                        ),
-                      )
-                    ],
-                  )),
-            );
-            return device;
-          }),
-        ),
-      );
-    }
-
+                    )
+                  ],
+                )),
+          );
+          return device;
+        }),
+      ),
+    );
+  }
 }
 
 class _StatusBar extends StatelessWidget {
@@ -286,8 +277,7 @@ class _StatusBar extends StatelessWidget {
   }
 }
 
-
-class FrameThemeData  {
+class FrameThemeData {
   final Color frameColor;
 
   final Brightness statusBarBrightness;
@@ -307,8 +297,6 @@ class FrameThemeData  {
     this.statusBarBrightness,
   })  : assert(frameColor != null),
         assert(statusBarBrightness != null);
-
-
 
   Color get statusBarColor =>
       statusBarBrightness == Brightness.dark ? Colors.white : Colors.black;

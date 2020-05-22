@@ -29,8 +29,8 @@ class _SpinState extends State<Spin> with TickerProviderStateMixin {
     animate();
   }
 
-  animate({double from= 0}) {
-    spin =  true;
+  animate({double from = 0}) {
+    spin = true;
     animationController.forward(from: from).then(
       (value) {
         if (mounted && spin) animate();
@@ -45,7 +45,7 @@ class _SpinState extends State<Spin> with TickerProviderStateMixin {
     return GestureDetector(
         onTap: () {
           setState(() {
-           /* timer?.cancel();
+            /* timer?.cancel();
             timer = Timer(Duration(seconds: 5), () => animate(from: animationController.value));*/
             spin = false;
           });
@@ -53,7 +53,7 @@ class _SpinState extends State<Spin> with TickerProviderStateMixin {
         },
         onPanDown: (_) {
           setState(() {
-          /*  timer?.cancel();
+            /*  timer?.cancel();
             timer = Timer(Duration(seconds: 5), () => animate(from: animationController.value));*/
             spin = false;
           });
@@ -62,7 +62,7 @@ class _SpinState extends State<Spin> with TickerProviderStateMixin {
         onPanUpdate: (_) {
           setState(() {
             spin = false;
-           /* timer?.cancel();
+            /* timer?.cancel();
             timer = Timer(Duration(seconds: 5), () => animate(from: animationController.value));*/
           });
         },

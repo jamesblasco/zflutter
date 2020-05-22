@@ -8,7 +8,7 @@ import 'package:zflutter/zflutter.dart';
 /// zWidget are special-purpose widgets that can be combined using a
 /// [ZIllustration] to distribute them in a 3D space. A [ZToBoxAdapter]
 /// is a basic zWidget that creates a bridge back to one of the usual box-based
-/// widgets. 
+/// widgets.
 ///
 class ZToBoxAdapter extends SingleChildRenderObjectWidget with ZWidget {
   // Height of the box widget
@@ -18,7 +18,7 @@ class ZToBoxAdapter extends SingleChildRenderObjectWidget with ZWidget {
   final double width;
 
   /// Creates a ZWidget that contains a single box widget.
-  const ZToBoxAdapter( {
+  const ZToBoxAdapter({
     Key key,
     this.height,
     this.width,

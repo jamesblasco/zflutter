@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 
 import '../core.dart';
 
-
 /// A zWidget that paints a shape in a 3D space.
 ///
 /// zWidget are special-purpose widgets that can be combined using a
@@ -27,7 +26,6 @@ import '../core.dart';
 /// If no path is provided a dot will be painted with the stroke as diameter.
 ///
 class ZShape extends SingleChildRenderObjectWidget with ZWidget {
-
   /// The path that will define the shape of the Widget
   /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
   /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
@@ -107,7 +105,9 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('color', color));
     properties.add(DoubleProperty('stroke', stroke));
-    properties.add(ColorProperty('backfaceColor', backfaceColor),);
+    properties.add(
+      ColorProperty('backfaceColor', backfaceColor),
+    );
     //Todo - Add all properties
   }
 

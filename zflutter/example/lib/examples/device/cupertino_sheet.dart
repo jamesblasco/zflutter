@@ -5,8 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
 class PhotoShareBottomSheet extends StatelessWidget {
   final ScrollController scrollController;
 
@@ -37,7 +35,7 @@ class PhotoShareBottomSheet extends StatelessWidget {
                         child: ListView(
                           padding: EdgeInsets.all(12).copyWith(
                               right:
-                              MediaQuery.of(context).size.width / 2 - 100),
+                                  MediaQuery.of(context).size.width / 2 - 100),
                           reverse: true,
                           scrollDirection: Axis.horizontal,
                           physics: PageScrollPhysics(),
@@ -49,7 +47,7 @@ class PhotoShareBottomSheet extends StatelessWidget {
                                     child: Hero(
                                       tag: 'image',
                                       child:
-                                      Image.asset('assets/demo_image.jpeg'),
+                                          Image.asset('assets/demo_image.jpeg'),
                                     ))),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 6),
@@ -100,12 +98,12 @@ class PhotoShareBottomSheet extends StatelessWidget {
                                                 fit: BoxFit.cover),
                                             color: Colors.white,
                                             borderRadius:
-                                            BorderRadius.circular(15)),
+                                                BorderRadius.circular(15)),
                                       ),
                                     ),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(15)),
+                                            BorderRadius.circular(15)),
                                     elevation: 12,
                                     shadowColor: Colors.black12,
                                   ),
@@ -132,18 +130,18 @@ class PhotoShareBottomSheet extends StatelessWidget {
                         sliver: SliverList(
                           delegate: SliverChildListDelegate.fixed(
                               List<Widget>.from(actions.map(
-                                    (action) => Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 16),
-                                    child: Text(
-                                      action.title,
-                                      style: CupertinoTheme.of(context)
-                                          .textTheme
-                                          .textStyle,
-                                    )),
-                              )).addItemInBetween(Divider(
-                                height: 1,
-                              ))),
+                            (action) => Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 16),
+                                child: Text(
+                                  action.title,
+                                  style: CupertinoTheme.of(context)
+                                      .textTheme
+                                      .textStyle,
+                                )),
+                          )).addItemInBetween(Divider(
+                            height: 1,
+                          ))),
                         )),
                   ),
                   SliverPadding(
@@ -155,18 +153,18 @@ class PhotoShareBottomSheet extends StatelessWidget {
                         sliver: SliverList(
                           delegate: SliverChildListDelegate.fixed(
                               List<Widget>.from(actions1.map(
-                                    (action) => Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 16),
-                                    child: Text(
-                                      action.title,
-                                      style: CupertinoTheme.of(context)
-                                          .textTheme
-                                          .textStyle,
-                                    )),
-                              )).addItemInBetween(Divider(
-                                height: 1,
-                              ))),
+                            (action) => Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 16),
+                                child: Text(
+                                  action.title,
+                                  style: CupertinoTheme.of(context)
+                                      .textTheme
+                                      .textStyle,
+                                )),
+                          )).addItemInBetween(Divider(
+                            height: 1,
+                          ))),
                         )),
                   ),
                   SliverPadding(
@@ -178,26 +176,26 @@ class PhotoShareBottomSheet extends StatelessWidget {
                         sliver: SliverList(
                           delegate: SliverChildListDelegate.fixed(
                               List<Widget>.from(actions2.map(
-                                    (action) => Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 16),
-                                    child: Text(
-                                      action.title,
-                                      style: CupertinoTheme.of(context)
-                                          .textTheme
-                                          .textStyle,
-                                    )),
-                              )).addItemInBetween(Divider(
-                                height: 1,
-                              ))),
+                            (action) => Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 16),
+                                child: Text(
+                                  action.title,
+                                  style: CupertinoTheme.of(context)
+                                      .textTheme
+                                      .textStyle,
+                                )),
+                          )).addItemInBetween(Divider(
+                            height: 1,
+                          ))),
                         )),
                   ),
                   SliverSafeArea(
                     top: false,
                     sliver: SliverPadding(
                         padding: EdgeInsets.only(
-                          bottom: 20,
-                        )),
+                      bottom: 20,
+                    )),
                   )
                 ],
               ),
@@ -276,40 +274,40 @@ class PhotoShareBottomSheet extends StatelessWidget {
                       SizedBox(width: 12),
                       Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              Text(
-                                '1 Photo selected',
-                                style: CupertinoTheme.of(context)
-                                    .textTheme
-                                    .textStyle
-                                    .copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(height: 4),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: <Widget>[
-                                    Text(
-                                      'Options',
-                                      style: CupertinoTheme.of(context)
-                                          .textTheme
-                                          .actionTextStyle
-                                          .copyWith(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Text(
+                            '1 Photo selected',
+                            style: CupertinoTheme.of(context)
+                                .textTheme
+                                .textStyle
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: <Widget>[
+                                Text(
+                                  'Options',
+                                  style: CupertinoTheme.of(context)
+                                      .textTheme
+                                      .actionTextStyle
+                                      .copyWith(
                                           fontSize: 14,
                                           fontWeight: FontWeight.normal),
-                                    ),
-                                    SizedBox(width: 2),
-                                    Icon(
-                                      CupertinoIcons.right_chevron,
-                                      size: 14,
-                                      color:
+                                ),
+                                SizedBox(width: 2),
+                                Icon(
+                                  CupertinoIcons.right_chevron,
+                                  size: 14,
+                                  color:
                                       CupertinoTheme.of(context).primaryColor,
-                                    )
-                                  ]),
-                            ],
-                          )),
+                                )
+                              ]),
+                        ],
+                      )),
                       GestureDetector(
                         onTap: () => Navigator.of(context).pop(),
                         child: Align(
@@ -395,7 +393,7 @@ extension ListUtils<T> on List<T> {
   List<T> addItemInBetween<T>(T item) => this.length == 0
       ? this
       : (this.fold([], (r, element) => [...r, element as T, item])
-    ..removeLast());
+        ..removeLast());
 }
 
 class SimpleSliverDelegate extends SliverPersistentHeaderDelegate {
@@ -425,19 +423,16 @@ class SimpleSliverDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-
-
-
 @immutable
 class SliverContainer extends RenderObjectWidget {
   SliverContainer(
       {Key key,
-        this.padding = EdgeInsets.zero,
-        this.margin = EdgeInsets.zero,
-        this.borderRadius,
-        this.decoration,
-        this.foregroundDecoration,
-        this.sliver})
+      this.padding = EdgeInsets.zero,
+      this.margin = EdgeInsets.zero,
+      this.borderRadius,
+      this.decoration,
+      this.foregroundDecoration,
+      this.sliver})
       : super(key: key);
 
   final EdgeInsets margin;
@@ -548,11 +543,11 @@ class _SliverGroupElement extends RenderObjectElement {
 class _RenderSliverGroup extends RenderSliver with RenderSliverHelpers {
   _RenderSliverGroup(
       {EdgeInsetsGeometry margin,
-        EdgeInsetsGeometry padding,
-        BorderRadius borderRadius,
-        RenderBox decoration,
-        RenderBox foregroundDecoration,
-        RenderSliver child}) {
+      EdgeInsetsGeometry padding,
+      BorderRadius borderRadius,
+      RenderBox decoration,
+      RenderBox foregroundDecoration,
+      RenderSliver child}) {
     this.margin = margin;
     this.padding = padding;
     this.borderRadius = borderRadius;

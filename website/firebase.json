@@ -1,6 +1,6 @@
 {
   "hosting": [{
-    "target" : "beta",
+    "target" : "zflutter",
     "public": "_site",
     "ignore": [
       "firebase.json",

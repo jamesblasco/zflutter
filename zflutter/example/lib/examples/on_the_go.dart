@@ -25,7 +25,6 @@ const Color bluePale = Color(0xFFCCCCFF);
 
 final sceneStartRotation = ZVector.only(y: -tau / 8);
 
-
 // Todo: Migrate to widget system and use StatelessWidgets instead of functions
 class OnTheGo extends StatefulWidget {
   @override
@@ -729,7 +728,8 @@ class Lady extends StatelessWidget {
         child: ZShape(
           path: [
             ZMove.vector(ZVector.zero),
-            ZArc.list([ZVector.only(x: 1, y: 0), ZVector.only(x: 1, y: 1)], null),
+            ZArc.list(
+                [ZVector.only(x: 1, y: 0), ZVector.only(x: 1, y: 1)], null),
             ZLine.vector(ZVector.only(x: 1, y: 3))
           ],
           stroke: 1.5,
@@ -762,7 +762,8 @@ class Lady extends StatelessWidget {
               child: ZShape(
                 path: [
                   ZMove.vector(ZVector.zero),
-                  ZArc.list([ZVector.only(x: -1, y: 0), ZVector.only(x: -1, y: 1)],
+                  ZArc.list(
+                      [ZVector.only(x: -1, y: 0), ZVector.only(x: -1, y: 1)],
                       null),
                   ZLine.vector(ZVector.only(x: -1, y: 3))
                 ],
@@ -818,7 +819,10 @@ class Lady extends StatelessWidget {
       final heel = ZPositioned(
         translate: ZVector.only(y: 5, z: -3),
         child: ZShape(
-          path: [ZMove.vector(ZVector.only(x: -1)), ZLine.vector(ZVector.only(x: 1))],
+          path: [
+            ZMove.vector(ZVector.only(x: -1)),
+            ZLine.vector(ZVector.only(x: 1))
+          ],
           stroke: 4,
           color: beigeLight,
         ),
@@ -872,7 +876,10 @@ class Lady extends StatelessWidget {
       return ZGroup(
         children: [
           ZShape(
-            path: [ZMove.vector(ZVector.only(y: 2)), ZLine.vector(ZVector.only(y: 8))],
+            path: [
+              ZMove.vector(ZVector.only(y: 2)),
+              ZLine.vector(ZVector.only(y: 8))
+            ],
             stroke: 4,
             color: color,
           ),
@@ -896,7 +903,10 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [ZMove.vector(ZVector.only(y: 0)), ZLine.vector(rightAnkle)],
+              path: [
+                ZMove.vector(ZVector.only(y: 0)),
+                ZLine.vector(rightAnkle)
+              ],
               stroke: 7,
               color: navy,
             ),
@@ -1074,7 +1084,10 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [ZMove.vector(ZVector.zero), ZLine.vector(ZVector.only(y: -2))],
+              path: [
+                ZMove.vector(ZVector.zero),
+                ZLine.vector(ZVector.only(y: -2))
+              ],
               stroke: 4,
               color: skinLight,
             ),

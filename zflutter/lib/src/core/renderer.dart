@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/core.dart';
 import 'package:zflutter/src/core/path_command.dart';
@@ -86,5 +85,4 @@ class ZRenderer {
     paint.style = PaintingStyle.fill;
     canvas.drawPath(path, paint);
   }
-
 }

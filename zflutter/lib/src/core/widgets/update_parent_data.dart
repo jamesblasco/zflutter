@@ -1,17 +1,17 @@
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zflutter/src/core/core.dart';
 
-
-abstract class ZUpdateParentDataWidget<T extends ParentData> extends ProxyWidget {
+abstract class ZUpdateParentDataWidget<T extends ParentData>
+    extends ProxyWidget {
   /// Abstract const constructor. This constructor enables subclasses to provide
   /// const constructors so that they can be used in const expressions.
-  const ZUpdateParentDataWidget({ Key key, Widget child })
+  const ZUpdateParentDataWidget({Key key, Widget child})
       : super(key: key, child: child);
 
   @override
-  UpdateParentDataElement<T> createElement() => UpdateParentDataElement<T>(this);
+  UpdateParentDataElement<T> createElement() =>
+      UpdateParentDataElement<T>(this);
 
   /// Checks if this widget can apply its parent data to the provided
   /// `renderObject`.
@@ -90,11 +90,11 @@ abstract class ZUpdateParentDataWidget<T extends ParentData> extends ProxyWidget
   /// [RenderObject.markNeedsLayout] or [RenderObject.markNeedsPaint] on the
   /// parent, as appropriate.
   @protected
-  void updateParentData(RenderObject renderObject, covariant ZUpdateParentDataWidget<T> oldWidget, ZTransform transform);
+  void updateParentData(RenderObject renderObject,
+      covariant ZUpdateParentDataWidget<T> oldWidget, ZTransform transform);
 
   @protected
   void startParentData(RenderObject renderObject, ZTransform transform);
-
 
   /// Whether the [ParentDataElement.applyWidgetOutOfTurn] method is allowed
   /// with this widget.
@@ -110,18 +110,19 @@ abstract class ZUpdateParentDataWidget<T extends ParentData> extends ProxyWidget
   bool debugCanApplyOutOfTurn() => false;
 }
 
-
 /// An [Element] that uses a [ParentDataWidget] as its configuration.
 class UpdateParentDataElement<T extends ParentData> extends ProxyElement {
   /// Creates an element that uses the given widget as its configuration.
   UpdateParentDataElement(ZUpdateParentDataWidget<T> widget) : super(widget);
 
   @override
-  ZUpdateParentDataWidget<T> get widget => super.widget as ZUpdateParentDataWidget<T>;
+  ZUpdateParentDataWidget<T> get widget =>
+      super.widget as ZUpdateParentDataWidget<T>;
 
   ZTransform transform = ZTransform();
 
-  void _updateParentData(ZUpdateParentDataWidget<T> widget, ZUpdateParentDataWidget<T> oldWidget) {
+  void _updateParentData(
+      ZUpdateParentDataWidget<T> widget, ZUpdateParentDataWidget<T> oldWidget) {
     void applyParentDataToChild(Element child) {
       if (child is RenderObjectElement) {
         widget.updateParentData(child.renderObject, oldWidget, transform);
@@ -129,6 +130,7 @@ class UpdateParentDataElement<T extends ParentData> extends ProxyElement {
         child.visitChildren(applyParentDataToChild);
       }
     }
+
     visitChildren(applyParentDataToChild);
   }
 
@@ -179,9 +181,4 @@ class UpdateParentDataElement<T extends ParentData> extends ProxyElement {
   void notifyClients(ZUpdateParentDataWidget<T> oldWidget) {
     _updateParentData(widget, oldWidget);
   }
-
-
 }
-
-
-

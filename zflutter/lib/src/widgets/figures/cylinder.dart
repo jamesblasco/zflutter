@@ -16,10 +16,8 @@ class ZCylinder extends StatelessWidget {
   final Color color;
   final bool visible;
 
-
   final Color backface;
   final Color frontface;
-
 
   ZCylinder({
     this.diameter = 1,
@@ -78,18 +76,19 @@ class ZCylinder extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class _ZCylinderMiddle extends ZShape {
   final double diameter;
 
-  _ZCylinderMiddle({this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
+  _ZCylinderMiddle(
+      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
       : super(path: path, stroke: stroke, color: color);
 
   @override
   RenderZCylinder createRenderObject(BuildContext context) {
-    return RenderZCylinder(path: path, stroke: stroke, diameter: diameter, color: color);
+    return RenderZCylinder(
+        path: path, stroke: stroke, diameter: diameter, color: color);
   }
 
   @override
@@ -99,7 +98,6 @@ class _ZCylinderMiddle extends ZShape {
     renderObject.path = path;
     renderObject.color = color;
   }
-
 }
 
 class RenderZCylinder extends RenderZShape {
@@ -114,7 +112,8 @@ class RenderZCylinder extends RenderZShape {
     markNeedsPaint();
   }
 
-  RenderZCylinder({List<ZPathCommand> path, double diameter, double stroke, Color color})
+  RenderZCylinder(
+      {List<ZPathCommand> path, double diameter, double stroke, Color color})
       : _diameter = diameter,
         super(path: path, stroke: stroke, color: color);
 

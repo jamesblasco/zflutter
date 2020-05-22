@@ -7,6 +7,9 @@
       "hosting": {
         "beta": [
           "zflutterbeta"
+        ],
+        "zflutter": [
+          "zflutter"
         ]
       }
     }

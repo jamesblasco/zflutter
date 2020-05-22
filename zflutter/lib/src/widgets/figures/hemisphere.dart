@@ -66,7 +66,6 @@ class _ZCylinderMiddle extends ZShape {
     );
   }
 
-
   @override
   void updateRenderObject(
       BuildContext context, _RenderZHemisphere renderObject) {
@@ -95,7 +94,7 @@ class _RenderZHemisphere extends RenderZShape {
     final ZParentData anchorParentData = parentData as ZParentData;
     matrix4.setIdentity();
     // print('relayout ${anchorParentData.transforms.length}');
-    apex = ZVector.only(z: diameter/2);
+    apex = ZVector.only(z: diameter / 2);
     anchorParentData.transforms.reversed.forEach((matrix4) {
       //   print(matrix4);
       apex = apex.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
@@ -109,13 +108,10 @@ class _RenderZHemisphere extends RenderZShape {
     sortValue = renderCentroid.z;
   }
 
-
   _RenderZHemisphere(
       {List<ZPathCommand> path, double diameter, double stroke, Color color})
       : _diameter = diameter,
         super(path: path, stroke: stroke, color: color, fill: true);
-
-
 
   @override
   void render(ZRenderer renderer) {

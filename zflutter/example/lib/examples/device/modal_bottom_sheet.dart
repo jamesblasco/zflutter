@@ -10,33 +10,36 @@ class ModalBottomSheetExample extends StatefulWidget {
 }
 
 class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
-
   @override
   void initState() {
     showModal();
     super.initState();
   }
 
-  showModal () {
-    if(!mounted) return;
+  showModal() {
+    if (!mounted) return;
     Future.delayed(Duration(seconds: 3), () {
-      if(!mounted) return;
+      if (!mounted) return;
       showCupertinoModalBottomSheet(
-      expand: true,
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context, scrollController) =>
-          Close(child:  PhotoShareBottomSheet(scrollController: scrollController),),
-    );});
+        expand: true,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context, scrollController) => Close(
+          child: PhotoShareBottomSheet(scrollController: scrollController),
+        ),
+      );
+    });
     Future.delayed(Duration(seconds: 9), () => showModal());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(context),
         body: CupertinoPageScaffold(
           child: Center(
-              child:  Image.asset('assets/demo_image.jpeg',
+              child: Image.asset(
+            'assets/demo_image.jpeg',
           )),
         ),
         bottomNavigationBar: bottomAppBar(context));
@@ -94,28 +97,25 @@ class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
   }
 }
 
-
 class Close extends StatefulWidget {
   final Widget child;
 
   const Close({Key key, this.child}) : super(key: key);
   @override
-  State<StatefulWidget> createState()  => CloseState();
-
+  State<StatefulWidget> createState() => CloseState();
 }
 
 class CloseState extends State<Close> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3), () {
-      if(mounted)
-      Navigator.of(context).pop();
+      if (mounted) Navigator.of(context).pop();
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return widget.child;
   }
-
 }

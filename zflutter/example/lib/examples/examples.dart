@@ -129,10 +129,14 @@ class BasicSamples {
         childrenBuilder: () => [
               ZShape(
                 path: [
-                  ZMove.vector(ZVector.only(x: -32, y: -40, z: 40)), // start at top left
-                  ZLine.vector(ZVector.only(x: 32, y: -40)), // line to top right
-                  ZLine.vector(ZVector.only(x: -32, y: 40, z: 40)), // line to bottom left
-                  ZLine.vector(ZVector.only(x: 32, y: 40, z: -40)), // line to bottom right
+                  ZMove.vector(
+                      ZVector.only(x: -32, y: -40, z: 40)), // start at top left
+                  ZLine.vector(
+                      ZVector.only(x: 32, y: -40)), // line to top right
+                  ZLine.vector(ZVector.only(
+                      x: -32, y: 40, z: 40)), // line to bottom left
+                  ZLine.vector(ZVector.only(
+                      x: 32, y: 40, z: -40)), // line to bottom right
                 ],
                 closed: false,
                 stroke: 20,
@@ -160,10 +164,14 @@ class BasicSamples {
         childrenBuilder: () => [
               ZShape(
                 path: [
-                  ZMove.vector(ZVector.only(x: -32, y: -40)), // start at top left
-                  ZLine.vector(ZVector.only(x: 32, y: -40)), // line to top right
-                  ZMove.vector(ZVector.only(x: -32, y: 40)), // line to bottom left
-                  ZLine.vector(ZVector.only(x: 32, y: 40)), // line to bottom right
+                  ZMove.vector(
+                      ZVector.only(x: -32, y: -40)), // start at top left
+                  ZLine.vector(
+                      ZVector.only(x: 32, y: -40)), // line to top right
+                  ZMove.vector(
+                      ZVector.only(x: -32, y: 40)), // line to bottom left
+                  ZLine.vector(
+                      ZVector.only(x: 32, y: 40)), // line to bottom right
                 ],
                 closed: false,
                 stroke: 20,
@@ -438,13 +446,12 @@ class BasicSamples {
     route: '/cylinder',
     builder: (_) => Template(
       childrenBuilder: () => [
-         ZCylinder(
-            diameter: 80,
-            length: 120,
-            frontface: Colors.red,
-            color: Colors.orange,
-            backface: Colors.green,
-
+        ZCylinder(
+          diameter: 80,
+          length: 120,
+          frontface: Colors.red,
+          color: Colors.orange,
+          backface: Colors.green,
         ),
       ],
     ),
@@ -526,23 +533,23 @@ class Template extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Spin(
-        builder: (context, rotate) =>
-    ZDragDetector(
-      key: key,
-      builder: (context, controller) {
-        return  ZIllustration(
-          zoom: 3,
-          children: [
-            ZPositioned(
-              rotate: controller.rotate + rotate,
-              child: ZGroup(
-                children: childrenBuilder(),
-              ),
-            )
-          ],
-        );
-      },
-    ),);
+      builder: (context, rotate) => ZDragDetector(
+        key: key,
+        builder: (context, controller) {
+          return ZIllustration(
+            zoom: 3,
+            children: [
+              ZPositioned(
+                rotate: controller.rotate + rotate,
+                child: ZGroup(
+                  children: childrenBuilder(),
+                ),
+              )
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 

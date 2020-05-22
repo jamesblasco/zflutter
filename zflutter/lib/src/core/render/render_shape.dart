@@ -6,7 +6,6 @@ import 'package:zflutter/zflutter.dart';
 import '../core.dart';
 import '../path_command.dart';
 import '../renderer.dart';
-import 'package:vector_math/vector_math_64.dart';
 
 class RenderZShape extends RenderZBox {
   Color _color;
@@ -72,7 +71,6 @@ class RenderZShape extends RenderZBox {
     markNeedsLayout();
   }
 
-
   double _sortValue;
   double get sortValue => _sortValue;
 
@@ -89,8 +87,6 @@ class RenderZShape extends RenderZBox {
     if (_visible == value) return;
     _visible = value;
   }
-
-
 
   double _stroke;
 
@@ -135,7 +131,6 @@ class RenderZShape extends RenderZBox {
   ZVector normalVector;
   final Matrix4 matrix4 = Matrix4.identity();
 
-
   @override
   void performLayout() {
     final ZParentData anchorParentData = parentData as ZParentData;
@@ -144,19 +139,23 @@ class RenderZShape extends RenderZBox {
 
     origin = ZVector.zero;
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      origin = origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+      origin =
+          origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
 
     _transformedFront = front;
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      _transformedFront = _transformedFront.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+      _transformedFront = _transformedFront.transform(
+          matrix4.translate, matrix4.rotate, matrix4.scale);
     });
 
     normalVector = origin - _transformedFront;
     transformedPath = path;
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      transformedPath =
-          transformedPath.map((e) => e.transform(matrix4.translate, matrix4.rotate, matrix4.scale)).toList();
+      transformedPath = transformedPath
+          .map((e) =>
+              e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
+          .toList();
     });
 
     performPathCommands();
@@ -181,7 +180,6 @@ class RenderZShape extends RenderZBox {
       });
     }
   }
-
 
   @override
   void performSort() {
@@ -210,12 +208,10 @@ class RenderZShape extends RenderZBox {
     return isBackFaceColor ? backfaceColor : color;
   }
 
-
-
   @override
   void paint(PaintingContext context, Offset offset) {
     assert(parentData is ZParentData);
-    if(!visible) return;
+    if (!visible) return;
 
     final renderer = ZRenderer(context.canvas);
     render(renderer);
@@ -223,7 +219,6 @@ class RenderZShape extends RenderZBox {
     if (length <= 1) {
       paintDot(renderer);
     } else {
-
       isFacingBack = normalVector.z > 0;
       if (!showBackFace && isFacingBack) {
         return super.paint(context, offset);
@@ -233,13 +228,12 @@ class RenderZShape extends RenderZBox {
       var isClosed = !isTwoPoints && _close == true;
       final color = renderColor;
 
-
       renderer.renderPath(transformedPath, isClosed: isClosed);
       if (stroke != null && stroke > 0) renderer.stroke(color, stroke);
       if (fill == true) renderer.fill(color);
     }
 
-  //  context.canvas.restore();
+    //  context.canvas.restore();
     super.paint(context, offset);
   }
 
@@ -257,9 +251,5 @@ class RenderZShape extends RenderZBox {
     renderer.fill(color);
   }
 
-
-  void render(ZRenderer renderer) {
-
-
-  }
+  void render(ZRenderer renderer) {}
 }

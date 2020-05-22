@@ -1,3 +1,3 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - First Version 
+Welcome to ZFlutter
 
-* TODO: Describe initial release.

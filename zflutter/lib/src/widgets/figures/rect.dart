@@ -131,8 +131,7 @@ class ZCircle extends ZShape {
 
   final int quarters;
 
-
-  ZCircle( {
+  ZCircle({
     Key key,
     @required this.diameter,
     this.quarters = 4,
@@ -263,6 +262,5 @@ class ZPolygon extends ZShape {
       final double y = math.sin(theta) * radius;
       return ZLine.vector(ZVector.only(x: x, y: y));
     });
-
   }
 }
