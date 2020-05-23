@@ -47,6 +47,7 @@ social:
 
 # Build settings
 #theme: minimal-mistakes-jekyll
+remote_theme: pmarsceill/just-the-docs
 theme: "just-the-docs"
 plugins:
   - jekyll-feed
