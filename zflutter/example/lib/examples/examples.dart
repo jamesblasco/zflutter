@@ -92,10 +92,7 @@ class BasicSamples {
     builder: (_) => Template(
       childrenBuilder: () => [
         ZShape(
-          path: [
-            ZMove.vector(ZVector.only(x: -40)),
-            ZLine.vector(ZVector.only(x: 40)),
-          ],
+          path: ZPath().move(x: -40).line(x: 40),
           stroke: 20,
           color: Color(0xff663366),
         )
@@ -109,12 +106,16 @@ class BasicSamples {
     builder: (_) => Template(
       childrenBuilder: () => [
         ZShape(
-          path: [
-            ZMove.vector(ZVector.only(x: -32, y: -40)), // start at top left
-            ZLine.vector(ZVector.only(x: 32, y: -40)), // line to top right
-            ZLine.vector(ZVector.only(x: -32, y: 40)), // line to bottom left
-            ZLine.vector(ZVector.only(x: 32, y: 40)), // line to bottom right
-          ],
+          path: ZPath([
+            ZMove.only(x: -32, y: -40),
+            // start at top left
+            ZLine.only(x: 32, y: -40),
+            // line to top right
+            ZLine.only(x: -32, y: 40),
+            // line to bottom left
+            ZLine.only(x: 32, y: 40),
+            // line to bottom right
+          ]),
           closed: false,
           stroke: 20,
           color: Color(0xff663366),
@@ -128,16 +129,11 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(
-                      ZVector.only(x: -32, y: -40, z: 40)), // start at top left
-                  ZLine.vector(
-                      ZVector.only(x: 32, y: -40)), // line to top right
-                  ZLine.vector(ZVector.only(
-                      x: -32, y: 40, z: 40)), // line to bottom left
-                  ZLine.vector(ZVector.only(
-                      x: 32, y: 40, z: -40)), // line to bottom right
-                ],
+                path: ZPath()
+                    .move(x: -32, y: -40, z: 40)
+                    .line(x: 32, y: -40)
+                    .line(x: -32, y: 40, z: 40)
+                    .line(x: 32, y: 40, z: -40),
                 closed: false,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -163,16 +159,11 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(
-                      ZVector.only(x: -32, y: -40)), // start at top left
-                  ZLine.vector(
-                      ZVector.only(x: 32, y: -40)), // line to top right
-                  ZMove.vector(
-                      ZVector.only(x: -32, y: 40)), // line to bottom left
-                  ZLine.vector(
-                      ZVector.only(x: 32, y: 40)), // line to bottom right
-                ],
+                path: ZPath()
+                    .move(x: -32, y: -40)
+                    .line(x: 32, y: -40)
+                    .move(x: -32, y: 40)
+                    .line(x: 32, y: 40),
                 closed: false,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -185,14 +176,11 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(ZVector.only(x: -60, y: -60)),
-                  ZBezier([
-                    ZVector.only(x: 20, y: -60),
-                    ZVector.only(x: 20, y: 60),
-                    ZVector.only(x: 60, y: 60)
-                  ]),
-                ],
+                path: ZPath().move(x: -60, y: -60).bezier([
+                  ZVector.only(x: 20, y: -60),
+                  ZVector.only(x: 20, y: 60),
+                  ZVector.only(x: 60, y: 60)
+                ]),
                 closed: false,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -219,11 +207,10 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(ZVector.only(x: 0, y: -40)),
-                  ZLine.vector(ZVector.only(x: 40, y: 40)),
-                  ZLine.vector(ZVector.only(x: -40, y: 40)),
-                ],
+                path: ZPath()
+                    .move(x: 0, y: -40)
+                    .line(x: 40, y: 40)
+                    .line(x: -40, y: 40),
                 closed: false,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -236,11 +223,10 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(ZVector.only(x: 0, y: -40)),
-                  ZLine.vector(ZVector.only(x: 40, y: 40)),
-                  ZLine.vector(ZVector.only(x: -40, y: 40)),
-                ],
+                path: ZPath()
+                    .move(x: 0, y: -40)
+                    .line(x: 40, y: 40)
+                    .line(x: -40, y: 40),
                 closed: true,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -254,11 +240,10 @@ class BasicSamples {
     builder: (_) => Template(
         childrenBuilder: () => [
               ZShape(
-                path: [
-                  ZMove.vector(ZVector.only(x: 0, y: -40)),
-                  ZLine.vector(ZVector.only(x: 40, y: 40)),
-                  ZLine.vector(ZVector.only(x: -40, y: 40)),
-                ],
+                path: ZPath()
+                    .move(x: 0, y: -40)
+                    .line(x: 40, y: 40)
+                    .line(x: -40, y: 40),
                 closed: true,
                 stroke: 20,
                 color: Color(0xff663366),
@@ -556,13 +541,7 @@ class Template extends StatelessWidget {
 List<Widget> generateArc(ZVector start, ZVector corner, ZVector end) {
   return [
     ZShape(
-      path: [
-        ZMove.vector(start),
-        // start at top left
-        ZArc.list(
-          [corner, end],
-        ),
-      ],
+      path: ZPath().moveVector(start).arc(corner: corner, end: end),
       closed: false,
       stroke: 20,
       color: Color(0xff663366),
@@ -575,19 +554,13 @@ List<Widget> generateArc(ZVector start, ZVector corner, ZVector end) {
       ),
     ),
     ZShape(
-      path: [
-        ZMove.vector(start),
-        ZLine.vector(corner),
-      ],
+      path: ZPath().moveVector(start).lineVector(corner),
       stroke: 2,
       closed: false,
       color: Colors.orange,
     ),
     ZShape(
-      path: [
-        ZMove.vector(corner),
-        ZLine.vector(end),
-      ],
+      path: ZPath().moveVector(corner).lineVector(end),
       stroke: 2,
       closed: false,
       color: Colors.orange,

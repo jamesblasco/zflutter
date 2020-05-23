@@ -11,6 +11,7 @@ final Color green = Color(0xff71d3c7);
 
 final Color black = Color(0xff000000);
 
+
 class Dash extends StatelessWidget {
   final double flight;
 
@@ -33,23 +34,12 @@ class Dash extends StatelessWidget {
             child: ZShape(
               stroke: 2,
               fill: true,
-              path: [
-                ZMove.vector(
-                  ZVector.only(x: 0, y: 0, z: 0),
-                ),
-                ZArc.list([
-                  ZVector.only(x: 5, y: -10, z: -8),
-                  ZVector.only(x: 8, y: -15, z: -10),
-                ], null),
-                ZArc.list([
-                  ZVector.only(x: 0, y: -25, z: -12),
-                  ZVector.only(x: -8, y: -15, z: -10),
-                ], null),
-                ZArc.list([
-                  ZVector.only(x: -5, y: -10, z: -8),
-                  ZVector.only(x: 0, y: -0, z: 0),
-                ], null)
-              ],
+              path:
+              const ZPath()
+                  .move()
+                  .arc(corner: ZVector(5, -10, -8), end: ZVector(8, -15, -10))
+                  .arc(corner: ZVector(0, -25, -12), end: ZVector(-8, -15, -10))
+                  .arc(corner: ZVector(-5, -10, -8), end: ZVector.zero),
               color: darkBlue,
             ),
           ),
@@ -73,19 +63,10 @@ class Dash extends StatelessWidget {
                 child: ZShape(
                   stroke: 2,
                   fill: true,
-                  path: [
-                    ZMove.vector(
-                      ZVector.only(x: 0, y: 0, z: 20),
-                    ),
-                    ZArc.list([
-                      ZVector.only(x: -30, y: 7, z: 15),
-                      ZVector.only(x: 0, y: 15, z: 15),
-                    ], null),
-                    ZArc.list([
-                      ZVector.only(x: 30, y: 7, z: 15),
-                      ZVector.only(x: 0, y: 0, z: 20),
-                    ], null)
-                  ],
+                  path: ZPath()
+                      .move(z: 20)
+                      .arc(corner: ZVector(-30, 7, 15), end: ZVector(0, 15, 15))
+                      .arc(corner: ZVector(30, 7, 15), end: ZVector(0, 0, 20)),
                   color: Colors.white,
                 ),
               ),

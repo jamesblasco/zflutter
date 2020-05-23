@@ -29,7 +29,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   /// The path that will define the shape of the Widget
   /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
   /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
-  final List<ZPathCommand> path;
+  final ZPath path;
 
   /// The color of the shape. If [stroke] is more than 0, the path will be painted
   /// with a stroke of this color. If [fill] is true, it will paint the inside of
@@ -78,7 +78,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   RenderZShape createRenderObject(BuildContext context) {
     return RenderZShape(
       color: color,
-      path: path ?? [],
+      path: path?.commands ?? [],
       stroke: stroke,
       close: closed,
       fill: fill,
@@ -91,7 +91,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   @override
   void updateRenderObject(BuildContext context, RenderZShape renderObject) {
     renderObject..color = color;
-    renderObject..path = path ?? [];
+    renderObject..path = path?.commands ?? [];
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;

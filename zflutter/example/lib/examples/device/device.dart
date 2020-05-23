@@ -144,13 +144,18 @@ class Device extends StatelessWidget {
                 ZPositioned(
                     translate: ZVector.only(y: -height / 2),
                     child: ZShape(
-                      path: [
-                        ZMove.vector(ZVector.zero),
-                        ZLine.vector(ZVector.only(x: -30)),
-                        ZArc.list([ZVector(-30, 10, 0), ZVector(-20, 10, 0)]),
-                        ZLine.vector(ZVector(20, 10, 0)),
-                        ZArc.list([ZVector(30, 10, 0), ZVector(30, 0, 0)]),
-                      ],
+                      path: ZPath()
+                          .move()
+                          .line(x: -30)
+                          .arc(
+                            corner: ZVector(-30, 10, 0),
+                            end: ZVector(-20, 10, 0),
+                          )
+                          .line(x: 20, y: 10)
+                          .arc(
+                            corner: ZVector(30, 10, 0),
+                            end: ZVector(30, 0, 0),
+                          ),
                       fill: true,
                       color: Colors.black,
                     )),
@@ -159,13 +164,18 @@ class Device extends StatelessWidget {
                     rotate: ZVector(0, 0, tau / 2),
                     child: ZShape(
                       visible: false,
-                      path: [
-                        ZMove.vector(ZVector.zero),
-                        ZLine.vector(ZVector.only(x: -30)),
-                        ZArc.list([ZVector(-30, 10, 0), ZVector(-20, 10, 0)]),
-                        ZLine.vector(ZVector(20, 10, 0)),
-                        ZArc.list([ZVector(30, 10, 0), ZVector(30, 0, 0)]),
-                      ],
+                      path: const ZPath()
+                          .move()
+                          .line(x: -30)
+                          .arc(
+                            corner: ZVector(-30, 10, 0),
+                            end: ZVector(-20, 10, 0),
+                          )
+                          .line(x: 20, y: 10)
+                          .arc(
+                            corner: ZVector(30, 10, 0),
+                            end: ZVector(30, 0, 0),
+                          ),
                       fill: true,
                       color: Colors.black,
                     )),

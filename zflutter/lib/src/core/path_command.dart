@@ -1,10 +1,57 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/renderer.dart';
 
 import 'core.dart';
 
-// TODO: This Paths needs to be immutable;
+@immutable
+class ZPath {
+  final List<ZPathCommand> _commands;
+  final bool closed;
 
+  List<ZPathCommand> get commands => _commands;
+
+  const ZPath([List<ZPathCommand> commands])
+      : this.closed = false,
+        this._commands = commands ?? const [];
+
+  const ZPath.closed([List<ZPathCommand> commands])
+      : this.closed = false,
+        this._commands = commands ?? const [];
+
+  ZPath close() => ZPath(_commands);
+
+  ZPath addCommand(ZPathCommand command) {
+    return ZPath([..._commands, command]);
+  }
+
+  ZPath move({double x = 0, double y = 0, double z = 0}) {
+   // assert(!(vector != null && (x != 0 || y!= null || y!= null)));
+    return addCommand(ZMove(x, y, z));
+  }
+
+  ZPath moveVector(ZVector vector) {
+    return addCommand(ZMove.vector(vector ?? ZVector.zero));
+  }
+
+  ZPath line({double x = 0, double y = 0, double z = 0}) {
+    return addCommand(ZLine(x, y, z));
+  }
+
+  ZPath lineVector(ZVector vector) {
+    return addCommand(ZLine.vector(vector));
+  }
+
+  ZPath arc({@required ZVector corner, @required ZVector end}) {
+    return addCommand(ZArc(corner: corner, end: end));
+  }
+
+  ZPath bezier(List<ZVector> points) {
+    return addCommand(ZBezier(points));
+  }
+}
+
+// TODO: This Paths needs to be immutable;
 abstract class ZPathCommand {
   final ZVector endRenderPoint = ZVector.zero;
 

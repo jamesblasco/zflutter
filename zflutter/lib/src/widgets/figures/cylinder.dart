@@ -66,12 +66,7 @@ class ZCylinder extends StatelessWidget {
           color: color,
           diameter: diameter,
           stroke: stroke,
-          path: [
-            ZMove.vector(ZVector.only(z: baseZ)),
-            ZLine.vector(
-              ZVector.only(z: -baseZ),
-            )
-          ],
+          path: ZPath().move(z: baseZ).line(z: -baseZ),
         )
       ],
     );
@@ -81,21 +76,20 @@ class ZCylinder extends StatelessWidget {
 class _ZCylinderMiddle extends ZShape {
   final double diameter;
 
-  _ZCylinderMiddle(
-      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
+  _ZCylinderMiddle({this.diameter, ZPath path, double stroke = 1, Color color})
       : super(path: path, stroke: stroke, color: color);
 
   @override
   RenderZCylinder createRenderObject(BuildContext context) {
     return RenderZCylinder(
-        path: path, stroke: stroke, diameter: diameter, color: color);
+        path: path.commands, stroke: stroke, diameter: diameter, color: color);
   }
 
   @override
   void updateRenderObject(BuildContext context, RenderZCylinder renderObject) {
     renderObject.diameter = diameter;
     renderObject.stroke = stroke;
-    renderObject.path = path;
+    renderObject.path = path.commands;
     renderObject.color = color;
   }
 }

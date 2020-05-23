@@ -26,15 +26,14 @@ class ZRect extends ZShape {
             front: front,
             path: performPath(width, height));
 
-  static List<ZPathCommand> performPath(double width, double height) {
+  static ZPath performPath(double width, double height) {
     final x = width / 2;
     final y = height / 2;
-    return [
-      ZMove.vector(ZVector.only(x: -x, y: -y)),
-      ZLine.vector(ZVector.only(x: x, y: -y)),
-      ZLine.vector(ZVector.only(x: x, y: y)),
-      ZLine.vector(ZVector.only(x: -x, y: y))
-    ];
+    return ZPath()
+        .move(x: -x, y: -y)
+        .line(x: x, y: -y)
+        .line(x: x, y: y)
+        .line(x: -x, y: y);
   }
 }
 
@@ -65,64 +64,54 @@ class ZRoundedRect extends ZShape {
             front: front,
             path: performPath(width, height, borderRadius));
 
-  static List<ZPathCommand> performPath(
-      double width, double height, double borderRadius) {
-    var xA = width / 2;
-    var yA = height / 2;
-    var shortSide = math.min(xA, yA);
-    var cornerRadius = math.min(borderRadius, shortSide);
-    var xB = xA - cornerRadius;
-    var yB = yA - cornerRadius;
-    var path = [
+  static ZPath performPath(double width, double height, double borderRadius) {
+    final xA = width / 2;
+    final yA = height / 2;
+    final shortSide = math.min(xA, yA);
+    final cornerRadius = math.min(borderRadius, shortSide);
+    final xB = xA - cornerRadius;
+    final yB = yA - cornerRadius;
+    final path = [
       // top right corner
-      ZMove.vector(ZVector.only(x: xB, y: -yA)),
-      ZArc.list(
-        [
-          ZVector.only(x: xA, y: -yA),
-          ZVector.only(x: xA, y: -yB),
-        ],
-        null,
+      ZMove.only(x: xB, y: -yA),
+      ZArc(
+        corner: ZVector.only(x: xA, y: -yA),
+        end: ZVector.only(x: xA, y: -yB),
       ),
+
+      // bottom right corner
+      if (yB != 0)
+        ZLine.only(x: xA, y: yB),
+
+      ZArc(
+        corner: ZVector.only(x: xA, y: yA),
+        end: ZVector.only(x: xB, y: yA),
+      ),
+
+      // bottom left corner
+      if (xB != 0)
+        ZLine.only(x: -xB, y: yA),
+
+      ZArc(
+        corner: ZVector.only(x: -xA, y: yA),
+        end: ZVector.only(x: -xA, y: yB),
+      ),
+
+      // top left corner
+      if (yB != 0)
+        ZLine.only(x: -xA, y: -yB),
+
+      ZArc(
+        corner: ZVector.only(x: -xA, y: -yA),
+        end: ZVector.only(x: -xB, y: -yA),
+      ),
+
+      // back to top right corner
+      if (xB != 0)
+        ZLine.only(x: xB, y: -yA)
     ];
-    // bottom right corner
-    if (yB != 0) {
-      path.add(ZLine.vector(ZVector.only(x: xA, y: yB)));
-    }
-    path.add(ZArc.list(
-      [
-        ZVector.only(x: xA, y: yA),
-        ZVector.only(x: xB, y: yA),
-      ],
-      null,
-    ));
 
-    // bottom left corner
-    if (xB != 0) {
-      path.add(ZLine.vector(ZVector.only(x: -xB, y: yA)));
-    }
-    path.add(ZArc.list(
-      [
-        ZVector.only(x: -xA, y: yA),
-        ZVector.only(x: -xA, y: yB),
-      ],
-      null,
-    ));
-
-    // top left corner
-    if (yB != 0) {
-      path.add(ZLine.vector(ZVector.only(x: -xA, y: -yB)));
-    }
-    path.add(ZArc.list([
-      ZVector.only(x: -xA, y: -yA),
-      ZVector.only(x: -xB, y: -yA),
-    ]));
-
-    // back to top right corner
-    if (xB != 0) {
-      path.add(ZLine.vector(ZVector.only(x: xB, y: -yA)));
-    }
-
-    return path;
+    return ZPath(path);
   }
 }
 
@@ -182,51 +171,34 @@ class ZEllipse extends ZShape {
             front: front,
             path: performPath(width, height, quarters));
 
-  static List<ZPathCommand> performPath(
-      double width, double height, int quarters) {
-    var x = width / 2;
-    var y = height / 2;
+  static ZPath performPath(double width, double height, int quarters) {
+    final x = width / 2;
+    final y = height / 2;
 
-    var path = [
-      ZLine.vector(ZVector.only(x: 0, y: -y)),
-      ZArc.list(
-        [
-          ZVector.only(x: x, y: -y),
-          ZVector.only(x: x, y: 0),
-        ],
-        null,
+    final path = [
+      ZLine.only(x: 0, y: -y),
+      ZArc(
+        corner: ZVector.only(x: x, y: -y),
+        end: ZVector.only(x: x, y: 0),
       ),
+      if (quarters > 1)
+        ZArc(
+          corner: ZVector.only(x: x, y: y),
+          end: ZVector.only(x: 0, y: y),
+        ),
+      if (quarters > 2)
+        ZArc(
+          corner: ZVector.only(x: -x, y: y),
+          end: ZVector.only(x: -x, y: 0),
+        ),
+      if (quarters > 3)
+        ZArc(
+          corner: ZVector.only(x: -x, y: -y),
+          end: ZVector.only(x: 0, y: -y),
+        ),
     ];
 
-    if (quarters > 1) {
-      path.add(ZArc.list(
-        [
-          ZVector.only(x: x, y: y),
-          ZVector.only(x: 0, y: y),
-        ],
-        null,
-      ));
-    }
-    if (quarters > 2) {
-      path.add(ZArc.list(
-        [
-          ZVector.only(x: -x, y: y),
-          ZVector.only(x: -x, y: 0),
-        ],
-        null,
-      ));
-    }
-    if (quarters > 3) {
-      path.add(ZArc.list(
-        [
-          ZVector.only(x: -x, y: -y),
-          ZVector.only(x: 0, y: -y),
-        ],
-        null,
-      ));
-    }
-
-    return path;
+    return ZPath(path);
   }
 }
 
@@ -255,12 +227,13 @@ class ZPolygon extends ZShape {
             front: front,
             path: performPath(sides, radius));
 
-  static List<ZPathCommand> performPath(int sides, double radius) {
-    return List.generate(sides, (index) {
+  static ZPath performPath(int sides, double radius) {
+    final commands = List.generate(sides, (index) {
       final double theta = index / sides * tau - tau / 4;
       final double x = math.cos(theta) * radius;
       final double y = math.sin(theta) * radius;
-      return ZLine.vector(ZVector.only(x: x, y: y));
+      return ZLine.only(x: x, y: y);
     });
+    return ZPath(commands);
   }
 }

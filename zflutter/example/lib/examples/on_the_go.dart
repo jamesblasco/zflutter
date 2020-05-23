@@ -118,10 +118,7 @@ class Dude extends StatelessWidget {
                     legRotation: ZVector.only(x: -tau / 4 - hipsRotation.x),
                     lineOposite: true)),
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(x: -hipX)),
-                ZLine.vector(ZVector.only(x: hipX)),
-              ],
+              path: ZPath().move(x: -hipX).line(x: hipX),
               stroke: 8,
               color: beigeLight,
             )
@@ -143,10 +140,7 @@ class Dude extends StatelessWidget {
       {ZVector legRotation, bool lineOposite = false}) {
     Widget shoe(bool isRight) {
       final shoelace = ZShape(
-        path: [
-          ZMove.vector(ZVector.only(x: -1)),
-          ZLine.vector(ZVector.only(x: 1)),
-        ],
+        path: ZPath().move(x: -1).line(x: 1),
         color: blueDark,
         stroke: 1,
       );
@@ -199,10 +193,7 @@ class Dude extends StatelessWidget {
     }
 
     var base = ZShape(
-      path: [
-        ZMove.vector(ZVector.only(y: 0)),
-        ZLine.vector(ZVector.only(y: 18)),
-      ],
+      path: ZPath().move(y: 0).line(y: 18),
       stroke: 8,
       color: beigeLight,
     );
@@ -211,10 +202,7 @@ class Dude extends StatelessWidget {
     var rightThighZLine = ZPositioned(
       translate: ZVector.only(x: lineOposite ? 4 : -4),
       child: ZShape(
-        path: [
-          ZMove.vector(ZVector.only(y: 0)),
-          ZLine.vector(ZVector.only(y: 18)),
-        ],
+        path: ZPath().move(y: 0).line(y: 18),
         color: lineColor,
         stroke: 0.5,
       ),
@@ -228,10 +216,7 @@ class Dude extends StatelessWidget {
       child: ZShape(
         stroke: 0.5,
         color: lineColor,
-        path: [
-          ZMove.vector(ZVector.only(y: 0)),
-          ZLine.vector(shinEnd),
-        ],
+        path: ZPath().move().lineVector(shinEnd),
       ),
     );
 
@@ -240,10 +225,7 @@ class Dude extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(y: 3)),
-                ZLine.vector(ZVector.only(y: 4)),
-              ],
+              path: ZPath().move(y: 3).line(y: 4),
               color: skinMedium,
               stroke: 6,
             ),
@@ -257,10 +239,7 @@ class Dude extends StatelessWidget {
       child: ZGroup(
         children: [
           ZShape(
-            path: [
-              ZMove.vector(ZVector.only(y: 0)),
-              ZLine.vector(shinEnd),
-            ],
+            path: ZPath().move().lineVector(shinEnd),
             stroke: 8,
             color: thighColor,
           ),
@@ -274,10 +253,7 @@ class Dude extends StatelessWidget {
     return ZGroup(
       children: [
         ZShape(
-          path: [
-            ZMove.vector(ZVector.only(y: 0)),
-            ZLine.vector(ZVector.only(y: 18)),
-          ],
+          path: ZPath().move().line(y: 18),
           stroke: 8,
           color: thighColor,
         ),
@@ -305,10 +281,7 @@ class Dude extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(y: 0)),
-                ZLine.vector(ZVector.only(y: 14)),
-              ],
+              path: ZPath().move().line(y: 14),
               stroke: 8,
               color: skinMedium,
             ),
@@ -325,10 +298,8 @@ class Dude extends StatelessWidget {
       child: ZGroup(
         children: [
           ZShape(
-            path: [
-              ZMove.vector(ZVector.only(y: 0)),
-              ZLine.vector(ZVector.only(y: 14)),
-            ],
+            path: ZPath().move().line(y: 14),
+
             // addTo: torso,
 
             stroke: 10,
@@ -345,10 +316,7 @@ class Dude extends StatelessWidget {
       child: ZGroup(
         children: [
           ZShape(
-            path: [
-              ZMove.vector(ZVector.only(y: 0)),
-              ZLine.vector(ZVector.only(y: 14)),
-            ],
+            path: ZPath().move().line(y: 14),
             // addTo: torso,
 
             stroke: 10,
@@ -376,10 +344,7 @@ class Dude extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(x: -torsoX)),
-                ZLine.vector(ZVector.only(x: torsoX)),
-              ],
+              path: ZPath().move(x: -torsoX).line(x: torsoX),
               color: navy,
               stroke: torsoStroke,
             ),
@@ -399,10 +364,7 @@ class Dude extends StatelessWidget {
       ZPositioned(
         translate: ZVector.only(x: -2, y: -2, z: -3),
         child: ZShape(
-          path: [
-            ZMove.vector(ZVector.only(y: -1)),
-            ZLine.vector(ZVector.only(y: -7)),
-          ],
+          path: ZPath().move(y: -1).line(y: -7),
           stroke: 4,
           color: auburn,
         ),
@@ -411,10 +373,7 @@ class Dude extends StatelessWidget {
       ZPositioned(
         translate: ZVector.only(x: 1.25, y: -2, z: -3),
         child: ZShape(
-          path: [
-            ZMove.vector(ZVector.only(y: -0)),
-            ZLine.vector(ZVector.only(y: -6)),
-          ],
+          path: ZPath().move().line(y: -6),
           stroke: 2.5,
           color: red,
         ),
@@ -519,10 +478,8 @@ class Dude extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(y: neckY)),
-                ZLine.vector(ZVector.only(y: neckY - 4)),
-              ],
+              path: ZPath().move(y: neckY).line(y: -4),
+
               // addTo: torso,
               // translate: { y: }
 
@@ -607,7 +564,7 @@ class Lady extends StatelessWidget {
 
     // z-sort hack
     final zSortHack = new ZShape(
-      path: [ZMove.vector(ZVector.only(z: 16))],
+      path: ZPath().move(y: 16),
       visible: false,
     );
 //Group update
@@ -653,7 +610,7 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [ZMove.vector(ZVector.only(x: -1, z: -0.5))],
+              path: ZPath().move(y: -1, z: -0.5),
               color: skinMedium,
               stroke: 6,
             ),
@@ -666,13 +623,16 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             leftHand,
-            ZShape(path: [
-              ZMove.vector(ZVector.only(z: -0, y: 0)),
-              ZLine.vector(ZVector.only(z: 12, y: -2)), // elbow
-              ZLine.vector(leftWrist),
-              // hack for z-sort probs
-              ZMove.vector(ZVector.only(x: 16, z: -16)),
-            ], closed: false, color: skinMedium, stroke: 4),
+            ZShape(
+              //Add the last move to hack for z-sort probs
+              path: ZPath()
+                  .move()
+                  .line(z: 12, y: -2)
+                  .line(z: 12, y: -2)
+                  .lineVector(leftWrist)
+                  .move(x: 16, z: -16),
+              closed: false, color: skinMedium, stroke: 4,
+            ),
           ],
         ));
   }
@@ -726,12 +686,10 @@ class Lady extends StatelessWidget {
       var suitCaseHandle = ZPositioned(
         translate: ZVector.only(x: 3, y: -11),
         child: ZShape(
-          path: [
-            ZMove.vector(ZVector.zero),
-            ZArc.list(
-                [ZVector.only(x: 1, y: 0), ZVector.only(x: 1, y: 1)], null),
-            ZLine.vector(ZVector.only(x: 1, y: 3))
-          ],
+          path: ZPath().move().arc(
+                corner: ZVector.only(x: 1, y: 0),
+                end: ZVector.only(x: 1, y: 1),
+              ),
           stroke: 1.5,
           color: midnight,
           closed: false,
@@ -760,13 +718,13 @@ class Lady extends StatelessWidget {
             ZPositioned(
               translate: ZVector.only(x: -3, y: -11),
               child: ZShape(
-                path: [
-                  ZMove.vector(ZVector.zero),
-                  ZArc.list(
-                      [ZVector.only(x: -1, y: 0), ZVector.only(x: -1, y: 1)],
-                      null),
-                  ZLine.vector(ZVector.only(x: -1, y: 3))
-                ],
+                path: ZPath()
+                    .move()
+                    .arc(
+                      corner: ZVector.only(x: -1, y: 0),
+                      end: ZVector.only(x: -1, y: 1),
+                    )
+                    .line(x: -1, y: 3),
                 stroke: 1.5,
                 color: midnight,
                 closed: false,
@@ -785,7 +743,7 @@ class Lady extends StatelessWidget {
       child: ZGroup(
         children: [
           ZShape(
-            path: [ZMove.vector(ZVector.only(x: 0, z: 0))],
+            path: ZPath().move(),
             color: skinLight,
             stroke: 6,
           ),
@@ -800,13 +758,13 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             rightHand,
-            ZShape(path: [
+            ZShape(path: ZPath([
               ZMove.vector(ZVector.only(y: 0)),
 
               ZLine.vector(rightWrist),
               // hack for z-sort probs
               ZMove.vector(ZVector.only(x: 16, z: -16)),
-            ], color: skinLight, closed: false, stroke: 4),
+            ]), color: skinLight, closed: false, stroke: 4),
           ],
         ));
   }
@@ -819,10 +777,7 @@ class Lady extends StatelessWidget {
       final heel = ZPositioned(
         translate: ZVector.only(y: 5, z: -3),
         child: ZShape(
-          path: [
-            ZMove.vector(ZVector.only(x: -1)),
-            ZLine.vector(ZVector.only(x: 1))
-          ],
+          path: ZPath().move(x:-1).line(x: 1),
           stroke: 4,
           color: beigeLight,
         ),
@@ -831,13 +786,13 @@ class Lady extends StatelessWidget {
       var soleEdge = ZPositioned(
         translate: ZVector.only(y: 6),
         child: ZShape(
-          path: [
+          path: ZPath([
             ZMove.vector(ZVector.only(x: -2, z: -2)),
             ZArc.list([
               ZVector.only(x: -2, z: -2, y: 5),
               ZVector.only(x: 0, z: 2, y: 5)
-            ], null),
-          ],
+            ]),
+          ],),
           stroke: 2,
           fill: false,
           closed: false,
@@ -848,13 +803,13 @@ class Lady extends StatelessWidget {
       var soleEdge2 = ZPositioned(
         translate: ZVector.only(y: 6),
         child: ZShape(
-          path: [
+          path: ZPath([
             ZMove.vector(ZVector.only(x: 2, z: -2)),
             ZArc.list([
               ZVector.only(x: 2, z: 2, y: 5),
               ZVector.only(x: -0, z: 2, y: 5)
-            ], null),
-          ],
+            ]),
+          ],),
           stroke: 2,
           fill: false,
           closed: false,
@@ -866,7 +821,7 @@ class Lady extends StatelessWidget {
       final heelSpike = ZPositioned(
         translate: ZVector.only(y: 6, z: -4),
         child: ZShape(
-          path: [ZMove.vector(ZVector.zero), ZLine.vector(ZVector.only(y: 5))],
+          path:  ZPath([ZMove.vector(ZVector.zero), ZLine.vector(ZVector.only(y: 5))]),
           stroke: 2,
           color: beigeLight,
         ),
@@ -876,10 +831,10 @@ class Lady extends StatelessWidget {
       return ZGroup(
         children: [
           ZShape(
-            path: [
+            path: ZPath( [
               ZMove.vector(ZVector.only(y: 2)),
               ZLine.vector(ZVector.only(y: 8))
-            ],
+            ]),
             stroke: 4,
             color: color,
           ),
@@ -903,10 +858,10 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
+              path: ZPath( [
                 ZMove.vector(ZVector.only(y: 0)),
                 ZLine.vector(rightAnkle)
-              ],
+              ]),
               stroke: 7,
               color: navy,
             ),
@@ -920,7 +875,7 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [ZMove.vector(ZVector.only(y: 0)), ZLine.vector(rightKnee)],
+              path:  ZPath([ZMove.vector(ZVector.only(y: 0)), ZLine.vector(rightKnee)]),
               stroke: 7,
               color: navy,
             ),
@@ -936,7 +891,7 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [ZMove.vector(ZVector.only(y: 0)), ZLine.vector(leftAnkle)],
+              path:  ZPath([ZMove.vector(ZVector.only(y: 0)), ZLine.vector(leftAnkle)]),
               stroke: 7,
               color: midnight,
             ),
@@ -1084,10 +1039,10 @@ class Lady extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
+              path:  ZPath([
                 ZMove.vector(ZVector.zero),
                 ZLine.vector(ZVector.only(y: -2))
-              ],
+              ]),
               stroke: 4,
               color: skinLight,
             ),

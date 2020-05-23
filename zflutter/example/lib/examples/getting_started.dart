@@ -84,7 +84,10 @@ class GettingStartedSamples {
     ),
   );
 
-
-
-  static List<Example> get list => [zoom, animated, drag, boxAdapter];
+  static List<Example> get list => [
+      //  zoom,
+        animated,
+        drag,
+        boxAdapter,
+      ];
 }

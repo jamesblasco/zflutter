@@ -31,7 +31,7 @@ class ZCone extends ZCircle {
   RenderZCone createRenderObject(BuildContext context) {
     return RenderZCone(
         color: color,
-        path: path,
+        path: path.commands,
         stroke: stroke,
         close: closed,
         fill: fill,
@@ -45,7 +45,7 @@ class ZCone extends ZCircle {
   @override
   void updateRenderObject(BuildContext context, RenderZCone renderObject) {
     renderObject..color = color;
-    renderObject..path = path;
+    renderObject..path = path.commands;
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;

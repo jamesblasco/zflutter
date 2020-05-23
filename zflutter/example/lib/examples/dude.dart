@@ -35,12 +35,13 @@ class Arm extends StatelessWidget {
       translate: translate,
       rotate: rotate,
       child: ZGroup(children: [
-        ZShape(color: eggplant, stroke: 4, path: [
-          ZMove.vector(ZVector.only(y: 0)),
-          ZLine.vector(
-            ZVector.only(y: armSize),
-          )
-        ]),
+        ZShape(
+          color: eggplant,
+          stroke: 4,
+          path: ZPath().move().lineVector(
+                ZVector.only(y: armSize),
+              ),
+        ),
         ZGroup(
           children: [
             ZPositioned(
@@ -49,10 +50,7 @@ class Arm extends StatelessWidget {
                 child: ZGroup(
                   children: [
                     ZShape(
-                      path: [
-                        ZMove.vector(ZVector.only(y: 0)),
-                        ZLine.vector(ZVector.only(y: armSize))
-                      ],
+                      path: ZPath().move().line(y: armSize),
                       color: gold,
                       stroke: 4,
                     ),
@@ -142,10 +140,11 @@ class Leg extends StatelessWidget {
       rotate: ZVector.only(x: rotation),
       child: ZGroup(
         children: [
-          ZShape(color: eggplant, stroke: 4, path: [
-            ZMove.vector(ZVector.only(y: 0)),
-            ZLine.vector(ZVector.only(y: 12)),
-          ]),
+          ZShape(
+            color: eggplant,
+            stroke: 4,
+            path: ZPath().move().line(y: 12),
+          ),
           // foot
           ZPositioned(
             translate: ZVector.only(y: 14, z: 2),
@@ -178,11 +177,7 @@ class Body extends StatelessWidget {
           children: [
             ZShape(
               //Chest
-              path: [
-                ZMove.vector(ZVector.only(x: -1.5)),
-                ZLine.vector(ZVector.only(x: 1.5)),
-              ],
-
+              path: ZPath().move(x: -1.5).line(x: 1.5),
               stroke: 9,
               color: garnet,
             ),
@@ -202,10 +197,7 @@ class Body extends StatelessWidget {
         child: ZGroup(
           children: [
             ZShape(
-              path: [
-                ZMove.vector(ZVector.only(x: -hipX)),
-                ZLine.vector(ZVector.only(x: hipX)),
-              ],
+              path: ZPath().move(x: -hipX).line(x: hipX),
               stroke: 4,
               color: eggplant,
             ),

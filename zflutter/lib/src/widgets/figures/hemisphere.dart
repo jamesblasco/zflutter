@@ -53,13 +53,13 @@ class _ZCylinderMiddle extends ZShape {
   final double diameter;
 
   _ZCylinderMiddle(
-      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
-      : super(path: [], stroke: stroke, color: color);
+      {this.diameter, double stroke = 1, Color color})
+      : super(path: ZPath().move(), stroke: stroke, color: color);
 
   @override
   _RenderZHemisphere createRenderObject(BuildContext context) {
     return _RenderZHemisphere(
-      path: path,
+      path: path.commands,
       stroke: stroke,
       diameter: diameter,
       color: color,
@@ -71,7 +71,6 @@ class _ZCylinderMiddle extends ZShape {
       BuildContext context, _RenderZHemisphere renderObject) {
     renderObject.diameter = diameter;
     renderObject.stroke = stroke;
-    renderObject.path = path;
     renderObject.color = color;
   }
 }
