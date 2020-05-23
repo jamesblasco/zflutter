@@ -124,6 +124,7 @@ class _RenderZHemisphere extends RenderZShape {
     final endAnchor = contourAngle - tau / 4;
 
     renderer.begin();
+    renderer.move(origin);
     renderer.arc(x, y, demoRadius, startAngle, endAnchor);
     renderer.closePath();
     if (stroke > 0) renderer.stroke(color, stroke);
