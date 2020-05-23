@@ -2,7 +2,7 @@ name: zflutter
 description: A round, flat and designer-friendly pseudo-3D engine for Flutter
 version: 0.0.1+2
 homepage: https://z.flutter.gallery/
-repository:
+repository: https://github.com/jamesblasco/zflutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
