@@ -41,7 +41,7 @@ Let’s jump in with a basic non-animated demo.
 <div class="code-md" markdown="1">
 ```dart
 MaterialApp(
-  home: ZIllustriation(
+  home: ZIllustration(
     child: ZCircle(    
       diameter: 80,
       stroke: 20,
@@ -70,19 +70,19 @@ To transform a ZWidget in a three dimension we use ZPositioned widget.
 <div class="code-md" markdown="1">
 
 ```dart
-MaterialApp(
-  home: ZIllustriation(
-    child: ZPositioned(
-      translate: ZVector.only(x: 20),
-      rotate: ZVector.only(tau/4),
-      scale: ZVector.scale(1.1),
-      child: ZCircle(    
-        diameter: 80,
-        stroke: 20,
-        color: Color(0xFFCC2255),
-      )
-    ) 
-  )    
+ZIllustration(
+  children: [
+    ZPositioned(
+        translate: ZVector.only(x: 20),
+        rotate: ZVector.only(x: pi/4),
+        scale: ZVector.all(1.1),
+        child: ZCircle(
+          diameter: 80,
+          stroke: 20,
+          color: Color(0xFFCC2255),
+        )
+    )
+  ]
 )
 ```
 </div>
@@ -99,21 +99,21 @@ It is posible to use nested ZPositioned and they will be combined.
 <div class="code-md" markdown="1">
 
 ```dart
-MaterialApp(
-  home: ZIllustriation(
-    child: ZPositioned(
-      translate: ZVector.only(x: 20),
-       child: ZPositioned(
-        rotate: ZVector.only(tau/2),
-        scale: ZVector.scale(1.1),
-        child: ZCircle(    
-          diameter: 80,
-          stroke: 20,
-          color: Color(0xFFCC2255),
+ZIllustration(
+    children: [
+      ZPositioned(
+        translate: ZVector.only(x: 20),
+        child: ZPositioned(
+          rotate: ZVector.only(y:pi/4),
+          scale: ZVector.all(1.1),
+          child: ZCircle(
+            diameter: 80,
+            stroke: 20,
+            color: Color(0xFFCC2255),
+          ),
         ),
-      ),
-    ) 
-  )    
+      )
+    ]
 )
 ```
 </div>
@@ -127,17 +127,15 @@ Setting zoom will scale the whole scene proportionally. This helps to make the c
 <div class="code-md" markdown="1">
 
 ```dart
-MaterialApp(
-  home: ZIllustriation(
-    zoom: 4,
-    child: ZPositioned(
-       ZCircle(    
-        diameter: 80,
-        stroke: 20,
-        color: Color(0xFFCC2255),
-      )
-    ) 
-  )    
+ZIllustration(
+  zoom: 4,
+  children: [
+    ZCircle(
+      diameter: 80,
+      stroke: 20,
+      color: Color(0xFFCC2255),
+    ),
+  ],
 )
 ```
 </div>
@@ -154,16 +152,18 @@ In this example we will be passing an `Animation` variable to an `AnimatedBuilde
 ```dart
 AnimatedBuilder(
     animation: animation,
-    builder: (context, _ ) => 
-    ZIllustriation(
-      zoom: 4,
-      child: ZCircle(    
-          diameter: 80,
-          stroke: 20,
-          color: Color(0xFFCC2255),
-      
-      ), 
-  ),    
+    builder: (context, _ ) {
+      // Change the widgets according to the animation
+      return ZIllustration(
+        children: [
+          ZCircle(
+            diameter: 80,
+            stroke: 20,
+            color: Color(0xFFCC2255),
+          ),
+        ],
+      );
+    }
 )
 ```
 </div>
@@ -179,19 +179,21 @@ You can use a custom GestureDetector or ZDragDetector, a widget that calculates 
 
 ```dart
  ZDragDetector(
-    builder: (context, controller) {
-    ZIllustriation(
-      zoom: 4,
-      child: ZPositioned(
-        rotate: controller.rotate,
-        child: ZCircle(    
-          diameter: 80,
-          stroke: 20,
-          color: Color(0xFFCC2255),
+  builder: (context, controller) {
+    return ZIllustration(
+      children: [
+        ZPositioned(
+          rotate: controller.rotate,
+          child: ZCircle(
+            diameter: 80,
+            stroke: 20,
+            color: Color(0xFFCC2255),
+          ),
         ),
-      ), 
-  ),    
-)
+      ],
+    );
+  },
+);
 ```
 </div>
 
@@ -204,19 +206,16 @@ ZToBoxAdapter lets you add any widget to your 3D playground.  `height` and a `wi
 <div class="code-md" markdown="1">
 
 ```dart
- ZDragDetector(
-    builder: (context, controller) {(
-    ZIllustriation(
-      zoom: 4,
-      child: ZPositioned(
-        rotate: controller.rotate,
-        child: ZToBoxAdapter(    
-          height: 80,
-          width: 80,
-          child: Container(color: Color(0xFFCC2255)),
+ZIllustration(
+    children: [
+      ZToBoxAdapter(
+        height: 80,
+        width: 80,
+        child: Container(
+          color: Color(0xFFCC2255),
         ),
-      ), 
-  ),    
+      ),
+    ],
 )
 ```
 </div>

@@ -17,8 +17,8 @@ We build ZFlutter models by using shape widgets and transforming them with ZPosi
 ```dart
 ZPositioned(
     translate: ZVector.only(x: 20),
-    rotate: ZVector.only(tau/4),
-    scale: ZVector.scale(1.1),
+    rotate: ZVector.only(x: tau/4),
+    scale: ZVector.all(1.1),
     child: ZCircle(    
         diameter: 80,
         stroke: 20,
@@ -34,8 +34,8 @@ The `ZPositioned` are relative to the previous origin reference. So if we add an
 ZPositioned(
     translate: ZVector.only(x: 20),
     child: ZPositioned(
-        rotate: ZVector.only(tau/4),
-        scale: ZVector.scale(1.1),
+        rotate: ZVector.only(x: tau/4),
+        scale: ZVector.all(1.1),
         child: ZCircle(    
             diameter: 80,
             stroke: 20,
@@ -110,6 +110,12 @@ that is SortMode.inherit by the default. There are three modes
 - **SortMode.inherit**: Renders the children in the same order as if they were children of the previous group or root illustration
 - **SortMode.stack:** Paints the children in the order they are added to the list
 - **SortMode.update**: Creates a new order for the children according to their transformation and paints the group according to the transformation of the group centroid
+
+
+# Z-fighting
+
+Z-fighting is when two shapes pop-over one another as they appear to fight for position. It happens when any shapes occupy the same space and is the natural result of its pseudo-3D engine.
+We are working on ways to improve this and docs will be added here once finished. In the meantine you can read some of the [workarounds that Zdog uses to solve this ](https://zzz.dog/extras#z-fighting)
 
 
 Learn more in detail the different pre-built shapes here

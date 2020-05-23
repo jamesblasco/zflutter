@@ -42,7 +42,7 @@ ZRect(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/rect">
+    src="https://z.flutter.gallery/examples/#/demo/rect">
 </iframe>
 </div>
 </div>
@@ -85,7 +85,7 @@ ZGroup(
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/rects">
+     src="https://z.flutter.gallery/examples/#/demo/rects">
 </iframe>
 </div>
 </div>
@@ -113,7 +113,7 @@ ZRoundedRect(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/rounded_rect">
+    src="https://z.flutter.gallery/examples/#/demo/rounded_rect">
 </iframe>
 </div>
 </div>
@@ -139,7 +139,7 @@ ZCircle(
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/circle">
+     src="https://z.flutter.gallery/examples/#/demo/circle">
 </iframe>
 </div>
 </div>
@@ -165,7 +165,7 @@ ZEllipse(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/ellipsis">
+    src="https://z.flutter.gallery/examples/#/demo/ellipsis">
 </iframe>
 </div>
 </div>
@@ -210,7 +210,7 @@ ZPolygon(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/polygon">
+    src="https://z.flutter.gallery/examples/#/demo/polygon">
 </iframe>
 </div>
 </div>
@@ -241,7 +241,7 @@ ZShape(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/sphere">
+    src="https://z.flutter.gallery/examples/#/demo/sphere">
 </iframe>
 </div>
 </div>
@@ -252,14 +252,14 @@ Set `path` to Array of path commands. Path commands set the directions for the p
 There are four path commands: `ZLine, ZMove, ZArc, and ZBezier.` 
 ```dart
 path: [
-    ZMove(ZVector(0,0,0)),
+    ZMove(0,0,0),
 
-    ZLine(ZVector(/*x,y,z*/)),
+    ZLine(/*x,y,z*/),
     
-    ZArc([
-        ZVector(/*x,y,z*/) // corner point
-        ZVector(/*x,y,z*/)  // end point
-    ]),
+    ZArc(
+        corner: ZVector(/*x,y,z*/) // corner point
+        end: ZVector(/*x,y,z*/)  // end point
+    ),
 
     ZBezier([
         ZVector(/*x,y,z*/) // start control point
@@ -277,8 +277,8 @@ path: [
 ```dart
 ZShape(
     path: [
-        ZMove(ZVector.only(x: -40)),
-        ZLine(ZVector.only(x: 40)),
+        ZMove.only(x: -40),
+        ZLine.only(x: 40),
     ],
     stroke: 20,
     color: Color(0xff663366),
@@ -292,7 +292,7 @@ ZShape(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/simple_line">
+    src="https://z.flutter.gallery/examples/#/demo/simple_line">
 </iframe>
 </div>
 </div>
@@ -303,10 +303,10 @@ ZShape(
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: -32, y: -40)), // start at top left
-        ZLine(ZVector.only(x: 32, y: -40)), // line to top right
-        ZLine(ZVector.only(x: -32, y: 40)), // line to bottom left
-        ZLine(ZVector.only(x: 32, y: 40)), // line to bottom right
+        ZMove.only(x: -32, y: -40), // start at top left
+        ZLine.only(x: 32, y: -40), // line to top right
+        ZLine.only(x: -32, y: 40), // line to bottom left
+        ZLine.only(x: 32, y: 40), // line to bottom right
     ],
     closed: false,
     stroke: 20,
@@ -321,7 +321,7 @@ ZShape(
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/z_plain">
+     src="https://z.flutter.gallery/examples/#/demo/z_plain">
 </iframe>
 </div>
 </div>
@@ -334,10 +334,10 @@ Path points can use `z` coordinates to form 3D shapes
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: -32, y: -40, z: 40)),
-        ZLine(ZVector.only(x: 32, y: -40)), 
-        ZLine(ZVector.only(x: -32, y: 40, z: 40)), 
-        ZLine(ZVector.only(x: 32, y: 40, z: -40)), 
+        ZMove.only(x: -32, y: -40, z: 40),
+        ZLine.only(x: 32, y: -40), 
+        ZLine.only(x: -32, y: 40, z: 40), 
+        ZLine.only(x: 32, y: 40, z: -40), 
     ],
     closed: false,
     stroke: 20,
@@ -352,7 +352,7 @@ Path points can use `z` coordinates to form 3D shapes
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/z_3d">
+     src="https://z.flutter.gallery/examples/#/demo/z_3d">
 </iframe>
 </div>
 </div>
@@ -364,10 +364,10 @@ Path points can use `z` coordinates to form 3D shapes
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: -32, y: -40)), // start at top left
-        ZLine(ZVector.only(x: 32, y: -40)), // line to top right
-        ZMove(ZVector.only(x: -32, y: 40)), // line to bottom left
-        ZLine(ZVector.only(x: 32, y: 40)), // line to bottom right
+        ZMove.only(x: -32, y: -40), // start at top left
+        ZLine.only(x: 32, y: -40), // line to top right
+        ZMove.only(x: -32, y: 40), // line to bottom left
+        ZLine.only(x: 32, y: 40), // line to bottom right
     ],
     closed: false,
     stroke: 20,
@@ -382,7 +382,7 @@ Path points can use `z` coordinates to form 3D shapes
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/parallel_lines">
+    src="https://z.flutter.gallery/examples/#/demo/parallel_lines">
 </iframe>
 </div>
 </div>
@@ -395,15 +395,15 @@ Renders an elliptical curve. The ellipse of the curve fits within a rectangle fo
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: -60, y: -60)), // start
-        ZArc([
-            ZVector.only(x: 20, y: -60), // corner
-            ZVector.only(x: 20, y: 20) // end point
-        ]), 
-        ZArc([  // start next arc from last end point
-            ZVector.only(x: 20, y: 60), // corner
-            ZVector.only(x: 60, y: 60) // end point
-        ]),
+        ZMove.only(x: -60, y: -60)), // start
+        ZArc(
+          corner:  ZVector.only(x: 20, y: -60), // corner
+          end:  ZVector.only(x: 20, y: 20) // end point
+        ), 
+        ZArc(  // start next arc from last end point
+         corner: ZVector.only(x: 20, y: 60), // corner
+         end:  ZVector.only(x: 60, y: 60) // end point
+        ),
     ],
     closed: false,
     stroke: 20,
@@ -418,7 +418,7 @@ Renders an elliptical curve. The ellipse of the curve fits within a rectangle fo
     marginheight="0" 
     width="200" 
     height="200" 
-        src="https://z.flutter.gallery/#/demo/arc">
+        src="https://z.flutter.gallery/examples/#/demo/arc">
 </iframe>
 </div>
 </div>
@@ -432,7 +432,7 @@ Renders a bezier curve.
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: -60, y: -60)),
+        ZMove.only(x: -60, y: -60),
         ZBezier([
             ZVector.only(x: 20, y: -60),
             ZVector.only(x: 20, y: 60),
@@ -452,7 +452,7 @@ Renders a bezier curve.
     marginheight="0" 
     width="200" 
     height="200" 
-        src="https://z.flutter.gallery/#/demo/bezier">
+        src="https://z.flutter.gallery/examples/#/demo/bezier">
 </iframe>
 </div>
 </div> 
@@ -466,9 +466,9 @@ Closes the path from the last point back to the first. Enabled by default `close
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: 0, y: -40)),
-        ZLine(ZVector.only(x: 40, y: 40)),
-        ZLine(ZVector.only(x: -40, y: 40)),
+        ZMove.only(x: 0, y: -40),
+        ZLine.only(x: 40, y: 40),
+        ZLine.only(x: -40, y: 40),
     ],
     // closed by default
     stroke: 20,
@@ -483,7 +483,7 @@ Closes the path from the last point back to the first. Enabled by default `close
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/closedTriangle">
+    src="https://z.flutter.gallery/examples/#/demo/closedTriangle">
 </iframe>
 </div>
 </div>
@@ -494,9 +494,9 @@ Closes the path from the last point back to the first. Enabled by default `close
 ```dart
  ZShape(
     path: [
-        ZMove(ZVector.only(x: 0, y: -40)),
-        ZLine(ZVector.only(x: 40, y: 40)),
-        ZLine(ZVector.only(x: -40, y: 40)),
+        ZMove.only(x: 0, y: -40),
+        ZLine.only(x: 40, y: 40),
+        ZLine.only(x: -40, y: 40),
     ],
     closed: false, // unclosed
     stroke: 20,
@@ -512,7 +512,7 @@ Closes the path from the last point back to the first. Enabled by default `close
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/open_triangle">
+    src="https://z.flutter.gallery/examples/#/demo/open_triangle">
 </iframe>
 </div>
 </div>
@@ -526,9 +526,6 @@ A spherical hemisphere. Set size with `diameter`. Set the color of the base elli
 ```dart
 ZHemisphere(
     diameter: 120,
-    // fill enabled by default
-    // disable stroke for crisp edge
-    // stroke: false,
     color: Color(0xffCC2255),
     backfaceColor: Color(0xffEEAA00),
 )
@@ -541,7 +538,7 @@ ZHemisphere(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/hemisphere">
+    src="https://z.flutter.gallery/examples/#/demo/hemisphere">
 </iframe>
 </div>
 </div>
@@ -568,7 +565,7 @@ ZCone(
     marginheight="0" 
     width="200" 
     height="200" 
-    src="https://z.flutter.gallery/#/demo/cone">
+    src="https://z.flutter.gallery/examples/#/demo/cone">
     
 </iframe>
 </div>
@@ -596,7 +593,7 @@ ZCylinder(
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/cylinder">
+     src="https://z.flutter.gallery/examples/#/demo/cylinder">
 </iframe>
 </div>
 </div>
@@ -628,7 +625,7 @@ ZBox(
     marginheight="0" 
     width="200" 
     height="200" 
-     src="https://z.flutter.gallery/#/demo/box">
+     src="https://z.flutter.gallery/examples/#/demo/box">
 </iframe>
 </div>
 </div>

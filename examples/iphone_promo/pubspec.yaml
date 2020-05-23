@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
 
   zflutter:
-    path: '../../zflutter/'
+  #  path: '../../zflutter/'
   modal_bottom_sheet: ^0.1.5
   audioplayers:
     git:

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zflutter/zflutter.dart';
 
 import 'examples/examples.dart';
+import 'examples/getting_started.dart';
 import 'flutter_widget.dart';
 
 void main() {
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        ...[...Examples.list, ...BasicSamples.list].asMap().map(
+        ...[...Examples.list, ...BasicSamples.list, ...GettingStartedSamples.list].asMap().map(
               (key, example) => MapEntry(
                 example.route,
                 (context) => Scaffold(
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
         // Demos for the website
-        ...[...Examples.list, ...BasicSamples.list].asMap().map(
+        ...[...Examples.list, ...BasicSamples.list, ...GettingStartedSamples.list].asMap().map(
               (key, example) => MapEntry(
                   '/demo${example.route}',
                   (context) => Container(
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
                       )),
             ),
       },
-      home: MyHomePage(),
+      home: MyHomePage()
     );
   }
 }
@@ -126,5 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Example> get examples => [
         ...Examples.list,
         ...BasicSamples.list,
+        ...GettingStartedSamples.list
       ];
 }
