@@ -31,3 +31,7 @@ Also I would like to encourage to submit issues and PR to improve this package.
 - Polish the code and add documentation
 - Add testing
 - Implement hitTest in ZWidgets
+
+# Known Issues
+- Scale in web is pixelated: [Flutter #34878](https://github.com/flutter/flutter/issues/34878)
+- Touch input inside ZWidgets is not detected yet
