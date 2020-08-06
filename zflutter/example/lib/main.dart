@@ -4,6 +4,7 @@ import 'package:zflutter/zflutter.dart';
 
 import 'examples/examples.dart';
 import 'examples/getting_started.dart';
+import 'examples/isometric_grid.dart';
 import 'flutter_widget.dart';
 
 void main() {
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
                       )),
             ),
       },
-      home: MyHomePage()
+      home: IsometricGrid()
     );
   }
 }
