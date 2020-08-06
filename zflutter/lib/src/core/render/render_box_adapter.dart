@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:zflutter/src/widgets/figures/box.dart';
 
 import '../core.dart';
 
@@ -64,9 +65,32 @@ class RenderZToBoxAdapter extends RenderZBox
               e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
           .toList();
     });
+    performTransform();
 
     performSort();
   }
+
+  Matrix4 _transform;
+
+  performTransform() {
+    assert(parentData is ZParentData);
+    final ZParentData anchorParentData = parentData as ZParentData;
+
+    Matrix4 matrix = Matrix4.translationValues(0, 0, 0);
+    anchorParentData.transforms.forEach((transform) {
+      final matrix4 = Matrix4.translationValues(
+          transform.translate.x, transform.translate.y, transform.translate.z);
+
+      matrix4.rotateX(transform.rotate.x);
+      matrix4.rotateY(-transform.rotate.y);
+      matrix4.rotateZ(transform.rotate.z);
+
+      matrix4.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+      matrix..multiply(matrix4);
+    });
+    _transform = matrix;
+  }
+
 
   @override
   void performSort() {
@@ -89,49 +113,48 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    assert(parentData is ZParentData);
-    final ZParentData anchorParentData = parentData as ZParentData;
-
-    Matrix4 matrix = Matrix4.translationValues(0, 0, 0);
-    anchorParentData.transforms.forEach((transform) {
-      final matrix4 = Matrix4.translationValues(
-          transform.translate.x, transform.translate.y, transform.translate.z);
-
-      matrix4.rotateX(transform.rotate.x);
-      matrix4.rotateY(-transform.rotate.y);
-      matrix4.rotateZ(transform.rotate.z);
-
-      matrix4.scale(transform.scale.x, transform.scale.y, transform.scale.z);
-      matrix..multiply(matrix4);
-    });
-
-    /* final transform2 = anchorParentData.transforms.reversed.toList()[1];
-    matrix..rotateY(transform2.rotate.y);
-    matrix..rotateX(transform2.rotate.x);
-
-    final transform = anchorParentData.transforms.reversed.first;
-
-    matrix..translate(transform.translate.x, transform.translate.y, transform.translate.z);*/
-
-    /* context.canvas.save();
-
-    context.canvas.transform(matrix.storage);
-
-    context.paintChild(child, offset - Offset(width / 2, height / 2));
-
-    context.canvas.restore();*/
+    final zParentData = parentData as ZParentData;
 
     if (child != null) {
       final TransformLayer layer = TransformLayer();
-      layer.transform = matrix;
+      layer.transform = _transform;
       context.pushLayer(
         layer,
-        (context, _) {
-          context.paintChild(child, offset - Offset(width / 2, height / 2));
+        (context, offset) {
+          context.paintChild(child, offset - Offset(width / 2, height / 2) );
         },
-        Offset.zero,
+        offset,
         childPaintBounds: context.estimatedBounds,
       );
     }
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {Offset position}) {
+    // RenderZToBoxAdapter objects don't check if they are
+    // themselves hit, because it's confusing to think about
+    // how the untransformed size and the child's transformed
+    // position interact.
+    return hitTestChildren(result, position: position);
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
+    final data = parentData as ZParentData;
+    print(position);
+    return result.addWithPaintTransform(
+      transform: _transform,
+      position: position,
+      hitTest: (result, Offset position) {
+        return child.hitTest(result,
+            position: position + Offset(width / 2, height / 2));
+      },
+    );
+  }
+
+  @override
+  void applyPaintTransform(RenderBox child, Matrix4 transform) {
+    transform.multiply(_transform);
+    transform.translate(-width / 2, -height / 2);
   }
 }

@@ -252,4 +252,29 @@ class RenderZShape extends RenderZBox {
   }
 
   void render(ZRenderer renderer) {}
+
+  @override
+  bool hitTestSelf(Offset position) {
+    print('test');
+    final renderer = ZRenderer(null);
+    var isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
+    var isClosed = !isTwoPoints && _close == true;
+    renderer.renderPath(transformedPath, isClosed: isClosed);
+    print(position);
+    final hit =  path.contains(position);
+    print(hit);
+    return hit;
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {Offset position}) {
+    if (hitTestSelf(position)) {
+      result.add(BoxHitTestEntry(this, position));
+      print('hitted');
+      return true;
+    }
+    return false;
+  }
+
+
 }

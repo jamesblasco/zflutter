@@ -42,22 +42,15 @@ class RenderZMultiChildBox extends RenderZBox
     super.performLayout();
 
     final BoxConstraints constraints = this.constraints;
-
     RenderZBox child = firstChild;
 
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
-
       if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
-        child.layout(constraints, parentUsesSize: true);
+        child.layout(constraints, parentUsesSize: false);
       } else {
-        child.layout(constraints, parentUsesSize: true);
+        child.layout(constraints, parentUsesSize: false);
       }
-
-      /*  final Size childSize = child.size;
-        width = math.max(width, childSize.width);
-        height = math.max(height, childSize.height);*/
-
       child = childParentData?.nextSibling;
     }
     performSort();
@@ -80,6 +73,7 @@ class RenderZMultiChildBox extends RenderZBox
       super.performSort();
     }
   }
+
 
   @override
   bool get sizedByParent => true;
@@ -124,8 +118,50 @@ class RenderZMultiChildBox extends RenderZBox
     }
     for (final child in children) {
       final ZParentData childParentData = child.parentData as ZParentData;
-      context.paintChild(child, childParentData.offset + offset);
+      context.paintChild(child, offset);
     }
+  }
+
+  bool defaultHitTestChildren(BoxHitTestResult result, { Offset position }) {
+    if (sortMode == SortMode.inherit) return false;
+    // The x, y parameters have the top left of the node's box as the origin.
+    List<RenderZBox> children = getFlatChildren();
+    //List<RenderBox> children = getChildrenAsList()
+    if (sortMode != SortMode.stack) {
+      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+    }
+    children = children.reversed.toList();
+
+    for (final child in children) {
+      final ZParentData childParentData = child.parentData as ZParentData;
+      final bool isHit = child.hitTest(result, position: position);
+
+     /* final bool isHit = result.addWithPaintOffset(
+        offset: childParentData.offset,
+        position: position,
+        hitTest: (BoxHitTestResult result, Offset transformed) {
+          assert(transformed == position - childParentData.offset);
+          return child.hitTest(result, position: transformed);
+        },
+      );*/
+      if (isHit)
+        return true;
+    }
+    return false;
+  }
+  
+  @override
+  bool hitTest(BoxHitTestResult result, {Offset position}) {
+    if (hitTestChildren(result, position: position) || hitTestSelf(position)) {
+      result.add(BoxHitTestEntry(this, position));
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, { Offset position }) {
+    return defaultHitTestChildren(result, position: position);
   }
 }
 
