@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /docs/getting-started/
 ---
 
-{% include head.html %}
+
 
 
 # Getting started

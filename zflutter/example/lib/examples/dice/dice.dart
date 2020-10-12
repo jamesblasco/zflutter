@@ -6,10 +6,10 @@ import 'package:flutter/physics.dart';
 import 'package:zflutter/zflutter.dart';
 
 class Dices extends StatefulWidget {
-  _PhysicsAnimation createState() => _PhysicsAnimation();
+  _PhysicsAnimation createState() => _DicesState();
 }
 
-class _PhysicsAnimation extends State<Dices>
+class _DicesState extends State<Dices>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
 
@@ -304,7 +304,5 @@ class Dice extends StatelessWidget {
         ),
       ],
     );
-// include the dots repeating as many shapes/groups as possible
-// ! when copying an element be sure to reset the rotation/translation of the copied shape
   }
 }

@@ -4,7 +4,6 @@ title: Modeling
 nav_order: 2
 permalink: /docs/modeling/
 ---
-{% include head.html %}
 
 # Modeling
 

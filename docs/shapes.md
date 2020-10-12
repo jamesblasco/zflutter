@@ -4,7 +4,7 @@ title: Shapes
 nav_order: 3
 permalink: /docs/shapes/
 ---
-{% include head.html %}
+
 
 # Shapes
 {: .no_toc}
