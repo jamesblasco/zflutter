@@ -11,14 +11,14 @@ typedef DragWidgetBuilder = Widget Function(
 class ZDragDetector extends StatefulWidget {
   final DragWidgetBuilder builder;
 
-  const ZDragDetector({Key key, this.builder}) : super(key: key);
+  const ZDragDetector({Key? key, required this.builder}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ZDragDetectorState();
 }
 
 class _ZDragDetectorState extends State<ZDragDetector> {
-  ZDragController controller;
+  late ZDragController controller;
   Offset dragStart = Offset.zero;
   Offset dragStartR = Offset.zero;
 
@@ -34,6 +34,7 @@ class _ZDragDetectorState extends State<ZDragDetector> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
         onPanStart: (event) {
           dragStartR = Offset(
             controller.rotate.x,

@@ -13,9 +13,9 @@ class FlutterAnimation extends StatefulWidget {
 
 class _FlutterAnimationState extends State<FlutterAnimation>
     with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
-  AnimationController dashController;
+  AnimationController? dashController;
 
   @override
   void initState() {
@@ -86,11 +86,11 @@ class _FlutterAnimationState extends State<FlutterAnimation>
               Tween(begin: 0.0, end: -tau / 2).evaluate(curved);
               final zoom = lerpDouble(0.8, 1.6, progress);
               final xrotate = -(0.5 - (progress - 0.5).abs()) * tau / 8;
-              final dash = dashAnimations.fold(
+              final dash = dashAnimations.fold<double>(
                   0, (previousValue, element) => previousValue + element.value);
 
               return ZIllustration(
-                zoom: zoom,
+                zoom: zoom ?? 1,
                 children: [
                   ZPositioned(
                     rotate: ZVector.only(y: rotationAnimation, x: xrotate) +

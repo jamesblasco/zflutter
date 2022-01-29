@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zflutter/src/core/core.dart';
@@ -6,7 +7,7 @@ abstract class ZUpdateParentDataWidget<T extends ParentData>
     extends ProxyWidget {
   /// Abstract const constructor. This constructor enables subclasses to provide
   /// const constructors so that they can be used in const expressions.
-  const ZUpdateParentDataWidget({Key key, Widget child})
+  const ZUpdateParentDataWidget({Key? key,  required Widget child})
       : super(key: key, child: child);
 
   @override

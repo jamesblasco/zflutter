@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zflutter/zflutter.dart';
 
@@ -32,7 +33,7 @@ class OnTheGo extends StatefulWidget {
 }
 
 class _OnTheGoState extends State<OnTheGo> with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
   @override
   void initState() {
@@ -140,7 +141,7 @@ class Dude extends StatelessWidget {
   }
 
   Widget rightThigh(Color thighColor, Color lineColor,
-      {ZVector legRotation, bool lineOposite = false}) {
+      {ZVector legRotation = ZVector.zero, bool lineOposite = false}) {
     Widget shoe(bool isRight) {
       final shoelace = ZShape(
         path: [
@@ -175,6 +176,7 @@ class Dude extends StatelessWidget {
                 ZPositioned(
                   translate: ZVector.only(y: 4),
                   child: ZShape(
+                    color: Colors.transparent,
                     visible: false,
                   ),
                 )
@@ -607,6 +609,7 @@ class Lady extends StatelessWidget {
 
     // z-sort hack
     final zSortHack = new ZShape(
+      color: Colors.transparent,
       path: [ZMove.vector(ZVector.only(z: 16))],
       visible: false,
     );

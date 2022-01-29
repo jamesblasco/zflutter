@@ -7,11 +7,11 @@ class ZRect extends ZShape {
   final double height;
 
   ZRect({
-    Key key,
-    @required this.width,
-    @required this.height,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.width,
+    required this.height,
+    required Color color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
@@ -44,12 +44,12 @@ class ZRoundedRect extends ZShape {
   final double borderRadius;
 
   ZRoundedRect({
-    Key key,
-    @required this.width,
-    @required this.height,
-    @required this.borderRadius,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.width,
+    required this.height,
+    required this.borderRadius,
+    required Color color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
@@ -132,12 +132,12 @@ class ZCircle extends ZShape {
   final int quarters;
 
   ZCircle({
-    Key key,
-    @required this.diameter,
+    Key? key,
+    required this.diameter,
     this.quarters = 4,
-    Color color,
+    required Color color,
     bool closed = false,
-    Color backfaceColor,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
@@ -161,12 +161,12 @@ class ZEllipse extends ZShape {
   final int quarters;
 
   ZEllipse({
-    Key key,
-    @required this.width,
-    @required this.height,
+    Key? key,
+    required this.width,
+    required this.height,
     this.quarters = 4,
-    Color color,
-    Color backfaceColor,
+    required Color color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
@@ -235,11 +235,11 @@ class ZPolygon extends ZShape {
   final double radius;
 
   ZPolygon({
-    Key key,
-    @required this.sides,
-    @required this.radius,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.sides,
+    required this.radius,
+    required Color color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),

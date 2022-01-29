@@ -17,21 +17,21 @@ class ZBox extends StatelessWidget {
   final Color color;
   final bool visible;
 
-  final Color frontColor;
-  final Color rearColor;
-  final Color leftColor;
-  final Color rightColor;
-  final Color topColor;
-  final Color bottomColor;
+  final Color? frontColor;
+  final Color? rearColor;
+  final Color? leftColor;
+  final Color? rightColor;
+  final Color? topColor;
+  final Color? bottomColor;
 
   ZBox({
-    this.width,
-    this.height,
-    this.depth,
+    required this.width,
+    required this.height,
+    required this.depth,
     this.stroke = 1,
     this.fill = true,
-    this.color,
-    this.visible,
+    required this.color,
+    this.visible = true,
     this.frontColor,
     this.rearColor,
     this.leftColor,
@@ -139,21 +139,21 @@ class ZBoxToBoxAdapter extends StatelessWidget {
   final Color color;
   final bool visible;
 
-  final Widget front;
-  final Widget rear;
-  final Widget left;
-  final Widget right;
-  final Widget top;
-  final Widget bottom;
+  final Widget? front;
+  final Widget? rear;
+  final Widget? left;
+  final Widget? right;
+  final Widget? top;
+  final Widget? bottom;
 
   ZBoxToBoxAdapter({
-    this.width,
-    this.height,
-    this.depth,
+    required this.width,
+    required this.height,
+    required this.depth,
     this.stroke = 1,
     this.fill = true,
-    this.color,
-    this.visible,
+    required this.color,
+    this.visible = true,
     this.front,
     this.rear,
     this.left,

@@ -20,16 +20,16 @@ import 'on_the_go.dart';
 class Example {
   final String title;
   final String route;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final WidgetBuilder builder;
-  final FlutterLogoColor logoStyle;
+  final FlutterLogoColor? logoStyle;
 
   Example({
     this.logoStyle,
-    @required this.title,
-    @required this.route,
+    required this.title,
+    required this.route,
     this.backgroundColor,
-    @required this.builder,
+    required this.builder,
   });
 }
 
@@ -537,13 +537,13 @@ class BasicSamples {
 class Template extends StatelessWidget {
   final List<Widget> Function() childrenBuilder;
 
-  const Template({Key key, this.childrenBuilder}) : super(key: key);
+  const Template({Key? key, required this.childrenBuilder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Spin(
       builder: (context, rotate) => ZDragDetector(
-        key: key,
+        key: Key('template'),
         builder: (context, controller) {
           return ZIllustration(
             zoom: 3,

@@ -16,14 +16,14 @@ class ZHemisphere extends StatelessWidget {
   final bool visible;
 
   // final ZVector front;
-  final Color backfaceColor;
+  final Color? backfaceColor;
 
   //var front = ZVector.only(z: 1);
   ZHemisphere({
     this.diameter = 1,
     this.stroke = 1,
-    this.color,
-    this.visible,
+    required this.color,
+    this.visible = true,
     this.backfaceColor,
   });
 
@@ -33,6 +33,7 @@ class ZHemisphere extends StatelessWidget {
       sortMode: SortMode.stack,
       children: [
         _ZCylinderMiddle(
+          path: [],
           color: color,
           diameter: diameter,
           stroke: stroke,
@@ -52,9 +53,12 @@ class ZHemisphere extends StatelessWidget {
 class _ZCylinderMiddle extends ZShape {
   final double diameter;
 
-  _ZCylinderMiddle(
-      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
-      : super(path: [], stroke: stroke, color: color);
+  _ZCylinderMiddle({
+    required this.diameter,
+    required List<ZPathCommand> path,
+    double stroke = 1,
+    required Color color,
+  }) : super(path: [], stroke: stroke, color: color);
 
   @override
   _RenderZHemisphere createRenderObject(BuildContext context) {
@@ -88,7 +92,7 @@ class _RenderZHemisphere extends RenderZShape {
     markNeedsPaint();
   }
 
-  ZVector apex;
+  ZVector? apex;
   @override
   void performLayout() {
     final ZParentData anchorParentData = parentData as ZParentData;
@@ -97,7 +101,7 @@ class _RenderZHemisphere extends RenderZShape {
     apex = ZVector.only(z: diameter / 2);
     anchorParentData.transforms.reversed.forEach((matrix4) {
       //   print(matrix4);
-      apex = apex.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+      apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
     super.performLayout();
   }
@@ -109,14 +113,17 @@ class _RenderZHemisphere extends RenderZShape {
   }
 
   _RenderZHemisphere(
-      {List<ZPathCommand> path, double diameter, double stroke, Color color})
+      {required List<ZPathCommand> path,
+      required double diameter,
+      required double stroke,
+      required Color color})
       : _diameter = diameter,
         super(path: path, stroke: stroke, color: color, fill: true);
 
   @override
   void render(ZRenderer renderer) {
-    final contourAngle = math.atan2(normalVector.y, normalVector.x);
-    final demoRadius = diameter / 2 * normalVector.magnitude();
+    final contourAngle = math.atan2(normalVector!.y, normalVector!.x);
+    final demoRadius = diameter / 2 * normalVector!.magnitude();
     final x = origin.x;
     final y = origin.y;
 

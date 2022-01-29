@@ -11,7 +11,7 @@ const Color eggplant = Color(0xff663366);
 class Hand extends StatelessWidget {
   final ZVector translate;
 
-  const Hand({Key key, this.translate}) : super(key: key);
+  const Hand({Key? key, required this.translate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,8 @@ class Arm extends StatelessWidget {
   final ZVector translate;
   final ZVector rotate;
 
-  const Arm({Key key, this.translate, this.rotate}) : super(key: key);
+  const Arm({Key? key, required this.translate, required this.rotate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class Arm extends StatelessWidget {
 class Eye extends StatelessWidget {
   final ZVector translate;
 
-  const Eye({Key key, this.translate}) : super(key: key);
+  const Eye({Key? key,required this.translate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +134,7 @@ class Leg extends StatelessWidget {
   final double xTranslation;
   final double rotation;
 
-  const Leg({Key key, this.xTranslation, this.rotation}) : super(key: key);
+  const Leg({Key? key, required this.xTranslation,  required this.rotation}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

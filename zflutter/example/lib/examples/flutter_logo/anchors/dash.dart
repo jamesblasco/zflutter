@@ -14,7 +14,7 @@ final Color black = Color(0xff000000);
 class Dash extends StatelessWidget {
   final double flight;
 
-  Dash({this.flight});
+  Dash({required this.flight});
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +148,7 @@ ZGroup hair() => ZGroup(
       ],
     );
 
-ZGroup eye({ZVector translate}) {
+ZGroup eye({ZVector translate = ZVector.zero}) {
   return ZGroup(sortMode: SortMode.stack, children: [
     ZPositioned(
       translate: translate,

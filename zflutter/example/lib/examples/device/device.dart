@@ -5,7 +5,7 @@ import 'package:zflutter/zflutter.dart';
 class Device extends StatelessWidget {
   final Widget child;
 
-  const Device({Key key, this.child}) : super(key: key);
+  const Device({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +77,7 @@ class Device extends StatelessWidget {
               translate: ZVector(
                   -width / 2 + 20, height / 2 - 35, -border - border / 4),
               child: ZShape(
+                color: Colors.transparent,
                 visible: false,
               ),
             ),
@@ -181,9 +182,9 @@ class Device extends StatelessWidget {
 class Frame extends StatelessWidget {
   final Widget app;
 
-  const Frame({Key key, this.app}) : super(key: key);
+  const Frame({Key? key, required this.app}) : super(key: key);
 
-  static TransitionBuilder get builder => (context, app) => Frame(app: app);
+  static TransitionBuilder get builder => (context, app) => Frame(app: app!);
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +240,7 @@ class Frame extends StatelessWidget {
 class _StatusBar extends StatelessWidget {
   final FrameThemeData theme;
 
-  const _StatusBar({Key key, this.theme}) : super(key: key);
+  const _StatusBar({Key? key, required this.theme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +284,7 @@ class FrameThemeData {
   final Brightness statusBarBrightness;
 
   // const FrameThemeData({this.frameColor, this.statusBarBrightness});
-  factory FrameThemeData({Color frameColor, Brightness statusBarBrightness}) {
+  factory FrameThemeData({Color? frameColor, Brightness? statusBarBrightness}) {
     frameColor ??= Colors.black;
     statusBarBrightness ??= Brightness.light;
     return FrameThemeData.raw(
@@ -293,8 +294,8 @@ class FrameThemeData {
   }
 
   const FrameThemeData.raw({
-    this.frameColor,
-    this.statusBarBrightness,
+    required this.frameColor,
+    required this.statusBarBrightness,
   })  : assert(frameColor != null),
         assert(statusBarBrightness != null);
 

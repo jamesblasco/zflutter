@@ -6,16 +6,16 @@ import 'package:zflutter/zflutter.dart';
 class Spin extends StatefulWidget {
   final Widget Function(BuildContext context, ZVector controller) builder;
 
-  const Spin({Key key, this.builder}) : super(key: key);
+  const Spin({Key? key, required this.builder}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => (_SpinState());
 }
 
 class _SpinState extends State<Spin> with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
-  Timer timer;
+  Timer? timer;
   bool spin = true;
 
   @override

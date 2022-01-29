@@ -4,8 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 const _primaryColor = Color(0xFF6200EE);
 

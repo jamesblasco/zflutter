@@ -5,7 +5,9 @@ class MadeWithFlutterContainer extends StatelessWidget {
   final FlutterLogoColor logoStyle;
 
   const MadeWithFlutterContainer(
-      {Key key, this.child, this.logoStyle = FlutterLogoColor.original})
+      {Key? key,
+      required this.child,
+      this.logoStyle = FlutterLogoColor.original})
       : super(key: key);
 
   @override
@@ -49,6 +51,5 @@ extension FlutterLogoColorImage on FlutterLogoColor {
           'assets/flutter_black.png',
         );
     }
-    return null;
   }
 }

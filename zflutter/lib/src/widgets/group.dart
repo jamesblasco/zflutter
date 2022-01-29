@@ -3,8 +3,10 @@ import 'package:zflutter/zflutter.dart';
 
 class ZGroup extends ZMultiChildWidget {
   final SortMode sortMode;
-  ZGroup({List<Widget> children, this.sortMode = SortMode.inherit})
-      : super(children: children);
+  ZGroup({
+    required List<Widget> children,
+    this.sortMode = SortMode.inherit,
+  }) : super(children: children);
 
   @override
   RenderZMultiChildBox createRenderObject(BuildContext context) {

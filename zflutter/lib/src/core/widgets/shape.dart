@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -52,22 +53,23 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
 
   /// An optional parameter to define a different color for the
   /// back face of the shape
-  final Color backfaceColor;
+  final Color? backfaceColor;
 
   /// If false the shape won't be painted
   final bool visible;
 
   ZShape({
-    Key key,
-    this.path,
-    this.color,
+    Key? key,
+    List<ZPathCommand>? path,
+    required this.color,
     this.front = const ZVector.only(z: 1),
     this.backfaceColor,
     this.stroke = 1,
     this.closed = true,
     this.fill = false,
     this.visible = true,
-  })  : assert(closed != null),
+  })  : path = path ?? [],
+        assert(closed != null),
         assert(front != null),
         assert(visible != null),
         assert(fill != null),
@@ -78,7 +80,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   RenderZShape createRenderObject(BuildContext context) {
     return RenderZShape(
       color: color,
-      path: path ?? [],
+      path: path,
       stroke: stroke,
       close: closed,
       fill: fill,
@@ -91,7 +93,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   @override
   void updateRenderObject(BuildContext context, RenderZShape renderObject) {
     renderObject..color = color;
-    renderObject..path = path ?? [];
+    renderObject..path = path;
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;

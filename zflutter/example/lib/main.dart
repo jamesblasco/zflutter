@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Container(
                     padding: EdgeInsets.all(8),
-                    color: Colors.grey[100].withOpacity(0.8),
+                    color: Colors.grey[100]?.withOpacity(0.8),
                     child: Center(
                         child: Text(
                       item.title,

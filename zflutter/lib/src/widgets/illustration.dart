@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:zflutter/src/core/render/render_box.dart';
 import 'package:zflutter/src/core/widgets/widget.dart';
 
-
 class ZIllustration extends ZMultiChildWidget {
   final double zoom;
 
@@ -14,8 +13,8 @@ class ZIllustration extends ZMultiChildWidget {
   final Overflow overflow;
 
   ZIllustration({
-    List<Widget> children,
     this.overflow = Overflow.clip,
+    required List<Widget> children,
     this.zoom = 1,
   })  : assert(zoom != null && zoom >= 0),
         super(children: children);
@@ -59,9 +58,9 @@ class RenderZIllustration extends RenderZMultiChildBox {
   }
 
   RenderZIllustration({
-    double zoom,
-    List<RenderZBox> children,
     Overflow overflow = Overflow.clip,
+    double zoom = 0,
+    List<RenderZBox>? children,
   })  : assert(zoom != null && zoom >= 0),
         assert(overflow != null),
         _zoom = zoom,
@@ -71,11 +70,16 @@ class RenderZIllustration extends RenderZMultiChildBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (_overflow == Overflow.clip) {
-      context.pushClipRect(needsCompositing, offset, Offset.zero & size, paintIllustration);
+      context.pushClipRect(
+        needsCompositing,
+        offset,
+        Offset.zero & size,
+        paintIllustration,
+        clipBehavior: Clip.hardEdge,
+      );
     } else {
       paintIllustration(context, offset);
     }
-
   }
 
   @protected
@@ -99,7 +103,7 @@ class RenderZIllustration extends RenderZMultiChildBox {
   @override
   void performLayout() {
     final BoxConstraints constraints = this.constraints;
-    RenderZBox child = firstChild;
+    RenderZBox? child = firstChild;
 
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
@@ -109,9 +113,47 @@ class RenderZIllustration extends RenderZMultiChildBox {
       } else {
         child.layout(constraints, parentUsesSize: false);
       }
-      child = childParentData?.nextSibling;
+      child = childParentData.nextSibling;
     }
     performSort();
+  }
+
+  bool hitTest(BoxHitTestResult result, {Offset? position}) {
+    assert(() {
+      if (!hasSize) {
+        if (debugNeedsLayout) {
+          throw FlutterError.fromParts(<DiagnosticsNode>[
+            ErrorSummary(
+                'Cannot hit test a render box that has never been laid out.'),
+            describeForError(
+                'The hitTest() method was called on this RenderBox'),
+            ErrorDescription(
+                "Unfortunately, this object's geometry is not known at this time, "
+                'probably because it has never been laid out. '
+                'This means it cannot be accurately hit-tested.'),
+            ErrorHint('If you are trying '
+                'to perform a hit test during the layout phase itself, make sure '
+                "you only hit test nodes that have completed layout (e.g. the node's "
+                'children, after their layout() method has been called).'),
+          ]);
+        }
+        throw FlutterError.fromParts(<DiagnosticsNode>[
+          ErrorSummary('Cannot hit test a render box with no size.'),
+          describeForError('The hitTest() method was called on this RenderBox'),
+          ErrorDescription(
+              'Although this node is not marked as needing layout, '
+              'its size is not set.'),
+          ErrorHint('A RenderBox object must have an '
+              'explicit size before it can be hit-tested. Make sure '
+              'that the RenderBox in question sets its size during layout.'),
+        ]);
+      }
+      return true;
+    }());
+    if (size.contains(position ?? Offset.zero)) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -124,7 +166,7 @@ class RenderZIllustration extends RenderZMultiChildBox {
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     Matrix4 matrix = Matrix4.identity()
       ..translate(size.width / 2, size.height / 2)
       ..scale(zoom, zoom, zoom);

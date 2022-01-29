@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'dart:ui';
 
 import 'package:flutter/rendering.dart';
@@ -18,11 +19,11 @@ class RenderZShape extends RenderZBox {
     markNeedsPaint();
   }
 
-  Color _backfaceColor;
+  Color? _backfaceColor;
 
-  Color get backfaceColor => _backfaceColor;
+  Color? get backfaceColor => _backfaceColor;
 
-  set backfaceColor(Color value) {
+  set backfaceColor(Color? value) {
     if (_backfaceColor == value) return;
     _backfaceColor = value;
     markNeedsPaint();
@@ -99,14 +100,15 @@ class RenderZShape extends RenderZBox {
   }
 
   RenderZShape({
-    Color color,
-    Color backfaceColor,
+    required Color color,
+    Color? backfaceColor,
     ZVector front = const ZVector.only(z: 1),
     bool close = false,
     bool visible = true,
     bool fill = false,
     double stroke = 1,
     List<ZPathCommand> path = const [],
+    double sortValue = 0,
   })  : assert(path != null),
         assert(front != null),
         assert(close != null),
@@ -119,7 +121,8 @@ class RenderZShape extends RenderZBox {
         _close = close,
         _fill = fill,
         _color = color,
-        _path = path;
+        _path = path,
+        _sortValue = sortValue;
 
   @override
   bool get sizedByParent => true;
@@ -127,8 +130,8 @@ class RenderZShape extends RenderZBox {
   /// With this markNeedsPaint will only repaint this core object and not their ancestors
   bool get isRepaintBoundary => true;
 
-  ZVector _transformedFront;
-  ZVector normalVector;
+  ZVector? _transformedFront;
+  ZVector? normalVector;
   final Matrix4 matrix4 = Matrix4.identity();
 
   @override
@@ -145,11 +148,11 @@ class RenderZShape extends RenderZBox {
 
     _transformedFront = front;
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      _transformedFront = _transformedFront.transform(
-          matrix4.translate, matrix4.rotate, matrix4.scale);
+      _transformedFront = _transformedFront!
+          .transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
 
-    normalVector = origin - _transformedFront;
+    normalVector = origin - _transformedFront!;
     transformedPath = path;
     anchorParentData.transforms.reversed.forEach((matrix4) {
       transformedPath = transformedPath
@@ -162,7 +165,10 @@ class RenderZShape extends RenderZBox {
     performSort();
   }
 
+  
+
   List<ZPathCommand> transformedPath = [];
+
 
   void performPathCommands() {
     ZVector previousPoint = origin;
@@ -205,7 +211,7 @@ class RenderZShape extends RenderZBox {
 
   Color get renderColor {
     final isBackFaceColor = backfaceColor != null && isFacingBack;
-    return isBackFaceColor ? backfaceColor : color;
+    return (isBackFaceColor ? backfaceColor : color) ?? color;
   }
 
   @override
@@ -219,7 +225,7 @@ class RenderZShape extends RenderZBox {
     if (length <= 1) {
       paintDot(renderer);
     } else {
-      isFacingBack = normalVector.z > 0;
+      isFacingBack = normalVector!.z > 0;
       if (!showBackFace && isFacingBack) {
         return super.paint(context, offset);
       }
@@ -243,7 +249,7 @@ class RenderZShape extends RenderZBox {
     }
     final color = renderColor;
 
-    final point = transformedPath.first?.endRenderPoint ?? origin;
+    final point = transformedPath.first.endRenderPoint;
     renderer.begin();
     final radius = stroke / 2;
     renderer.circle(point.x, point.y, radius);
@@ -267,7 +273,7 @@ class RenderZShape extends RenderZBox {
   }
 
   @override
-  bool hitTest(BoxHitTestResult result, {Offset position}) {
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
     if (hitTestSelf(position)) {
       result.add(BoxHitTestEntry(this, position));
       print('hitted');

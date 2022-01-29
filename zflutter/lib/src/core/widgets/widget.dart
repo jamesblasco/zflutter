@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/widgets/update_parent_data.dart';
@@ -25,7 +26,8 @@ class ZSingleChildRenderObjectElement extends SingleChildRenderObjectElement {
 
 abstract class ZMultiChildWidget extends MultiChildRenderObjectWidget
     with ZWidget {
-  ZMultiChildWidget({List<Widget> children}) : super(children: children);
+  ZMultiChildWidget({required List<Widget> children})
+      : super(children: children);
 
   @override
   RenderZMultiChildBox createRenderObject(BuildContext context) {

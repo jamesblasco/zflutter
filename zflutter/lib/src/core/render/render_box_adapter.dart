@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/src/widgets/figures/box.dart';
 
@@ -26,8 +27,8 @@ class RenderZToBoxAdapter extends RenderZBox
   }
 
   RenderZToBoxAdapter({
-    double width,
-    double height,
+    required double width,
+    required double height,
   })  : _width = width,
         _height = height;
 
@@ -36,12 +37,12 @@ class RenderZToBoxAdapter extends RenderZBox
 
   // bool get isRepaintBoundary => true;
 
-  List<ZPathCommand> transformedPath;
+  List<ZPathCommand>? transformedPath;
 
   @override
   void performLayout() {
     final ZParentData anchorParentData = parentData as ZParentData;
-    child.layout(BoxConstraints.expand(height: height, width: width),
+    child?.layout(BoxConstraints.expand(height: height, width: width),
         parentUsesSize: false);
     size = constraints.smallest;
 
@@ -60,7 +61,7 @@ class RenderZToBoxAdapter extends RenderZBox
       origin =
           origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
 
-      transformedPath = transformedPath
+      transformedPath = transformedPath!
           .map((e) =>
               e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
           .toList();
@@ -70,7 +71,7 @@ class RenderZToBoxAdapter extends RenderZBox
     performSort();
   }
 
-  Matrix4 _transform;
+  late Matrix4 _transform;
 
   performTransform() {
     assert(parentData is ZParentData);
@@ -91,13 +92,12 @@ class RenderZToBoxAdapter extends RenderZBox
     _transform = matrix;
   }
 
-
   @override
   void performSort() {
-    assert(transformedPath.isNotEmpty);
-    var pointCount = this.transformedPath.length;
-    var firstPoint = this.transformedPath[0].endRenderPoint;
-    var lastPoint = this.transformedPath[pointCount - 1].endRenderPoint;
+    assert(transformedPath!.isNotEmpty);
+    var pointCount = this.transformedPath!.length;
+    var firstPoint = this.transformedPath![0].endRenderPoint;
+    var lastPoint = this.transformedPath![pointCount - 1].endRenderPoint;
     // ignore the final point if self closing shape
     var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
     if (isSelfClosing) {
@@ -106,7 +106,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
     double sortValueTotal = 0;
     for (var i = 0; i < pointCount; i++) {
-      sortValueTotal += this.transformedPath[i].endRenderPoint.z;
+      sortValueTotal += this.transformedPath![i].endRenderPoint.z;
     }
     this.sortValue = sortValueTotal / pointCount;
   }
@@ -117,11 +117,11 @@ class RenderZToBoxAdapter extends RenderZBox
 
     if (child != null) {
       final TransformLayer layer = TransformLayer();
-      layer.transform = _transform;
+      layer.transform = _transform.clone()..translate(- width / 2, - height / 2);
       context.pushLayer(
         layer,
-        (context, offset) {
-          context.paintChild(child, offset - Offset(width / 2, height / 2) );
+        (context, _) {
+          context.paintChild(child!, offset);
         },
         offset,
         childPaintBounds: context.estimatedBounds,
@@ -130,7 +130,7 @@ class RenderZToBoxAdapter extends RenderZBox
   }
 
   @override
-  bool hitTest(BoxHitTestResult result, {Offset position}) {
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
     // RenderZToBoxAdapter objects don't check if they are
     // themselves hit, because it's confusing to think about
     // how the untransformed size and the child's transformed
@@ -139,15 +139,22 @@ class RenderZToBoxAdapter extends RenderZBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
-    final data = parentData as ZParentData;
-    print(position);
+  bool hitTestSelf(Offset position) {
+    // TODO: implement hitTestSelf
+    return super.hitTestSelf(position);
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     return result.addWithPaintTransform(
       transform: _transform,
       position: position,
       hitTest: (result, Offset position) {
-        return child.hitTest(result,
-            position: position + Offset(width / 2, height / 2));
+        return child?.hitTest(
+              result,
+              position: position + Offset(width / 2, height / 2),
+            ) ??
+            false;
       },
     );
   }

@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/core.dart';
 import 'package:zflutter/src/core/path_command.dart';
@@ -10,7 +11,7 @@ class ZRenderer {
     ..strokeCap = StrokeCap.round
     ..strokeJoin = StrokeJoin.round;
 
-  final Canvas canvas;
+  final Canvas? canvas;
 
   ZRenderer(this.canvas);
 
@@ -77,12 +78,12 @@ class ZRenderer {
     paint.color = color;
     paint.strokeWidth = lineWidth;
     paint.style = PaintingStyle.stroke;
-    canvas.drawPath(path, paint);
+    canvas?.drawPath(path, paint);
   }
 
   void fill(Color color) {
     paint.color = color;
     paint.style = PaintingStyle.fill;
-    canvas.drawPath(path, paint);
+    canvas?.drawPath(path, paint);
   }
 }

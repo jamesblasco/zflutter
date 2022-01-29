@@ -1,13 +1,9 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:zflutter/zflutter.dart';
 
 import 'device.dart';
-import 'modal_bottom_sheet.dart';
-
 class DeviceStyle {
   final Color color;
   final Color backgroundColor;

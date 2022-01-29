@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/cupertino.dart';
 import 'package:zflutter/src/core/renderer.dart';
 
@@ -24,9 +25,9 @@ abstract class ZPathCommand {
 }
 
 class ZMove extends ZPathCommand {
-  ZVector _point;
+  late ZVector _point;
 
-  ZVector _renderPoint;
+  late ZVector _renderPoint;
 
   ZVector get endRenderPoint => _renderPoint;
 
@@ -35,10 +36,12 @@ class ZMove extends ZPathCommand {
   }
 
   ZMove(double x, double y, double z) {
+    _point = ZVector(x, y, z);
     _renderPoint = ZVector(x, y, z);
   }
 
   ZMove.only({double x = 0, double y = 0, double z = 0}) {
+    _point = ZVector(x, y, z);
     _renderPoint = ZVector(x, y, z);
   }
 
@@ -68,9 +71,9 @@ class ZMove extends ZPathCommand {
 }
 
 class ZLine extends ZPathCommand {
-  ZVector _point;
+  late ZVector _point;
 
-  ZVector _renderPoint;
+  late ZVector _renderPoint;
 
   ZVector get endRenderPoint => _renderPoint;
 
@@ -79,10 +82,12 @@ class ZLine extends ZPathCommand {
   }
 
   ZLine(double x, double y, double z) {
+    _point = ZVector(x, y, z);
     _renderPoint = ZVector(x, y, z);
   }
 
   ZLine.only({double x = 0, double y = 0, double z = 0}) {
+    _point = ZVector(x, y, z);
     _renderPoint = ZVector(x, y, z);
   }
 
@@ -114,7 +119,7 @@ class ZLine extends ZPathCommand {
 class ZBezier extends ZPathCommand {
   List<ZVector> points;
 
-  List<ZVector> renderPoints;
+  late List<ZVector> renderPoints;
 
   ZVector get endRenderPoint => renderPoints.last;
 
@@ -154,21 +159,22 @@ class ZBezier extends ZPathCommand {
 const double _arcHandleLength = 9 / 16;
 
 class ZArc extends ZPathCommand {
-  List<ZVector> points;
-  ZVector _previous = ZVector.zero;
+  late List<ZVector> points;
+  late ZVector _previous = ZVector.zero;
 
-  List<ZVector> renderPoints;
+  late List<ZVector> renderPoints;
 
   ZVector get endRenderPoint => renderPoints.last;
 
-  ZArc.list(this.points, [this._previous]) {
+  ZArc.list(this.points, [ZVector? previous])
+      : _previous = previous ?? ZVector.zero {
     renderPoints = points.map((e) => e.copy()).toList();
   }
 
-  ZArc({@required ZVector corner, @required ZVector end, ZVector previous})
+  ZArc({required ZVector corner, required ZVector end, ZVector? previous})
       : assert(corner != null && end != null,
             'Corner and end points can\'t be null') {
-    _previous = previous;
+    _previous = previous ?? ZVector.zero;
 
     points = [corner, end];
 

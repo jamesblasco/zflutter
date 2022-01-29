@@ -7,12 +7,12 @@ class ZCone extends ZCircle {
   final double length;
 
   ZCone({
-    this.length,
-    Key key,
-    @required this.diameter,
-    Color color,
+    required this.length,
+    Key? key,
+    required this.diameter,
+    required Color color,
     bool closed = false,
-    Color backfaceColor,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = true,
     ZVector front = const ZVector.only(z: 1),
@@ -81,10 +81,10 @@ class RenderZCone extends RenderZShape {
   }
 
   RenderZCone({
-    double length,
-    double diameter,
-    Color color,
-    Color backfaceColor,
+    required double length,
+    required double diameter,
+    required Color color,
+    Color? backfaceColor,
     ZVector front = const ZVector.only(z: 1),
     bool close = false,
     bool visible = true,
@@ -108,7 +108,7 @@ class RenderZCone extends RenderZShape {
   ZVector tangentA = ZVector.zero;
   ZVector tangentB = ZVector.zero;
 
-  ZVector apex;
+  ZVector? apex;
 
   @override
   void performLayout() {
@@ -117,7 +117,7 @@ class RenderZCone extends RenderZShape {
 
     apex = ZVector.only(z: length);
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      apex = apex.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+      apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
     super.performLayout();
   }
@@ -140,10 +140,10 @@ class RenderZCone extends RenderZShape {
     if (!visible) {
       return;
     }
-    renderApex = apex - origin;
-    final scale = normalVector.magnitude();
+    renderApex = apex! - origin;
+    final scale = normalVector!.magnitude();
     final apexDistance = renderApex.magnitude2d();
-    final normalDistance = normalVector.magnitude2d();
+    final normalDistance = normalVector!.magnitude2d();
     // eccentricity
     final eccenAngle = math.acos(normalDistance / scale);
     final eccen = math.sin(eccenAngle);
@@ -154,7 +154,7 @@ class RenderZCone extends RenderZShape {
       return;
     }
 
-    final apexAngle = (math.atan2(normalVector.y, normalVector.x) + tau / 2);
+    final apexAngle = (math.atan2(normalVector!.y, normalVector!.x) + tau / 2);
     final projectLength = apexDistance / eccen;
     final projectAngle = math.acos(radius / projectLength);
 
@@ -168,7 +168,7 @@ class RenderZCone extends RenderZShape {
 
     final path = [
       ZMove.vector(tangentA),
-      ZLine.vector(apex),
+      ZLine.vector(apex!),
       ZLine.vector(tangentB),
     ];
 

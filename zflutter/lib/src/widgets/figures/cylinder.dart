@@ -16,16 +16,16 @@ class ZCylinder extends StatelessWidget {
   final Color color;
   final bool visible;
 
-  final Color backface;
-  final Color frontface;
+  final Color? backface;
+  final Color? frontface;
 
   ZCylinder({
     this.diameter = 1,
     this.length = 1,
     this.stroke = 1,
     this.fill = true,
-    this.color,
-    this.visible,
+    required this.color,
+    this.visible = true,
     this.backface,
     this.frontface,
   });
@@ -82,7 +82,10 @@ class _ZCylinderMiddle extends ZShape {
   final double diameter;
 
   _ZCylinderMiddle(
-      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
+      {required this.diameter,
+      required List<ZPathCommand> path,
+      double stroke = 1,
+      required Color color})
       : super(path: path, stroke: stroke, color: color);
 
   @override
@@ -112,14 +115,17 @@ class RenderZCylinder extends RenderZShape {
     markNeedsPaint();
   }
 
-  RenderZCylinder(
-      {List<ZPathCommand> path, double diameter, double stroke, Color color})
-      : _diameter = diameter,
+  RenderZCylinder({
+    required List<ZPathCommand> path,
+    required double diameter,
+    required double stroke,
+    required Color color,
+  })  : _diameter = diameter,
         super(path: path, stroke: stroke, color: color);
 
   @override
   void render(ZRenderer renderer) {
-    var scale = normalVector.magnitude();
+    var scale = normalVector!.magnitude();
     var strokeWidth = diameter * scale + stroke;
 
     renderer.setLineCap(StrokeCap.butt);

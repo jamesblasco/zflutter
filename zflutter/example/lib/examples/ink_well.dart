@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zflutter/zflutter.dart';
@@ -21,16 +19,16 @@ class InkWell3D extends StatelessWidget {
                   child: ZPositioned(
                     translate: ZVector(100, 100, 0),
                     child: Box(
-                      color: Colors.blue[100],
-                      darkColor: Colors.blue[200],
+                      color: Colors.blue[100]!,
+                      darkColor: Colors.blue[200]!,
                     ),
                   ),
                 ),
                 ZPositioned(
                   translate: ZVector(-100, -100, 10),
                   child: Box(
-                    color: Colors.red[100],
-                    darkColor: Colors.red[200],
+                    color: Colors.red[100]!,
+                    darkColor: Colors.red[200]!,
                   ),
                 ),
               ]),
@@ -40,16 +38,14 @@ class InkWell3D extends StatelessWidget {
       ),
     );
   }
-
 }
-
-
 
 class Box extends StatefulWidget {
   final Color color;
   final Color darkColor;
 
-  const Box({Key key, this.color, this.darkColor}) : super(key: key);
+  const Box({Key? key, required this.color, required this.darkColor})
+      : super(key: key);
 
   @override
   _ExampleState createState() => _ExampleState();
@@ -58,7 +54,7 @@ class Box extends StatefulWidget {
 class _ExampleState extends State<Box> with TickerProviderStateMixin {
   int count = 0;
 
-  AnimationController animationController;
+  late AnimationController animationController;
 
   @override
   void initState() {
@@ -79,8 +75,6 @@ class _ExampleState extends State<Box> with TickerProviderStateMixin {
         .then((value) => animationController.animateBack(0));
   }
 
-  Animation colorAnimation;
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -88,13 +82,13 @@ class _ExampleState extends State<Box> with TickerProviderStateMixin {
       builder: (context, child) {
         final t = animationController.value;
         final darkColor =
-        Color.lerp(widget.darkColor, widget.darkColor.darken(20), t);
+            Color.lerp(widget.darkColor, widget.darkColor.darken(20), t);
         final color = Color.lerp(widget.color, widget.color.darken(20), t);
         return ZBoxToBoxAdapter(
           height: 300,
           width: 300,
           depth: 100,
-          color: darkColor,
+          color: darkColor!,
           front: Container(
             height: 300,
             width: 300,
@@ -138,7 +132,6 @@ class _ExampleState extends State<Box> with TickerProviderStateMixin {
     );
   }
 }
-
 
 extension on Color {
   Color brighten([int amount = 10]) {
