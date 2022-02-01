@@ -8,8 +8,11 @@ class RenderZBox extends RenderBox {
   ZVector origin = ZVector.zero;
 
   void performSort() {
-    sortValue = this.origin.z;
+    sortValue = origin.z;
   }
+
+  @override
+  Size computeDryLayout(BoxConstraints constraints) => constraints.biggest;
 }
 
 enum SortMode { inherit, stack, update }
@@ -72,9 +75,11 @@ class RenderZMultiChildBox extends RenderZBox
   @override
   void performSort() {
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
-      final children = getFlatChildren();
-      sortValue = children.fold(0,
-              (previousValue, element) => previousValue + element.sortValue) /
+      final List<RenderZBox> children = getFlatChildren();
+      sortValue = children.fold<double>(
+              0,
+              (double previousValue, RenderZBox element) =>
+                  previousValue + element.sortValue) /
           children.length;
     } else {
       super.performSort();
@@ -87,7 +92,7 @@ class RenderZMultiChildBox extends RenderZBox
   SortMode sortMode;
 
   List<RenderZBox> getFlatChildren() {
-    List<RenderZBox> children = [];
+    final List<RenderZBox> children = [];
 
     RenderZBox child = firstChild;
 
@@ -120,7 +125,7 @@ class RenderZMultiChildBox extends RenderZBox
     List<RenderZBox> children = getFlatChildren();
     //List<RenderBox> children = getChildrenAsList()
     if (sortMode != SortMode.stack) {
-      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+      children.sort((a, b) => a.sortValue.compareTo(b.sortValue));
     }
     for (final child in children) {
       final ZParentData childParentData = child.parentData as ZParentData;
