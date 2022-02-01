@@ -6,14 +6,14 @@ import 'package:flutter/physics.dart';
 import 'package:zflutter/zflutter.dart';
 
 class Dices extends StatefulWidget {
-  _PhysicsAnimation createState() => _DicesState();
+  @override
+  _DicesState createState() => _DicesState();
 }
 
-class _DicesState extends State<Dices>
-    with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+class _DicesState extends State<Dices> with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
 
-  SpringSimulation simulation;
+  late SpringSimulation simulation;
   int num = 1;
   int num2 = 1;
   ZVector rotation = ZVector.zero;
@@ -90,12 +90,14 @@ class _DicesState extends State<Dices>
                             ZVector.all((tau / 2) * (firstHalf.value)) -
                             ZVector.all((tau / 2) * (secondHalf.value)),
                     child: ZPositioned(
-                        rotate: ZVector.only(
-                            z: -zRotation * 1.9 * (animationController.value)),
-                        child: Dice(
-                          zoom: zoom,
-                          color: Colors.green,
-                        )),
+                      rotate: ZVector.only(
+                        z: -zRotation * 1.9 * (animationController.value),
+                      ),
+                      child: Dice(
+                        zoom: zoom,
+                        color: Colors.green,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -110,9 +112,11 @@ class _DicesState extends State<Dices>
                         ZVector.all((tau / 2) * (firstHalf.value)) -
                         ZVector.all((tau / 2) * (secondHalf.value)),
                     child: ZPositioned(
-                        rotate: ZVector.only(
-                            z: -zRotation * 2.1 * (animationController.value)),
-                        child: Dice(zoom: zoom)),
+                      rotate: ZVector.only(
+                        z: -zRotation * 2.1 * (animationController.value),
+                      ),
+                      child: Dice(zoom: zoom),
+                    ),
                   ),
                 ],
               ),
@@ -152,7 +156,7 @@ class Face extends StatelessWidget {
   final double zoom;
   final Color color;
 
-  const Face({Key key, this.zoom = 1, this.color}) : super(key: key);
+  const Face({Key? key, this.zoom = 1, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +211,7 @@ class Dice extends StatelessWidget {
   final Color color;
   final double zoom;
 
-  const Dice({Key key, this.zoom = 1, this.color = const Color(0xffF23726)})
+  const Dice({Key? key, this.zoom = 1, this.color = const Color(0xffF23726)})
       : super(key: key);
 
   @override
@@ -218,22 +222,23 @@ class Dice extends StatelessWidget {
           sortMode: SortMode.update,
           children: [
             ZPositioned(
-                translate: ZVector.only(z: -25),
-                child: Face(zoom: zoom, color: color)),
+              translate: ZVector.only(z: -25),
+              child: Face(zoom: zoom, color: color),
+            ),
             ZPositioned(
-                translate: ZVector.only(z: 25),
-                child: Face(zoom: zoom, color: color)),
+              translate: ZVector.only(z: 25),
+              child: Face(zoom: zoom, color: color),
+            ),
             ZPositioned(
-                translate: ZVector.only(y: 25),
-                rotate: ZVector.only(x: tau / 4),
-                child: Face(
-                  zoom: zoom,
-                  color: color,
-                )),
+              translate: ZVector.only(y: 25),
+              rotate: ZVector.only(x: tau / 4),
+              child: Face(zoom: zoom, color: color),
+            ),
             ZPositioned(
-                translate: ZVector.only(y: -25),
-                rotate: ZVector.only(x: tau / 4),
-                child: Face(zoom: zoom, color: color)),
+              translate: ZVector.only(y: -25),
+              rotate: ZVector.only(x: tau / 4),
+              child: Face(zoom: zoom, color: color),
+            ),
           ],
         ),
         //one
@@ -242,13 +247,7 @@ class Dice extends StatelessWidget {
         ZPositioned(
           rotate: ZVector.only(x: tau / 4),
           translate: ZVector.only(y: 50),
-          child: ZGroup(
-            sortMode: SortMode.update,
-            children: [
-              ZPositioned(translate: ZVector.only(y: -20), child: Dot()),
-              ZPositioned(translate: ZVector.only(y: 20), child: Dot()),
-            ],
-          ),
+          child: GroupTwo(),
         ),
         //three
         ZPositioned(
@@ -271,9 +270,13 @@ class Dice extends StatelessWidget {
             sortMode: SortMode.update,
             children: [
               ZPositioned(
-                  translate: ZVector.only(x: 20, y: 0), child: GroupTwo()),
+                translate: ZVector.only(x: 20, y: 0),
+                child: GroupTwo(),
+              ),
               ZPositioned(
-                  translate: ZVector.only(x: -20, y: 0), child: GroupTwo()),
+                translate: ZVector.only(x: -20, y: 0),
+                child: GroupTwo(),
+              ),
             ],
           ),
         ),
