@@ -62,18 +62,18 @@ class ZVector {
   }
 
   ZVector rotateZ(double angle) {
-    return _rotateProperty(angle, Axis.x, Axis.y);
+    return _rotateProperty(angle, VectorAxis.x, VectorAxis.y);
   }
 
   ZVector rotateX(double angle) {
-    return _rotateProperty(angle, Axis.y, Axis.z);
+    return _rotateProperty(angle, VectorAxis.y, VectorAxis.z);
   }
 
   ZVector rotateY(double angle) {
-    return _rotateProperty(angle, Axis.x, Axis.z);
+    return _rotateProperty(angle, VectorAxis.x, VectorAxis.z);
   }
 
-  ZVector _rotateProperty(double angle, Axis propA, Axis propB) {
+  ZVector _rotateProperty(double angle, VectorAxis propA, VectorAxis propB) {
     if (angle % tau == 0) {
       return this;
     }
@@ -86,15 +86,15 @@ class ZVector {
         {propA: a * cos - b * sin, propB: b * cos + a * sin});
   }
 
-  ZVector replaceAxisInMap(Map<Axis, double> axis) {
-    double? x = axis[Axis.x];
-    double? y = axis[Axis.y];
-    double? z = axis[Axis.z];
+  ZVector replaceAxisInMap(Map<VectorAxis, double> axis) {
+    double? x = axis[VectorAxis.x];
+    double? y = axis[VectorAxis.y];
+    double? z = axis[VectorAxis.z];
 
     return ZVector(x ?? this.x, y ?? this.y, z ?? this.z);
   }
 
-  Map<Axis, double> get toMap => {Axis.x: x, Axis.y: y, Axis.z: z};
+  Map<VectorAxis, double> get toMap => {VectorAxis.x: x, VectorAxis.y: y, VectorAxis.z: z};
 
   ZVector multiply(ZVector? scale) {
     if (scale == null) return this;
@@ -122,10 +122,10 @@ class ZVector {
     return this.multiply(scale).rotate(rotation).addVector(translation);
   }
 
-  static ZVector lerp(ZVector a, ZVector? b, double t) {
-    final x = lerpDouble(a.x, b?.x ?? 0.0, t);
-    final y = lerpDouble(a.y, b?.y ?? 0.0, t);
-    final z = lerpDouble(a.z, b?.z ?? 0.0, t);
+  static ZVector lerp(ZVector? a, ZVector? b, double t) {
+    final x = lerpDouble(a?.x, b?.x ?? 0.0, t);
+    final y = lerpDouble(a?.y, b?.y ?? 0.0, t);
+    final z = lerpDouble(a?.z, b?.z ?? 0.0, t);
     return ZVector(x!, y!, z!);
   }
 
@@ -189,4 +189,4 @@ class ZVector {
   }
 }
 
-enum Axis { x, y, z }
+enum VectorAxis { x, y, z }
