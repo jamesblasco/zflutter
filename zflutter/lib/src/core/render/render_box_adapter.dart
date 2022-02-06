@@ -1,4 +1,6 @@
 //@dart=2.12
+import 'dart:math';
+
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/src/widgets/figures/box.dart';
 
@@ -117,7 +119,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
     if (child != null) {
       final TransformLayer layer = TransformLayer();
-      layer.transform = _transform.clone()..translate(- width / 2, - height / 2);
+      layer.transform = _transform.clone()..translate(-width / 2, -height / 2);
       context.pushLayer(
         layer,
         (context, _) {
@@ -136,12 +138,6 @@ class RenderZToBoxAdapter extends RenderZBox
     // how the untransformed size and the child's transformed
     // position interact.
     return hitTestChildren(result, position: position);
-  }
-
-  @override
-  bool hitTestSelf(Offset position) {
-    // TODO: implement hitTestSelf
-    return super.hitTestSelf(position);
   }
 
   @override

@@ -1,4 +1,6 @@
 //@dart=2.12
+import 'dart:math';
+
 import 'package:flutter/rendering.dart';
 
 import '../core.dart';
@@ -74,25 +76,29 @@ class RenderZMultiChildBox extends RenderZBox
     assert(size.isFinite);
   }
 
+  List<RenderZBox>? sortedChildren;
+
   @override
   void performSort() {
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
-      final children = getFlatChildren();
-      sortValue = children.fold<double>(0,
+      sortedChildren = _getFlatChildren();
+      sortValue = sortedChildren!.fold<double>(0,
               (previousValue, element) => previousValue + element.sortValue) /
-          children.length;
+          sortedChildren!.length;
+      if (sortMode != SortMode.stack) {
+        sortedChildren!..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+      }
     } else {
       super.performSort();
     }
   }
-
 
   @override
   bool get sizedByParent => true;
 
   SortMode? sortMode;
 
-  List<RenderZBox> getFlatChildren() {
+  List<RenderZBox> _getFlatChildren() {
     List<RenderZBox> children = [];
 
     RenderZBox? child = firstChild;
@@ -101,7 +107,7 @@ class RenderZMultiChildBox extends RenderZBox
       final ZParentData childParentData = child.parentData as ZParentData;
 
       if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
-        children.addAll(child.getFlatChildren());
+        children.addAll(child._getFlatChildren());
       } else {
         children.add(child);
       }
@@ -123,32 +129,26 @@ class RenderZMultiChildBox extends RenderZBox
   void paint(PaintingContext context, Offset offset) {
     assert(sortMode != null);
     if (sortMode == SortMode.inherit) return;
-    List<RenderZBox> children = getFlatChildren();
+    List<RenderZBox> children = sortedChildren!;
     //List<RenderBox> children = getChildrenAsList()
-    if (sortMode != SortMode.stack) {
-      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
-    }
+
     for (final child in children) {
       final ZParentData childParentData = child.parentData as ZParentData;
       context.paintChild(child, offset);
     }
   }
 
-  bool defaultHitTestChildren(BoxHitTestResult result, { required Offset position }) {
+  bool defaultHitTestChildren(BoxHitTestResult result,
+      {required Offset position}) {
     if (sortMode == SortMode.inherit) return false;
     // The x, y parameters have the top left of the node's box as the origin.
-    List<RenderZBox> children = getFlatChildren();
-    //List<RenderBox> children = getChildrenAsList()
-    if (sortMode != SortMode.stack) {
-      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
-    }
-    children = children.reversed.toList();
+    List<RenderZBox> children = sortedChildren!;
 
-    for (final child in children) {
+    for (final child in children.reversed) {
       final ZParentData childParentData = child.parentData as ZParentData;
       final bool isHit = child.hitTest(result, position: position);
 
-     /* final bool isHit = result.addWithPaintOffset(
+      /* final bool isHit = result.addWithPaintOffset(
         offset: childParentData.offset,
         position: position,
         hitTest: (BoxHitTestResult result, Offset transformed) {
@@ -156,12 +156,11 @@ class RenderZMultiChildBox extends RenderZBox
           return child.hitTest(result, position: transformed);
         },
       );*/
-      if (isHit)
-        return true;
+      if (isHit) return true;
     }
     return false;
   }
-  
+
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
     if (hitTestChildren(result, position: position) || hitTestSelf(position)) {
@@ -172,7 +171,7 @@ class RenderZMultiChildBox extends RenderZBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, { required Offset position }) {
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     return defaultHitTestChildren(result, position: position);
   }
 }
