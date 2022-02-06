@@ -166,10 +166,7 @@ class RenderZShape extends RenderZBox {
     performSort();
   }
 
-  
-
   List<ZPathCommand> transformedPath = [];
-
 
   void performPathCommands() {
     ZVector previousPoint = origin;
@@ -262,14 +259,11 @@ class RenderZShape extends RenderZBox {
 
   @override
   bool hitTestSelf(Offset position) {
-    print('test');
     final renderer = ZRenderer(null);
     var isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
     var isClosed = !isTwoPoints && _close == true;
     renderer.renderPath(transformedPath, isClosed: isClosed);
-    print(position);
-    final hit =  path.contains(position);
-    print(hit);
+    final hit = path.contains(position);
     return hit;
   }
 
@@ -277,11 +271,8 @@ class RenderZShape extends RenderZBox {
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
     if (hitTestSelf(position)) {
       result.add(BoxHitTestEntry(this, position));
-      print('hitted');
       return true;
     }
     return false;
   }
-
-
 }
