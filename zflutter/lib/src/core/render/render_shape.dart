@@ -74,6 +74,7 @@ class RenderZShape extends RenderZBox {
   PathBuilder _pathBuilder;
   PathBuilder get pathBuilder => _pathBuilder;
   set pathBuilder(PathBuilder value) {
+    markNeedsLayout();
     if (_pathBuilder == value) return;
     if (_pathBuilder.shouldRebuildPath(value)) {
       path = _pathBuilder.buildPath();

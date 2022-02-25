@@ -1,5 +1,4 @@
 //@dart=2.12
-import 'dart:math';
 
 import 'package:flutter/rendering.dart';
 
@@ -20,7 +19,16 @@ class RenderZBox extends RenderBox {
   }
 }
 
-enum SortMode { inherit, stack, update }
+enum SortMode {
+  // Each child inside the group is sorted by its own center
+  // The group acts as a proxy
+  inherit,
+  // Children are sorted following the order in the list
+  stack,
+  // Children are encapsulated and painted in the order described
+  // The group is painted by
+  update,
+}
 
 class RenderZMultiChildBox extends RenderZBox
     with
@@ -29,8 +37,10 @@ class RenderZMultiChildBox extends RenderZBox
   RenderZMultiChildBox({
     List<RenderZBox>? children,
     SortMode? sortMode = SortMode.inherit,
+    ZVector? sortPoint,
   })  : assert(sortMode != null),
-        this.sortMode = sortMode {
+        this.sortMode = sortMode,
+        _sortPoint = sortPoint {
     addAll(children);
   }
 
@@ -60,14 +70,17 @@ class RenderZMultiChildBox extends RenderZBox
       } else {
         child.layout(constraints, parentUsesSize: true);
       }
-
-      /*  final Size childSize = child.size;
-        width = math.max(width, childSize.width);
-        height = math.max(height, childSize.height);*/
-
       child = childParentData.nextSibling;
     }
     performSort();
+  }
+
+  ZVector? get sortPoint => _sortPoint;
+  ZVector? _sortPoint;
+  set sortPoint(ZVector? value) {
+    if (value == sortPoint) return;
+    _sortPoint = value;
+    markNeedsLayout();
   }
 
   @override
@@ -82,9 +95,21 @@ class RenderZMultiChildBox extends RenderZBox
   void performSort() {
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
       sortedChildren = _getFlatChildren();
-      sortValue = sortedChildren!.fold<double>(0,
-              (previousValue, element) => previousValue + element.sortValue) /
-          sortedChildren!.length;
+      if (sortPoint != null) {
+        final ZParentData anchorParentData = parentData as ZParentData;
+
+        ZVector origin = _sortPoint!;
+        anchorParentData.transforms.reversed.forEach((matrix4) {
+          origin = origin.transform(
+              matrix4.translate, matrix4.rotate, matrix4.scale);
+        });
+        sortValue = origin.z;
+      } else {
+        sortValue = sortedChildren!.fold<double>(0,
+                (previousValue, element) => previousValue + element.sortValue) /
+            sortedChildren!.length;
+      }
+
       if (sortMode != SortMode.stack) {
         sortedChildren!..sort((a, b) => a.sortValue.compareTo(b.sortValue));
       }
@@ -130,10 +155,8 @@ class RenderZMultiChildBox extends RenderZBox
     assert(sortMode != null);
     if (sortMode == SortMode.inherit) return;
     List<RenderZBox> children = sortedChildren!;
-    //List<RenderBox> children = getChildrenAsList()
 
     for (final child in children) {
-      final ZParentData childParentData = child.parentData as ZParentData;
       context.paintChild(child, offset);
     }
   }
@@ -145,7 +168,6 @@ class RenderZMultiChildBox extends RenderZBox
     List<RenderZBox> children = sortedChildren!;
 
     for (final child in children.reversed) {
-      final ZParentData childParentData = child.parentData as ZParentData;
       final bool isHit = child.hitTest(result, position: position);
 
       /* final bool isHit = result.addWithPaintOffset(

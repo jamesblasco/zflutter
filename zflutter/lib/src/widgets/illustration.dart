@@ -6,17 +6,17 @@ import 'package:zflutter/src/core/widgets/widget.dart';
 class ZIllustration extends ZMultiChildWidget {
   final double zoom;
 
-  /// Whether overflowing children should be clipped. See [Overflow].
+  /// Whether clipBehavioring children should be clipped. See [clipBehavior].
   ///
-  /// Some children in a stack might overflow its box. When this flag is set to
-  /// [Overflow.clip], children cannot paint outside of the stack's box.
-  final Overflow overflow;
+  /// Some children in a stack might clipBehavior its box. When this flag is set to
+  /// [clipBehavior.clip], children cannot paint outside of the stack's box.
+  final Clip clipBehavior;
 
   ZIllustration({
-    this.overflow = Overflow.clip,
+    this.clipBehavior = Clip.hardEdge,
     required List<Widget> children,
     this.zoom = 1,
-  })  : assert(zoom != null && zoom >= 0),
+  })  : assert(zoom >= 0),
         super(children: children);
 
   @override
@@ -37,39 +37,37 @@ class RenderZIllustration extends RenderZMultiChildBox {
   double get zoom => _zoom;
 
   set zoom(double value) {
-    assert(_zoom != null && _zoom >= 0);
+    assert(_zoom >= 0);
     if (_zoom == value) return;
     _zoom = value;
     markNeedsPaint();
   }
 
-  /// Whether overflowing children should be clipped. See [Overflow].
+  /// Whether clipBehavioring children should be clipped. See [clipBehavior].
   ///
-  /// Some children in a stack might overflow its box. When this flag is set to
-  /// [Overflow.clip], children cannot paint outside of the stack's box.
-  Overflow get overflow => _overflow;
-  Overflow _overflow;
-  set overflow(Overflow value) {
-    assert(value != null);
-    if (_overflow != value) {
-      _overflow = value;
+  /// Some children in a stack might clipBehavior its box. When this flag is set to
+  /// [clipBehavior.clip], children cannot paint outside of the stack's box.
+  Clip get clipBehavior => _clipBehavior;
+  Clip _clipBehavior;
+  set clipBehavior(Clip value) {
+    if (_clipBehavior != value) {
+      _clipBehavior = value;
       markNeedsPaint();
     }
   }
 
   RenderZIllustration({
-    Overflow overflow = Overflow.clip,
+    Clip clipBehavior = Clip.none,
     double zoom = 0,
     List<RenderZBox>? children,
-  })  : assert(zoom != null && zoom >= 0),
-        assert(overflow != null),
+  })  : assert(zoom >= 0),
         _zoom = zoom,
-        _overflow = overflow,
+        _clipBehavior = clipBehavior,
         super(children: children, sortMode: SortMode.update);
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (_overflow == Overflow.clip) {
+    if (_clipBehavior == Clip.none) {
       context.pushClipRect(
         needsCompositing,
         offset,
@@ -107,7 +105,6 @@ class RenderZIllustration extends RenderZMultiChildBox {
 
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
-
       if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
         child.layout(constraints, parentUsesSize: false);
       } else {
@@ -117,7 +114,7 @@ class RenderZIllustration extends RenderZMultiChildBox {
     }
     performSort();
   }
- 
+
   @override
   bool get isRepaintBoundary => true;
 
