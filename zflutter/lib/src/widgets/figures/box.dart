@@ -178,8 +178,8 @@ class ZBoxToBoxAdapter extends StatelessWidget {
         rotate: ZVector.only(y: tau / 2),
         child: rear != null
             ? ZToBoxAdapter(
-                height: height,
                 width: width,
+                height: height,
                 child: rear,
               )
             : ZRect(
@@ -196,8 +196,8 @@ class ZBoxToBoxAdapter extends StatelessWidget {
         rotate: ZVector.only(y: -tau / 4),
         child: left != null
             ? ZToBoxAdapter(
+                width: depth,
                 height: height,
-                width: width,
                 child: left,
               )
             : ZRect(
@@ -214,14 +214,14 @@ class ZBoxToBoxAdapter extends StatelessWidget {
         rotate: ZVector.only(y: tau / 4),
         child: right != null
             ? ZToBoxAdapter(
+                width: depth,
                 height: height,
-                width: width,
                 child: right,
               )
             : ZRect(
                 width: depth,
-                color: color,
                 height: height,
+                color: color,
                 stroke: 1,
                 fill: fill,
               ),
@@ -232,14 +232,14 @@ class ZBoxToBoxAdapter extends StatelessWidget {
         rotate: ZVector.only(x: -tau / 4),
         child: top != null
             ? ZToBoxAdapter(
-                height: height,
                 width: width,
+                height: depth,
                 child: top,
               )
             : ZRect(
                 width: width,
-                color: color,
                 height: depth,
+                color: color,
                 stroke: 1,
                 fill: fill,
               ),
@@ -250,16 +250,16 @@ class ZBoxToBoxAdapter extends StatelessWidget {
         rotate: ZVector.only(x: tau / 4),
         child: bottom != null
             ? ZToBoxAdapter(
-                height: height,
                 width: width,
+                height: depth,
                 child: bottom,
               )
             : ZRect(
                 width: width,
+                height: depth,
                 color: color,
                 stroke: 1,
                 fill: fill,
-                height: depth,
               ),
       );
 
