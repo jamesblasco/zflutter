@@ -58,7 +58,6 @@ class RendeMultiChildZBox extends RenderZBox
     with
         ContainerRenderObjectMixin<RenderZBox, ZParentData>,
         RenderBoxContainerDefaultsMixin<RenderZBox, ZParentData> {
-  
   RendeMultiChildZBox({
     List<RenderZBox>? children,
     SortMode? sortMode = SortMode.inherit,
@@ -111,7 +110,6 @@ class RendeMultiChildZBox extends RenderZBox
 
   @override
   void performSort() {
-    super.performSort();
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
       sortedChildren = _getFlatChildren();
       if (sortPoint != null) {
@@ -165,6 +163,7 @@ class RendeMultiChildZBox extends RenderZBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    performSort();
     assert(sortMode != null);
     if (sortMode == SortMode.inherit) return;
     List<RenderZBox> children = sortedChildren!;
