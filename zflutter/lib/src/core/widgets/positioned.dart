@@ -100,7 +100,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     final ZParentData parentData = renderObject.parentData as ZParentData;
     bool needsLayout = false;
-    assert(parentData.transforms.contains(transform));
+    //  assert(parentData.transforms.contains(transform));
     transform.scale = scale;
     transform.rotate = rotate;
     transform.translate = translate;
@@ -111,7 +111,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
       needsLayout = true;
     }
 
-    if (renderObject is RendeMultiChildZBox) {
+    if (renderObject is RenderMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {
@@ -124,6 +124,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
     if (needsLayout) {
       renderObject.markNeedsLayout();
       final AbstractNode? targetParent = renderObject.parent;
+      
       if (targetParent is RenderObject) targetParent.markNeedsLayout();
     }
   }
@@ -142,7 +143,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     parentData.transforms.add(transform);
 
-    if (renderObject is RendeMultiChildZBox) {
+    if (renderObject is RenderMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {
@@ -156,14 +157,8 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
     if (targetParent is RenderObject) targetParent.markNeedsLayout();
   }
 
-/*  @override
+  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('left', left, defaultValue: null));
-    properties.add(DoubleProperty('top', top, defaultValue: null));
-    properties.add(DoubleProperty('right', right, defaultValue: null));
-    properties.add(DoubleProperty('bottom', bottom, defaultValue: null));
-    properties.add(DoubleProperty('width', width, defaultValue: null));
-    properties.add(DoubleProperty('height', height, defaultValue: null));
-  }*/
+  }
 }

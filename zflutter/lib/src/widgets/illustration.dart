@@ -31,7 +31,7 @@ class ZIllustration extends ZMultiChildWidget {
   }
 }
 
-class RenderZIllustration extends RendeMultiChildZBox {
+class RenderZIllustration extends RenderMultiChildZBox {
   RenderZIllustration({
     Clip clipBehavior = Clip.none,
     double zoom = 0,

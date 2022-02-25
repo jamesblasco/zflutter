@@ -16,13 +16,13 @@ class ZGroup extends ZMultiChildWidget {
   final ZVector? sortPoint;
 
   @override
-  RendeMultiChildZBox createRenderObject(BuildContext context) {
-    return RendeMultiChildZBox(sortMode: sortMode, sortPoint: sortPoint);
+  RenderMultiChildZBox createRenderObject(BuildContext context) {
+    return RenderMultiChildZBox(sortMode: sortMode, sortPoint: sortPoint);
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RendeMultiChildZBox renderObject) {
+      BuildContext context, RenderMultiChildZBox renderObject) {
     renderObject.sortMode = sortMode;
     renderObject.sortPoint = sortPoint;
   }

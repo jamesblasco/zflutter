@@ -54,11 +54,11 @@ enum SortMode {
   update,
 }
 
-class RendeMultiChildZBox extends RenderZBox
+class RenderMultiChildZBox extends RenderZBox
     with
         ContainerRenderObjectMixin<RenderZBox, ZParentData>,
         RenderBoxContainerDefaultsMixin<RenderZBox, ZParentData> {
-  RendeMultiChildZBox({
+  RenderMultiChildZBox({
     List<RenderZBox>? children,
     SortMode? sortMode = SortMode.inherit,
     ZVector? sortPoint,
@@ -89,7 +89,7 @@ class RendeMultiChildZBox extends RenderZBox
 
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
-      if (child is RendeMultiChildZBox && child.sortMode == SortMode.inherit) {
+      if (child is RenderMultiChildZBox && child.sortMode == SortMode.inherit) {
         child.layout(constraints, parentUsesSize: true);
       } else {
         child.layout(constraints, parentUsesSize: true);
@@ -110,8 +110,8 @@ class RendeMultiChildZBox extends RenderZBox
 
   @override
   void performSort() {
+    final children = _getFlatChildren();
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
-      sortedChildren = _getFlatChildren();
       if (sortPoint != null) {
         final ZParentData anchorParentData = parentData as ZParentData;
 
@@ -127,15 +127,16 @@ class RendeMultiChildZBox extends RenderZBox
         );
         sortValue = origin.z;
       } else {
-        sortValue = sortedChildren!.fold<double>(0,
-                (previousValue, element) => previousValue + element.sortValue) /
-            sortedChildren!.length;
-      }
-
-      if (sortMode != SortMode.stack) {
-        sortedChildren!..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+        sortValue = children.fold<double>(0, (previousValue, element) {
+              return (previousValue + element.sortValue);
+            }) /
+            children.length;
       }
     }
+    if (sortMode == SortMode.update) {
+      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+    }
+    sortedChildren = children;
   }
 
   @override
@@ -151,7 +152,7 @@ class RendeMultiChildZBox extends RenderZBox
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
 
-      if (child is RendeMultiChildZBox && child.sortMode == SortMode.inherit) {
+      if (child is RenderMultiChildZBox && child.sortMode == SortMode.inherit) {
         children.addAll(child._getFlatChildren());
       } else {
         children.add(child);
@@ -166,9 +167,8 @@ class RendeMultiChildZBox extends RenderZBox
     performSort();
     assert(sortMode != null);
     if (sortMode == SortMode.inherit) return;
-    List<RenderZBox> children = sortedChildren!;
 
-    for (final child in children) {
+    for (final child in sortedChildren!) {
       context.paintChild(child, offset);
     }
   }
@@ -182,14 +182,6 @@ class RendeMultiChildZBox extends RenderZBox
     for (final child in children.reversed) {
       final bool isHit = child.hitTest(result, position: position);
 
-      /* final bool isHit = result.addWithPaintOffset(
-        offset: childParentData.offset,
-        position: position,
-        hitTest: (BoxHitTestResult result, Offset transformed) {
-          assert(transformed == position - childParentData.offset);
-          return child.hitTest(result, position: transformed);
-        },
-      );*/
       if (isHit) return true;
     }
     return false;
@@ -212,31 +204,15 @@ class RendeMultiChildZBox extends RenderZBox
 
 /// Parent data for use with [ZRenderer].
 class ZParentData extends ContainerBoxParentData<RenderZBox> {
-  //ZVector translate = ZVector.zero;
-  //ZVector rotate = ZVector.zero;
-  //ZVector scale = ZVector.identity;
-
   List<ZTransform> transforms;
 
   ZParentData({
     List<ZTransform>? transforms,
   }) : this.transforms = transforms ?? [];
 
-  ZParentData clone() =>
-      ZParentData(transforms: List<ZTransform>.from(transforms));
-
-  /* String toString() {
-    final List<String> values = <String>[
-      if (top != null) 'top=${debugFormatDouble(top)}',
-      if (right != null) 'right=${debugFormatDouble(right)}',
-      if (bottom != null) 'bottom=${debugFormatDouble(bottom)}',
-      if (left != null) 'left=${debugFormatDouble(left)}',
-      if (width != null) 'width=${debugFormatDouble(width)}',
-      if (height != null) 'height=${debugFormatDouble(height)}',
-    ];
-    if (values.isEmpty)
-      values.add('not positioned');
-    values.add(super.toString());
-    return values.join('; ');
-  }*/
+  ZParentData clone() {
+    return ZParentData(
+      transforms: List<ZTransform>.from(transforms),
+    );
+  }
 }

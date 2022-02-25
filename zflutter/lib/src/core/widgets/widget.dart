@@ -17,7 +17,7 @@ class ZSingleChildRenderObjectElement extends SingleChildRenderObjectElement {
 
     visitAncestorElements((element) {
       if (element is UpdateParentDataElement<ZParentData>) {
-        element.startParentData(renderObject, element.transform);
+        element.startParentData(renderObject);
       }
       return element.widget is! RenderObjectWidget;
     });
@@ -30,31 +30,27 @@ abstract class ZMultiChildWidget extends MultiChildRenderObjectWidget
       : super(children: children);
 
   @override
-  RendeMultiChildZBox createRenderObject(BuildContext context) {
-    return RendeMultiChildZBox();
+  RenderMultiChildZBox createRenderObject(BuildContext context) {
+    return RenderMultiChildZBox();
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RendeMultiChildZBox renderObject) {}
+      BuildContext context, RenderMultiChildZBox renderObject) {}
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    /* properties.add(EnumProperty<AxisDirection>('axisDirection', axisDirection));
-   properties.add(EnumProperty<AxisDirection>('crossAxisDirection', crossAxisDirection, defaultValue: null));
-   properties.add(DiagnosticsProperty<ViewportOffset>('offset', offset));*/
   }
 
   @override
-  AnchorMultipleChildRenderObjectElement createElement() =>
-      AnchorMultipleChildRenderObjectElement(this);
+  ZMultiChildRenderObjectElement createElement() =>
+      ZMultiChildRenderObjectElement(this);
 }
 
-class AnchorMultipleChildRenderObjectElement
-    extends MultiChildRenderObjectElement {
+class ZMultiChildRenderObjectElement extends MultiChildRenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
-  AnchorMultipleChildRenderObjectElement(MultiChildRenderObjectWidget widget)
+  ZMultiChildRenderObjectElement(MultiChildRenderObjectWidget widget)
       : assert(!debugChildrenHaveDuplicateKeys(widget, widget.children)),
         super(widget);
 
@@ -64,7 +60,7 @@ class AnchorMultipleChildRenderObjectElement
 
     visitAncestorElements((element) {
       if (element is UpdateParentDataElement<ZParentData>) {
-        element.startParentData(renderObject, element.transform);
+        element.startParentData(renderObject);
       }
       return element.widget is! RenderObjectWidget;
     });
