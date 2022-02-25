@@ -1,8 +1,5 @@
 //@dart=2.12
-import 'dart:math';
-
 import 'package:flutter/rendering.dart';
-import 'package:zflutter/src/widgets/figures/box.dart';
 
 import '../core.dart';
 
@@ -60,12 +57,18 @@ class RenderZToBoxAdapter extends RenderZBox
     origin = ZVector.zero;
 
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      origin =
-          origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+      origin = origin.transform(
+        matrix4.translate,
+        matrix4.rotate,
+        matrix4.scale,
+      );
 
       transformedPath = transformedPath!
-          .map((e) =>
-              e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
+          .map((e) => e.transform(
+                matrix4.translate,
+                matrix4.rotate,
+                matrix4.scale,
+              ))
           .toList();
     });
     performTransform();
@@ -96,6 +99,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void performSort() {
+    super.performSort();
     assert(transformedPath!.isNotEmpty);
     var pointCount = this.transformedPath!.length;
     var firstPoint = this.transformedPath![0].endRenderPoint;
@@ -115,8 +119,6 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final zParentData = parentData as ZParentData;
-
     if (child != null) {
       final TransformLayer layer = TransformLayer();
       layer.transform = _transform.clone()..translate(-width / 2, -height / 2);

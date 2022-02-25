@@ -103,7 +103,6 @@ class _RenderZHemisphere extends RenderZShape {
     // print('relayout ${anchorParentData.transforms.length}');
     apex = ZVector.only(z: diameter / 2);
     anchorParentData.transforms.reversed.forEach((matrix4) {
-      //   print(matrix4);
       apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
     super.performLayout();
@@ -111,6 +110,7 @@ class _RenderZHemisphere extends RenderZShape {
 
   @override
   void performSort() {
+    super.performSort();
     final renderCentroid = ZVector.lerp(origin, apex, 3 / 8);
     sortValue = renderCentroid.z;
   }

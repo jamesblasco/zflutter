@@ -1,16 +1,32 @@
 //@dart=2.12
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
 import '../core.dart';
 
 class RenderZBox extends RenderBox {
+  bool _debugSortedValue = false;
   double sortValue = 0;
 
   ZVector origin = ZVector.zero;
 
+  @override
+  void layout(Constraints constraints, {bool parentUsesSize = false}) {
+    _debugSortedValue = false;
+    super.layout(constraints, parentUsesSize: parentUsesSize);
+  }
+
+  @mustCallSuper
   void performSort() {
     sortValue = this.origin.z;
+    _debugSortedValue = true;
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    assert(_debugSortedValue, 'requires sorted value');
+    super.paint(context, offset);
   }
 
   @override
@@ -93,16 +109,22 @@ class RenderZMultiChildBox extends RenderZBox
 
   @override
   void performSort() {
+    super.performSort();
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
       sortedChildren = _getFlatChildren();
       if (sortPoint != null) {
         final ZParentData anchorParentData = parentData as ZParentData;
 
         ZVector origin = _sortPoint!;
-        anchorParentData.transforms.reversed.forEach((matrix4) {
-          origin = origin.transform(
-              matrix4.translate, matrix4.rotate, matrix4.scale);
-        });
+        anchorParentData.transforms.reversed.forEach(
+          (matrix4) {
+            origin = origin.transform(
+              matrix4.translate,
+              matrix4.rotate,
+              matrix4.scale,
+            );
+          },
+        );
         sortValue = origin.z;
       } else {
         sortValue = sortedChildren!.fold<double>(0,
@@ -113,8 +135,6 @@ class RenderZMultiChildBox extends RenderZBox
       if (sortMode != SortMode.stack) {
         sortedChildren!..sort((a, b) => a.sortValue.compareTo(b.sortValue));
       }
-    } else {
-      super.performSort();
     }
   }
 
@@ -136,19 +156,10 @@ class RenderZMultiChildBox extends RenderZBox
       } else {
         children.add(child);
       }
-
-      /*  final Size childSize = child.size;
-        width = math.max(width, childSize.width);
-        height = math.max(height, childSize.height);*/
-
       child = childParentData.nextSibling;
     }
     return children;
   }
-
-  ZVector rotation = ZVector.zero;
-  ZVector scale = ZVector.zero;
-  ZVector translate = ZVector.zero;
 
   @override
   void paint(PaintingContext context, Offset offset) {

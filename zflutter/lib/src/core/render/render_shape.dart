@@ -1,13 +1,10 @@
 //@dart=2.12
-import 'dart:math';
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/zflutter.dart';
 
 import '../core.dart';
-import '../path_command.dart';
-import '../renderer.dart';
+
 
 class RenderZShape extends RenderZBox {
   Color _color;
@@ -104,7 +101,7 @@ class RenderZShape extends RenderZBox {
   double get stroke => _stroke;
 
   set stroke(double value) {
-    assert(value != null && value >= 0);
+    assert(value >= 0);
     if (_stroke == value) return;
     _stroke = value;
   }
@@ -119,10 +116,7 @@ class RenderZShape extends RenderZBox {
     double stroke = 1,
     PathBuilder pathBuilder = PathBuilder.empty,
     double sortValue = 0,
-  })  : assert(front != null),
-        assert(close != null),
-        assert(fill != null),
-        assert(stroke != null && stroke >= 0),
+  })  : assert(stroke >= 0),
         _stroke = stroke,
         _visible = visible,
         _backfaceColor = backfaceColor,
@@ -196,6 +190,7 @@ class RenderZShape extends RenderZBox {
 
   @override
   void performSort() {
+    super.performSort();
     assert(transformedPath.isNotEmpty);
     var pointCount = this.transformedPath.length;
     var firstPoint = this.transformedPath[0].endRenderPoint;
@@ -224,7 +219,8 @@ class RenderZShape extends RenderZBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     assert(parentData is ZParentData);
-    if (!visible) return;
+    isFacingBack = normalVector!.z > 0;
+    if (!visible || renderColor == Colors.transparent) return;
 
     final renderer = ZRenderer(context.canvas);
     render(renderer);
@@ -232,7 +228,6 @@ class RenderZShape extends RenderZBox {
     if (length <= 1) {
       paintDot(renderer);
     } else {
-      isFacingBack = normalVector!.z > 0;
       if (!showBackFace && isFacingBack) {
         return super.paint(context, offset);
       }
@@ -242,7 +237,7 @@ class RenderZShape extends RenderZBox {
       final color = renderColor;
 
       renderer.renderPath(transformedPath, isClosed: isClosed);
-      if (stroke != null && stroke > 0) renderer.stroke(color, stroke);
+      if (stroke > 0) renderer.stroke(color, stroke);
       if (fill == true) renderer.fill(color);
     }
 

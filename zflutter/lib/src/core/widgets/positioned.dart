@@ -100,7 +100,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     final ZParentData parentData = renderObject.parentData as ZParentData;
     bool needsLayout = false;
-
+    assert(parentData.transforms.contains(transform));
     transform.scale = scale;
     transform.rotate = rotate;
     transform.translate = translate;

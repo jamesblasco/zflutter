@@ -125,6 +125,7 @@ class RenderZCone extends RenderZShape {
 
   @override
   void performSort() {
+    super.performSort();
     final renderCentroid = ZVector.lerp(origin, apex, 1 / 3);
     sortValue = renderCentroid.z;
   }
