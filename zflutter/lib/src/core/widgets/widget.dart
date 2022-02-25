@@ -30,13 +30,13 @@ abstract class ZMultiChildWidget extends MultiChildRenderObjectWidget
       : super(children: children);
 
   @override
-  RenderZMultiChildBox createRenderObject(BuildContext context) {
-    return RenderZMultiChildBox();
+  RendeMultiChildZBox createRenderObject(BuildContext context) {
+    return RendeMultiChildZBox();
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderZMultiChildBox renderObject) {}
+      BuildContext context, RendeMultiChildZBox renderObject) {}
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

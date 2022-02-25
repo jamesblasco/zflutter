@@ -31,11 +31,18 @@ class ZIllustration extends ZMultiChildWidget {
   }
 }
 
-class RenderZIllustration extends RenderZMultiChildBox {
+class RenderZIllustration extends RendeMultiChildZBox {
+  RenderZIllustration({
+    Clip clipBehavior = Clip.none,
+    double zoom = 0,
+    List<RenderZBox>? children,
+  })  : assert(zoom >= 0),
+        _zoom = zoom,
+        _clipBehavior = clipBehavior,
+        super(children: children, sortMode: SortMode.update);
+
   double _zoom = 1;
-
   double get zoom => _zoom;
-
   set zoom(double value) {
     assert(_zoom >= 0);
     if (_zoom == value) return;
@@ -55,15 +62,6 @@ class RenderZIllustration extends RenderZMultiChildBox {
       markNeedsPaint();
     }
   }
-
-  RenderZIllustration({
-    Clip clipBehavior = Clip.none,
-    double zoom = 0,
-    List<RenderZBox>? children,
-  })  : assert(zoom >= 0),
-        _zoom = zoom,
-        _clipBehavior = clipBehavior,
-        super(children: children, sortMode: SortMode.update);
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -96,23 +94,6 @@ class RenderZIllustration extends RenderZMultiChildBox {
       ..translate(size.width / 2, size.height / 2)
       ..scale(zoom, zoom, zoom);
     transform.multiply(matrix);
-  }
-
-  @override
-  void performLayout() {
-    final BoxConstraints constraints = this.constraints;
-    RenderZBox? child = firstChild;
-
-    while (child != null) {
-      final ZParentData childParentData = child.parentData as ZParentData;
-      if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
-        child.layout(constraints, parentUsesSize: false);
-      } else {
-        child.layout(constraints, parentUsesSize: false);
-      }
-      child = childParentData.nextSibling;
-    }
-    performSort();
   }
 
   @override

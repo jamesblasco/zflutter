@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zflutter/zflutter.dart';
 
 class ZGroup extends ZMultiChildWidget {
-  
   ZGroup({
     required List<Widget> children,
     this.sortMode = SortMode.inherit,
@@ -17,13 +16,13 @@ class ZGroup extends ZMultiChildWidget {
   final ZVector? sortPoint;
 
   @override
-  RenderZMultiChildBox createRenderObject(BuildContext context) {
-    return RenderZMultiChildBox(sortMode: sortMode, sortPoint: sortPoint);
+  RendeMultiChildZBox createRenderObject(BuildContext context) {
+    return RendeMultiChildZBox(sortMode: sortMode, sortPoint: sortPoint);
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderZMultiChildBox renderObject) {
+      BuildContext context, RendeMultiChildZBox renderObject) {
     renderObject.sortMode = sortMode;
     renderObject.sortPoint = sortPoint;
   }

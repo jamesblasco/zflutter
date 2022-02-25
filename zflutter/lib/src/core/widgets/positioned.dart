@@ -111,7 +111,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
       needsLayout = true;
     }
 
-    if (renderObject is RenderZMultiChildBox) {
+    if (renderObject is RendeMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {
@@ -142,7 +142,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     parentData.transforms.add(transform);
 
-    if (renderObject is RenderZMultiChildBox) {
+    if (renderObject is RendeMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {

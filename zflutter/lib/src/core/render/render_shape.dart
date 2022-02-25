@@ -5,7 +5,6 @@ import 'package:zflutter/zflutter.dart';
 
 import '../core.dart';
 
-
 class RenderZShape extends RenderZBox {
   Color _color;
 
@@ -137,6 +136,7 @@ class RenderZShape extends RenderZBox {
   ZVector? _transformedFront;
   ZVector? normalVector;
   final Matrix4 matrix4 = Matrix4.identity();
+  ZVector origin = ZVector.zero;
 
   @override
   void performLayout() {
@@ -166,7 +166,6 @@ class RenderZShape extends RenderZBox {
     });
 
     performPathCommands();
-    performSort();
   }
 
   List<ZPathCommand> transformedPath = [];

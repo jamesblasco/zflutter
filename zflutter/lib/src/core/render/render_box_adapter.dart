@@ -53,7 +53,7 @@ class RenderZToBoxAdapter extends RenderZBox
       ZLine.vector(ZVector.only(x: x, y: y)),
       ZLine.vector(ZVector.only(x: -x, y: y))
     ];
-
+    ZVector origin = ZVector.zero;
     origin = ZVector.zero;
 
     anchorParentData.transforms.reversed.forEach((matrix4) {
@@ -73,7 +73,7 @@ class RenderZToBoxAdapter extends RenderZBox
     });
     performTransform();
 
-    performSort();
+
   }
 
   late Matrix4 _transform;

@@ -7,20 +7,22 @@ import '../core.dart';
 
 class RenderZBox extends RenderBox {
   bool _debugSortedValue = false;
-  double sortValue = 0;
 
-  ZVector origin = ZVector.zero;
+  double sortValue = 0;
 
   @override
   void layout(Constraints constraints, {bool parentUsesSize = false}) {
     _debugSortedValue = false;
     super.layout(constraints, parentUsesSize: parentUsesSize);
+    sort();
   }
 
+  void performSort() {}
+
   @mustCallSuper
-  void performSort() {
-    sortValue = this.origin.z;
+  void sort() {
     _debugSortedValue = true;
+    performSort();
   }
 
   @override
@@ -32,6 +34,12 @@ class RenderZBox extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     return constraints.biggest;
+  }
+
+  @override
+  void performResize() {
+    size = constraints.biggest;
+    assert(size.isFinite);
   }
 }
 
@@ -46,11 +54,12 @@ enum SortMode {
   update,
 }
 
-class RenderZMultiChildBox extends RenderZBox
+class RendeMultiChildZBox extends RenderZBox
     with
         ContainerRenderObjectMixin<RenderZBox, ZParentData>,
         RenderBoxContainerDefaultsMixin<RenderZBox, ZParentData> {
-  RenderZMultiChildBox({
+  
+  RendeMultiChildZBox({
     List<RenderZBox>? children,
     SortMode? sortMode = SortMode.inherit,
     ZVector? sortPoint,
@@ -81,14 +90,13 @@ class RenderZMultiChildBox extends RenderZBox
 
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
-      if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
+      if (child is RendeMultiChildZBox && child.sortMode == SortMode.inherit) {
         child.layout(constraints, parentUsesSize: true);
       } else {
         child.layout(constraints, parentUsesSize: true);
       }
       child = childParentData.nextSibling;
     }
-    performSort();
   }
 
   ZVector? get sortPoint => _sortPoint;
@@ -97,12 +105,6 @@ class RenderZMultiChildBox extends RenderZBox
     if (value == sortPoint) return;
     _sortPoint = value;
     markNeedsLayout();
-  }
-
-  @override
-  void performResize() {
-    size = constraints.biggest;
-    assert(size.isFinite);
   }
 
   List<RenderZBox>? sortedChildren;
@@ -151,7 +153,7 @@ class RenderZMultiChildBox extends RenderZBox
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
 
-      if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
+      if (child is RendeMultiChildZBox && child.sortMode == SortMode.inherit) {
         children.addAll(child._getFlatChildren());
       } else {
         children.add(child);
