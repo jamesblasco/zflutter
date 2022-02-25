@@ -56,9 +56,9 @@ class RenderZMultiChildBox extends RenderZBox
     while (child != null) {
       final ZParentData childParentData = child.parentData as ZParentData;
       if (child is RenderZMultiChildBox && child.sortMode == SortMode.inherit) {
-        child.layout(constraints, parentUsesSize: false);
+        child.layout(constraints, parentUsesSize: true);
       } else {
-        child.layout(constraints, parentUsesSize: false);
+        child.layout(constraints, parentUsesSize: true);
       }
 
       /*  final Size childSize = child.size;
