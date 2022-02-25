@@ -1,6 +1,7 @@
 //@dart=2.12
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:zflutter/zflutter.dart';
 
 import '../core.dart';
 
@@ -26,12 +27,8 @@ import '../core.dart';
 ///
 /// If no path is provided a dot will be painted with the stroke as diameter.
 ///
-class ZShape extends SingleChildRenderObjectWidget with ZWidget {
-  /// The path that will define the shape of the Widget
-  /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
-  /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
-  final List<ZPathCommand> path;
-
+abstract class ZShapeBuilder extends SingleChildRenderObjectWidget
+    with ZWidget {
   /// The color of the shape. If [stroke] is more than 0, the path will be painted
   /// with a stroke of this color. If [fill] is true, it will paint the inside of
   /// the path with this color
@@ -58,9 +55,8 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   /// If false the shape won't be painted
   final bool visible;
 
-  ZShape({
+  const ZShapeBuilder({
     Key? key,
-    List<ZPathCommand>? path,
     required this.color,
     this.front = const ZVector.only(z: 1),
     this.backfaceColor,
@@ -68,19 +64,19 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
     this.closed = true,
     this.fill = false,
     this.visible = true,
-  })  : path = path ?? [],
-        assert(closed != null),
-        assert(front != null),
-        assert(visible != null),
-        assert(fill != null),
-        assert(stroke != null && stroke >= 0),
+  })  : assert(stroke >= 0),
         super(key: key);
+
+  /// The path that will define the shape of the Widget
+  /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
+  /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
+  PathBuilder buildPath();
 
   @override
   RenderZShape createRenderObject(BuildContext context) {
     return RenderZShape(
       color: color,
-      path: path,
+      pathBuilder: buildPath(),
       stroke: stroke,
       close: closed,
       fill: fill,
@@ -93,7 +89,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   @override
   void updateRenderObject(BuildContext context, RenderZShape renderObject) {
     renderObject..color = color;
-    renderObject..path = path;
+    renderObject..pathBuilder = buildPath();
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;
@@ -116,4 +112,37 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   @override
   ZSingleChildRenderObjectElement createElement() =>
       ZSingleChildRenderObjectElement(this);
+}
+
+class ZShape extends ZShapeBuilder {
+  /// The path that will define the shape of the Widget
+  /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
+  /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
+  final PathBuilder path;
+
+  ZShape({
+    Key? key,
+    List<ZPathCommand>? path,
+    required Color color,
+    Color? backfaceColor,
+    double stroke = 1,
+    bool fill = false,
+    ZVector front = const ZVector.only(z: 1),
+    bool visible = true,
+    bool closed = true,
+  })  : path = SimplePathBuilder(path ?? const []),
+        assert(stroke >= 0),
+        super(
+          key: key,
+          color: color,
+          backfaceColor: backfaceColor,
+          stroke: stroke,
+          closed: closed,
+          fill: fill,
+          front: front,
+          visible: visible,
+        );
+
+  @override
+  PathBuilder buildPath() => path;
 }

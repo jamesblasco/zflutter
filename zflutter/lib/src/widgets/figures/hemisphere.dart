@@ -33,7 +33,6 @@ class ZHemisphere extends StatelessWidget {
       sortMode: SortMode.stack,
       children: [
         _ZCylinderMiddle(
-          path: [],
           color: color,
           diameter: diameter,
           stroke: stroke,
@@ -50,20 +49,19 @@ class ZHemisphere extends StatelessWidget {
   }
 }
 
-class _ZCylinderMiddle extends ZShape {
+class _ZCylinderMiddle extends ZShapeBuilder {
   final double diameter;
 
   _ZCylinderMiddle({
     required this.diameter,
-    required List<ZPathCommand> path,
     double stroke = 1,
     required Color color,
-  }) : super(path: [], stroke: stroke, color: color);
+  }) : super(stroke: stroke, color: color);
 
   @override
   _RenderZHemisphere createRenderObject(BuildContext context) {
     return _RenderZHemisphere(
-      path: path,
+      pathBuilder: buildPath(),
       stroke: stroke,
       diameter: diameter,
       color: color,
@@ -75,8 +73,13 @@ class _ZCylinderMiddle extends ZShape {
       BuildContext context, _RenderZHemisphere renderObject) {
     renderObject.diameter = diameter;
     renderObject.stroke = stroke;
-    renderObject.path = path;
+    renderObject.pathBuilder = buildPath();
     renderObject.color = color;
+  }
+
+  @override
+  PathBuilder buildPath() {
+    return PathBuilder.empty;
   }
 }
 
@@ -113,12 +116,13 @@ class _RenderZHemisphere extends RenderZShape {
   }
 
   _RenderZHemisphere(
-      {required List<ZPathCommand> path,
+      {required PathBuilder pathBuilder,
       required double diameter,
       required double stroke,
       required Color color})
       : _diameter = diameter,
-        super(path: path, stroke: stroke, color: color, fill: true);
+        super(
+            pathBuilder: pathBuilder, stroke: stroke, color: color, fill: true);
 
   @override
   void render(ZRenderer renderer) {

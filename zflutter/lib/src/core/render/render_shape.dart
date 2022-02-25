@@ -63,14 +63,22 @@ class RenderZShape extends RenderZBox {
   }
 
   List<ZPathCommand> _path;
-
   List<ZPathCommand> get path => _path;
-
   set path(List<ZPathCommand> value) {
     if (_path == value) return;
     _path = value;
 
     markNeedsLayout();
+  }
+
+  PathBuilder _pathBuilder;
+  PathBuilder get pathBuilder => _pathBuilder;
+  set pathBuilder(PathBuilder value) {
+    if (_pathBuilder == value) return;
+    if (_pathBuilder.shouldRebuildPath(value)) {
+      path = _pathBuilder.buildPath();
+    }
+    _pathBuilder = value;
   }
 
   double _sortValue;
@@ -108,10 +116,9 @@ class RenderZShape extends RenderZBox {
     bool visible = true,
     bool fill = false,
     double stroke = 1,
-    List<ZPathCommand> path = const [],
+    PathBuilder pathBuilder = PathBuilder.empty,
     double sortValue = 0,
-  })  : assert(path != null),
-        assert(front != null),
+  })  : assert(front != null),
         assert(close != null),
         assert(fill != null),
         assert(stroke != null && stroke >= 0),
@@ -122,7 +129,8 @@ class RenderZShape extends RenderZBox {
         _close = close,
         _fill = fill,
         _color = color,
-        _path = path,
+        _pathBuilder = pathBuilder,
+        _path = pathBuilder.buildPath(),
         _sortValue = sortValue;
 
   @override

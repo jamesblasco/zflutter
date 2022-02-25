@@ -178,24 +178,18 @@ class RenderZMultiChildBox extends RenderZBox
 
 /// Parent data for use with [ZRenderer].
 class ZParentData extends ContainerBoxParentData<RenderZBox> {
-  ZVector translate = ZVector.zero;
-  ZVector rotate = ZVector.zero;
-  ZVector scale = ZVector.identity;
+  //ZVector translate = ZVector.zero;
+  //ZVector rotate = ZVector.zero;
+  //ZVector scale = ZVector.identity;
 
   List<ZTransform> transforms;
 
   ZParentData({
-    this.rotate = ZVector.zero,
-    this.scale = ZVector.identity,
-    this.translate = ZVector.zero,
     List<ZTransform>? transforms,
   }) : this.transforms = transforms ?? [];
 
-  ZParentData clone() => ZParentData(
-      rotate: rotate,
-      scale: scale,
-      translate: translate,
-      transforms: List<ZTransform>.from(transforms));
+  ZParentData clone() =>
+      ZParentData(transforms: List<ZTransform>.from(transforms));
 
   /* String toString() {
     final List<String> values = <String>[

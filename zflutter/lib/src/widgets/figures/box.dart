@@ -24,7 +24,7 @@ class ZBox extends StatelessWidget {
   final Color? topColor;
   final Color? bottomColor;
 
-  ZBox({
+  const ZBox({
     required this.width,
     required this.height,
     required this.depth,
@@ -126,8 +126,6 @@ class ZBox extends StatelessWidget {
   }
 }
 
-
-
 class ZBoxToBoxAdapter extends StatelessWidget {
   final double width;
   final double height;
@@ -163,111 +161,111 @@ class ZBoxToBoxAdapter extends StatelessWidget {
   });
 
   Widget get frontFace => ZPositioned(
-    translate: ZVector.only(z: depth / 2),
-    child: front != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: front,
-    )
-        : ZRect(
-      color: color,
-      fill: fill,
-      stroke: 1,
-      width: width,
-      height: height,
-    ),
-  );
+        translate: ZVector.only(z: depth / 2),
+        child: front != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: front,
+              )
+            : ZRect(
+                color: color,
+                fill: fill,
+                stroke: 1,
+                width: width,
+                height: height,
+              ),
+      );
 
   Widget get rearFace => ZPositioned(
-    translate: ZVector.only(z: -depth / 2),
-    rotate: ZVector.only(y: tau / 2),
-    child: rear != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: rear,
-    )
-        : ZRect(
-      width: width,
-      height: height,
-      color: color,
-      fill: fill,
-      stroke: 1,
-    ),
-  );
+        translate: ZVector.only(z: -depth / 2),
+        rotate: ZVector.only(y: tau / 2),
+        child: rear != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: rear,
+              )
+            : ZRect(
+                width: width,
+                height: height,
+                color: color,
+                fill: fill,
+                stroke: 1,
+              ),
+      );
 
   Widget get leftFace => ZPositioned(
-    translate: ZVector.only(x: -width / 2),
-    rotate: ZVector.only(y: -tau / 4),
-    child: left != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: left,
-    )
-        : ZRect(
-      width: depth,
-      height: height,
-      stroke: 1,
-      color: color,
-      fill: fill,
-    ),
-  );
+        translate: ZVector.only(x: -width / 2),
+        rotate: ZVector.only(y: -tau / 4),
+        child: left != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: left,
+              )
+            : ZRect(
+                width: depth,
+                height: height,
+                stroke: 1,
+                color: color,
+                fill: fill,
+              ),
+      );
 
   Widget get rightFace => ZPositioned(
-    translate: ZVector.only(x: width / 2),
-    rotate: ZVector.only(y: tau / 4),
-    child: right != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: right,
-    )
-        : ZRect(
-      width: depth,
-      color: color,
-      height: height,
-      stroke: 1,
-      fill: fill,
-    ),
-  );
+        translate: ZVector.only(x: width / 2),
+        rotate: ZVector.only(y: tau / 4),
+        child: right != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: right,
+              )
+            : ZRect(
+                width: depth,
+                color: color,
+                height: height,
+                stroke: 1,
+                fill: fill,
+              ),
+      );
 
   Widget get topFace => ZPositioned(
-    translate: ZVector.only(y: -height / 2),
-    rotate: ZVector.only(x: -tau / 4),
-    child: top != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: top,
-    )
-        : ZRect(
-      width: width,
-      color: color,
-      height: depth,
-      stroke: 1,
-      fill: fill,
-    ),
-  );
+        translate: ZVector.only(y: -height / 2),
+        rotate: ZVector.only(x: -tau / 4),
+        child: top != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: top,
+              )
+            : ZRect(
+                width: width,
+                color: color,
+                height: depth,
+                stroke: 1,
+                fill: fill,
+              ),
+      );
 
   Widget get bottomFace => ZPositioned(
-    translate: ZVector.only(y: height / 2),
-    rotate: ZVector.only(x: tau / 4),
-    child: bottom != null
-        ? ZToBoxAdapter(
-      height: height,
-      width: width,
-      child: bottom,
-    )
-        : ZRect(
-      width: width,
-      color: color,
-      stroke: 1,
-      fill: fill,
-      height: depth,
-    ),
-  );
+        translate: ZVector.only(y: height / 2),
+        rotate: ZVector.only(x: tau / 4),
+        child: bottom != null
+            ? ZToBoxAdapter(
+                height: height,
+                width: width,
+                child: bottom,
+              )
+            : ZRect(
+                width: width,
+                color: color,
+                stroke: 1,
+                fill: fill,
+                height: depth,
+              ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -283,4 +281,3 @@ class ZBoxToBoxAdapter extends StatelessWidget {
     );
   }
 }
-

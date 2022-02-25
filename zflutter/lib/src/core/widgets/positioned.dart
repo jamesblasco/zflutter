@@ -1,8 +1,6 @@
 //@dart=2.12
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zflutter/src/core/render/render_box.dart';
 import 'package:zflutter/src/core/widgets/update_parent_data.dart';
 import 'package:zflutter/src/widgets/illustration.dart';
 
@@ -43,7 +41,7 @@ class ZTransform {
 ///
 class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
   /// Creates a widget that controls where a child of a [ZStack] is positioned.
-  ZPositioned({
+  const ZPositioned({
     Key? key,
     this.scale = ZVector.identity,
     this.translate = ZVector.zero,
@@ -107,24 +105,9 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
     transform.rotate = rotate;
     transform.translate = translate;
 
-    if (scale != oldWidget.scale) {
-      final dif = scale / oldWidget.scale;
-      parentData.scale *= dif;
-
-      needsLayout = true;
-    }
-
-    if (rotate != oldWidget.rotate) {
-      final dif = rotate - oldWidget.rotate;
-      parentData.rotate += dif;
-
-      needsLayout = true;
-    }
-
-    if (translate != oldWidget.translate) {
-      final dif = translate - oldWidget.translate;
-      parentData.translate = dif;
-
+    if (scale != oldWidget.scale ||
+        rotate != oldWidget.rotate ||
+        translate != oldWidget.translate) {
       needsLayout = true;
     }
 
@@ -135,7 +118,6 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
         final ZParentData childParentData = child.parentData as ZParentData;
         updateParentData(child, oldWidget, transform);
         child = childParentData.nextSibling;
-        needsLayout = true;
       }
     }
 
@@ -159,12 +141,6 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
     transform.rotate = rotate;
 
     parentData.transforms.add(transform);
-
-    parentData.rotate += rotate;
-
-    parentData.translate += translate;
-
-    parentData.scale *= scale;
 
     if (renderObject is RenderZMultiChildBox) {
       RenderZBox? child = renderObject.firstChild;

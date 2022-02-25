@@ -1,0 +1,60 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "zflutter",
+            "cwd": "zflutter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "zflutter (profile mode)",
+            "cwd": "zflutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "iphone_promo",
+            "cwd": "examples/iphone_promo",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "iphone_promo (profile mode)",
+            "cwd": "examples/iphone_promo",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ui_3d",
+            "cwd": "examples/ui_3d",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ui_3d (profile mode)",
+            "cwd": "examples/ui_3d",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "example",
+            "cwd": "zflutter/example",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "example (profile mode)",
+            "cwd": "zflutter/example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}

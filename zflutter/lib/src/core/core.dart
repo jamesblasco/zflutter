@@ -12,6 +12,7 @@ export 'render/render_box.dart';
 export 'render/render_shape.dart';
 export 'path_command.dart';
 export 'renderer.dart';
+export 'path_builder.dart';
 
 export 'widgets/box_adapter.dart';
 
@@ -94,7 +95,8 @@ class ZVector {
     return ZVector(x ?? this.x, y ?? this.y, z ?? this.z);
   }
 
-  Map<VectorAxis, double> get toMap => {VectorAxis.x: x, VectorAxis.y: y, VectorAxis.z: z};
+  Map<VectorAxis, double> get toMap =>
+      {VectorAxis.x: x, VectorAxis.y: y, VectorAxis.z: z};
 
   ZVector multiply(ZVector? scale) {
     if (scale == null) return this;

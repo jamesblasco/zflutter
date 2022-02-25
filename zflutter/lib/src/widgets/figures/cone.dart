@@ -31,7 +31,7 @@ class ZCone extends ZCircle {
   RenderZCone createRenderObject(BuildContext context) {
     return RenderZCone(
         color: color,
-        path: path,
+        pathBuilder: buildPath(),
         stroke: stroke,
         close: closed,
         fill: fill,
@@ -45,7 +45,7 @@ class ZCone extends ZCircle {
   @override
   void updateRenderObject(BuildContext context, RenderZCone renderObject) {
     renderObject..color = color;
-    renderObject..path = path;
+    renderObject..pathBuilder = buildPath();
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;
@@ -90,20 +90,21 @@ class RenderZCone extends RenderZShape {
     bool visible = true,
     bool fill = false,
     double stroke = 1,
-    List<ZPathCommand> path = const [],
+    PathBuilder pathBuilder = PathBuilder.empty,
   })  : assert(length != null),
         assert(diameter != null),
         _length = length,
         _diameter = diameter,
         super(
-            color: color,
-            backfaceColor: backfaceColor,
-            front: front,
-            close: close,
-            visible: visible,
-            fill: fill,
-            stroke: stroke,
-            path: path);
+          color: color,
+          backfaceColor: backfaceColor,
+          front: front,
+          close: close,
+          visible: visible,
+          fill: fill,
+          stroke: stroke,
+          pathBuilder: pathBuilder,
+        );
 
   ZVector tangentA = ZVector.zero;
   ZVector tangentB = ZVector.zero;
