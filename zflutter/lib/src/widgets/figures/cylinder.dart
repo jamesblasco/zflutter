@@ -119,7 +119,7 @@ class RenderZCylinder extends RenderZShape {
     if (_diameter == value) return;
     _diameter = value;
 
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   RenderZCylinder({

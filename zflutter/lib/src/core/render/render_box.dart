@@ -5,19 +5,21 @@ import 'package:flutter/rendering.dart';
 
 import '../core.dart';
 
-class RenderZBox extends RenderBox {
+abstract class RenderZBox extends RenderBox {
   bool _debugSortedValue = false;
 
   double sortValue = 0;
 
   @override
-  void layout(Constraints constraints, {bool parentUsesSize = false}) {
-    _debugSortedValue = false;
-    super.layout(constraints, parentUsesSize: parentUsesSize);
+  @mustCallSuper
+  void performLayout() {
+    performTransformation();
     sort();
   }
 
-  void performSort() {}
+  void performTransformation();
+
+  void performSort();
 
   @mustCallSuper
   void sort() {
@@ -80,9 +82,10 @@ class RenderMultiChildZBox extends RenderZBox
   }
 
   @override
-  void performLayout() {
-    super.performLayout();
+  bool get sizedByParent => true;
 
+  @override
+  void performTransformation() {
     final BoxConstraints constraints = this.constraints;
 
     RenderZBox? child = firstChild;
@@ -139,9 +142,6 @@ class RenderMultiChildZBox extends RenderZBox
     sortedChildren = children;
   }
 
-  @override
-  bool get sizedByParent => true;
-
   SortMode? sortMode;
 
   List<RenderZBox> _getFlatChildren() {
@@ -164,7 +164,6 @@ class RenderMultiChildZBox extends RenderZBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    performSort();
     assert(sortMode != null);
     if (sortMode == SortMode.inherit) return;
 

@@ -63,7 +63,7 @@ class RenderZCone extends RenderZShape {
   double get length => _length;
 
   set length(double value) {
-    assert(value != null && value >= 0);
+    assert(value >= 0);
     if (_length == value) return;
     _length = value;
     markNeedsLayout();
@@ -74,7 +74,7 @@ class RenderZCone extends RenderZShape {
   double get diameter => _diameter;
 
   set diameter(double value) {
-    assert(value != null && value >= 0);
+    assert(value >= 0);
     if (_diameter == value) return;
     _diameter = value;
     markNeedsLayout();
@@ -112,7 +112,8 @@ class RenderZCone extends RenderZShape {
   ZVector? apex;
 
   @override
-  void performLayout() {
+  void performTransformation() {
+    super.performTransformation();
     final ZParentData anchorParentData = parentData as ZParentData;
     matrix4.setIdentity();
 
@@ -120,12 +121,10 @@ class RenderZCone extends RenderZShape {
     anchorParentData.transforms.reversed.forEach((matrix4) {
       apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
-    super.performLayout();
   }
 
   @override
   void performSort() {
-    super.performSort();
     final renderCentroid = ZVector.lerp(origin, apex, 1 / 3);
     sortValue = renderCentroid.z;
   }

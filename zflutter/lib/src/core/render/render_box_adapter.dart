@@ -39,7 +39,7 @@ class RenderZToBoxAdapter extends RenderZBox
   List<ZPathCommand>? transformedPath;
 
   @override
-  void performLayout() {
+  void performTransformation() {
     final ZParentData anchorParentData = parentData as ZParentData;
     child?.layout(BoxConstraints.expand(height: height, width: width),
         parentUsesSize: false);
@@ -71,14 +71,12 @@ class RenderZToBoxAdapter extends RenderZBox
               ))
           .toList();
     });
-    performTransform();
-
-
+    performPathTransform();
   }
 
   late Matrix4 _transform;
 
-  performTransform() {
+  void performPathTransform() {
     assert(parentData is ZParentData);
     final ZParentData anchorParentData = parentData as ZParentData;
 
@@ -99,7 +97,6 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void performSort() {
-    super.performSort();
     assert(transformedPath!.isNotEmpty);
     var pointCount = this.transformedPath!.length;
     var firstPoint = this.transformedPath![0].endRenderPoint;
@@ -119,6 +116,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    super.paint(context, offset);
     if (child != null) {
       final TransformLayer layer = TransformLayer();
       layer.transform = _transform.clone()..translate(-width / 2, -height / 2);

@@ -53,8 +53,6 @@ class RenderZShape extends RenderZBox {
   set front(ZVector value) {
     if (_front == value) return;
     _front = value;
-    //TODO: Transform front here so no need to rebuild layout a
-    // markNeedsPaint();
     markNeedsLayout();
   }
 
@@ -70,7 +68,6 @@ class RenderZShape extends RenderZBox {
   PathBuilder _pathBuilder;
   PathBuilder get pathBuilder => _pathBuilder;
   set pathBuilder(PathBuilder value) {
-    markNeedsLayout();
     if (_pathBuilder == value) return;
     if (_pathBuilder.shouldRebuildPath(value)) {
       path = _pathBuilder.buildPath();
@@ -139,7 +136,8 @@ class RenderZShape extends RenderZBox {
   ZVector origin = ZVector.zero;
 
   @override
-  void performLayout() {
+  @mustCallSuper
+  void performTransformation() {
     final ZParentData anchorParentData = parentData as ZParentData;
 
     matrix4.setIdentity();
@@ -189,7 +187,6 @@ class RenderZShape extends RenderZBox {
 
   @override
   void performSort() {
-    super.performSort();
     assert(transformedPath.isNotEmpty);
     var pointCount = this.transformedPath.length;
     var firstPoint = this.transformedPath[0].endRenderPoint;
@@ -217,7 +214,9 @@ class RenderZShape extends RenderZBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    super.paint(context, offset);
     assert(parentData is ZParentData);
+
     isFacingBack = normalVector!.z > 0;
     if (!visible || renderColor == Colors.transparent) return;
 
@@ -241,7 +240,6 @@ class RenderZShape extends RenderZBox {
     }
 
     //  context.canvas.restore();
-    super.paint(context, offset);
   }
 
   void paintDot(ZRenderer renderer) {

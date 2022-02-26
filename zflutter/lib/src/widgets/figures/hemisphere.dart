@@ -92,12 +92,13 @@ class _RenderZHemisphere extends RenderZShape {
     if (_diameter == value) return;
     _diameter = value;
 
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ZVector? apex;
   @override
-  void performLayout() {
+  void performTransformation() {
+    super.performTransformation();
     final ZParentData anchorParentData = parentData as ZParentData;
     matrix4.setIdentity();
     // print('relayout ${anchorParentData.transforms.length}');
@@ -105,12 +106,10 @@ class _RenderZHemisphere extends RenderZShape {
     anchorParentData.transforms.reversed.forEach((matrix4) {
       apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
-    super.performLayout();
   }
 
   @override
   void performSort() {
-    super.performSort();
     final renderCentroid = ZVector.lerp(origin, apex, 3 / 8);
     sortValue = renderCentroid.z;
   }

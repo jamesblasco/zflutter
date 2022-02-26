@@ -50,6 +50,9 @@ class RenderZIllustration extends RenderMultiChildZBox {
     markNeedsPaint();
   }
 
+  @override
+  bool get sizedByParent => true;
+
   /// Whether clipBehavioring children should be clipped. See [clipBehavior].
   ///
   /// Some children in a stack might clipBehavior its box. When this flag is set to
