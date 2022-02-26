@@ -131,8 +131,10 @@ class RenderZCylinder extends RenderZShape {
         super(pathBuilder: pathBuilder, stroke: stroke, color: color);
 
   @override
+  bool get needsDirection => true;
+  @override
   void render(ZRenderer renderer) {
-    var scale = normalVector!.magnitude();
+    var scale = normalVector.magnitude();
     var strokeWidth = diameter * scale + stroke;
 
     renderer.setLineCap(StrokeCap.butt);

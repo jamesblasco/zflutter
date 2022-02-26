@@ -7,15 +7,21 @@ import '../core.dart';
 
 abstract class RenderZBox extends RenderBox {
   bool _debugSortedValue = false;
+  bool _debugTransformedValue = false;
 
   double sortValue = 0;
 
   @override
   @mustCallSuper
   void performLayout() {
+    _debugTransformedValue = false;
     performTransformation();
+    _debugTransformedValue = true;
     sort();
   }
+
+  @override
+  bool get sizedByParent => true;
 
   void performTransformation();
 
@@ -30,7 +36,12 @@ abstract class RenderZBox extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     assert(_debugSortedValue, 'requires sorted value');
+    debugTransformed();
     super.paint(context, offset);
+  }
+
+  void debugTransformed() {
+    assert(_debugTransformedValue, 'requires transformation to be performed');
   }
 
   @override

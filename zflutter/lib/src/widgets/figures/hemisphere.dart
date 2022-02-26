@@ -100,7 +100,7 @@ class _RenderZHemisphere extends RenderZShape {
   void performTransformation() {
     super.performTransformation();
     final ZParentData anchorParentData = parentData as ZParentData;
-    matrix4.setIdentity();
+
     // print('relayout ${anchorParentData.transforms.length}');
     apex = ZVector.only(z: diameter / 2);
     anchorParentData.transforms.reversed.forEach((matrix4) {
@@ -124,9 +124,12 @@ class _RenderZHemisphere extends RenderZShape {
             pathBuilder: pathBuilder, stroke: stroke, color: color, fill: true);
 
   @override
+  bool get needsDirection => true;
+
+  @override
   void render(ZRenderer renderer) {
-    final contourAngle = math.atan2(normalVector!.y, normalVector!.x);
-    final demoRadius = diameter / 2 * normalVector!.magnitude();
+    final contourAngle = math.atan2(normalVector.y, normalVector.x);
+    final demoRadius = diameter / 2 * normalVector.magnitude();
     final x = origin.x;
     final y = origin.y;
 

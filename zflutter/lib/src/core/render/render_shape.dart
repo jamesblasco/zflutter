@@ -22,6 +22,10 @@ class RenderZShape extends RenderZBox {
 
   set backfaceColor(Color? value) {
     if (_backfaceColor == value) return;
+    if (_backfaceColor == null) {
+      // It needs to calculate normalVector when there is backface color
+      return markNeedsLayout();
+    }
     _backfaceColor = value;
     markNeedsPaint();
   }
@@ -75,12 +79,13 @@ class RenderZShape extends RenderZBox {
     _pathBuilder = value;
   }
 
-  double _sortValue;
-  double get sortValue => _sortValue;
+  ZVector? _sortPoint;
+  ZVector? get sortPoint => _sortPoint;
 
-  set sortValue(double value) {
-    if (_sortValue == value) return;
-    _sortValue = value;
+  set sortPoint(ZVector? value) {
+    if (_sortPoint == value) return;
+    _sortPoint = value;
+    markNeedsLayout();
   }
 
   bool _visible;
@@ -111,7 +116,7 @@ class RenderZShape extends RenderZBox {
     bool fill = false,
     double stroke = 1,
     PathBuilder pathBuilder = PathBuilder.empty,
-    double sortValue = 0,
+    ZVector? sortPoint,
   })  : assert(stroke >= 0),
         _stroke = stroke,
         _visible = visible,
@@ -122,7 +127,7 @@ class RenderZShape extends RenderZBox {
         _color = color,
         _pathBuilder = pathBuilder,
         _path = pathBuilder.buildPath(),
-        _sortValue = sortValue;
+        _sortPoint = sortPoint;
 
   @override
   bool get sizedByParent => true;
@@ -130,40 +135,75 @@ class RenderZShape extends RenderZBox {
   /// With this markNeedsPaint will only repaint this core object and not their ancestors
   bool get isRepaintBoundary => true;
 
-  ZVector? _transformedFront;
-  ZVector? normalVector;
-  final Matrix4 matrix4 = Matrix4.identity();
+  bool get needsDirection => backfaceColor != null;
+
+  ZVector? _normalVector;
+  ZVector get normalVector {
+    assert(needsDirection,
+        'needs direction needs to be true so normal vector can be retrieved');
+    debugTransformed();
+    return _normalVector!;
+  }
+
   ZVector origin = ZVector.zero;
 
+  ZVector? transformedSortPoint;
+
   @override
-  @mustCallSuper
   void performTransformation() {
     final ZParentData anchorParentData = parentData as ZParentData;
 
-    matrix4.setIdentity();
+    final transformations = anchorParentData.transforms.reversed;
 
     origin = ZVector.zero;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
-      origin =
-          origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
+    transformations.forEach((matrix4) {
+      origin = origin.transform(
+        matrix4.translate,
+        matrix4.rotate,
+        matrix4.scale,
+      );
     });
 
-    _transformedFront = front;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
-      _transformedFront = _transformedFront!
-          .transform(matrix4.translate, matrix4.rotate, matrix4.scale);
-    });
+    /// To optimize we calculate the sort point position
+    if (sortPoint == ZVector.zero) {
+      transformedSortPoint = origin;
+    } else if (sortPoint == ZVector.zero) {
+      transformedSortPoint = sortPoint;
+      transformations.forEach((matrix4) {
+        transformedSortPoint = origin.transform(
+          matrix4.translate,
+          matrix4.rotate,
+          matrix4.scale,
+        );
+      });
+    } else {
+      transformedSortPoint = null;
+    }
 
-    normalVector = origin - _transformedFront!;
     transformedPath = path;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
+    transformations.forEach((matrix4) {
       transformedPath = transformedPath
-          .map((e) =>
-              e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
+          .map((e) => e.transform(
+                matrix4.translate,
+                matrix4.rotate,
+                matrix4.scale,
+              ))
           .toList();
     });
 
     performPathCommands();
+
+    if (needsDirection) {
+      var _transformedFront = front;
+      transformations.forEach((matrix4) {
+        _transformedFront = _transformedFront.transform(
+          matrix4.translate,
+          matrix4.rotate,
+          matrix4.scale,
+        );
+      });
+      _normalVector = origin - _transformedFront;
+    }
   }
 
   List<ZPathCommand> transformedPath = [];
@@ -187,24 +227,28 @@ class RenderZShape extends RenderZBox {
 
   @override
   void performSort() {
-    assert(transformedPath.isNotEmpty);
-    var pointCount = this.transformedPath.length;
-    var firstPoint = this.transformedPath[0].endRenderPoint;
-    var lastPoint = this.transformedPath[pointCount - 1].endRenderPoint;
-    // ignore the final point if self closing shape
-    var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
-    if (isSelfClosing) {
-      pointCount -= 1;
-    }
+    if (transformedSortPoint != null) {
+      sortValue = transformedSortPoint!.z;
+    } else {
+      assert(transformedPath.isNotEmpty);
+      var pointCount = this.transformedPath.length;
+      final firstPoint = this.transformedPath[0].endRenderPoint;
+      final lastPoint = this.transformedPath[pointCount - 1].endRenderPoint;
+      // ignore the final point if self closing shape
+      var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
+      if (isSelfClosing) {
+        pointCount -= 1;
+      }
 
-    double sortValueTotal = 0;
-    for (var i = 0; i < pointCount; i++) {
-      sortValueTotal += this.transformedPath[i].endRenderPoint.z;
+      double sortValueTotal = 0;
+      for (var i = 0; i < pointCount; i++) {
+        sortValueTotal += this.transformedPath[i].endRenderPoint.z;
+      }
+      this.sortValue = sortValueTotal / pointCount;
     }
-    this.sortValue = sortValueTotal / pointCount;
   }
 
-  bool isFacingBack = false;
+  bool get isFacingBack => normalVector.z > 0;
   bool showBackFace = true;
 
   Color get renderColor {
@@ -217,7 +261,6 @@ class RenderZShape extends RenderZBox {
     super.paint(context, offset);
     assert(parentData is ZParentData);
 
-    isFacingBack = normalVector!.z > 0;
     if (!visible || renderColor == Colors.transparent) return;
 
     final renderer = ZRenderer(context.canvas);
@@ -230,7 +273,7 @@ class RenderZShape extends RenderZBox {
         return super.paint(context, offset);
       }
 
-      var isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
+      final isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
       var isClosed = !isTwoPoints && _close == true;
       final color = renderColor;
 

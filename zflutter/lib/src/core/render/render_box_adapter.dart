@@ -34,51 +34,33 @@ class RenderZToBoxAdapter extends RenderZBox
   @override
   bool get isRepaintBoundary => true;
 
-  // bool get isRepaintBoundary => true;
-
   List<ZPathCommand>? transformedPath;
 
   @override
+  void performLayout() {
+    child?.layout(
+      BoxConstraints.expand(height: height, width: width),
+      parentUsesSize: false,
+    );
+    super.performLayout();
+  }
+
+  late Matrix4 _transform;
+
+  ZVector origin = ZVector.zero;
+  @override
   void performTransformation() {
     final ZParentData anchorParentData = parentData as ZParentData;
-    child?.layout(BoxConstraints.expand(height: height, width: width),
-        parentUsesSize: false);
-    size = constraints.smallest;
 
-    final x = width / 2;
-    final y = height / 2;
-    transformedPath = [
-      ZMove.vector(ZVector.only(x: -x, y: -y)),
-      ZLine.vector(ZVector.only(x: x, y: -y)),
-      ZLine.vector(ZVector.only(x: x, y: y)),
-      ZLine.vector(ZVector.only(x: -x, y: y))
-    ];
-    ZVector origin = ZVector.zero;
     origin = ZVector.zero;
-
-    anchorParentData.transforms.reversed.forEach((matrix4) {
+    final transformations = anchorParentData.transforms.reversed;
+    transformations.forEach((matrix4) {
       origin = origin.transform(
         matrix4.translate,
         matrix4.rotate,
         matrix4.scale,
       );
-
-      transformedPath = transformedPath!
-          .map((e) => e.transform(
-                matrix4.translate,
-                matrix4.rotate,
-                matrix4.scale,
-              ))
-          .toList();
     });
-    performPathTransform();
-  }
-
-  late Matrix4 _transform;
-
-  void performPathTransform() {
-    assert(parentData is ZParentData);
-    final ZParentData anchorParentData = parentData as ZParentData;
 
     Matrix4 matrix = Matrix4.translationValues(0, 0, 0);
     anchorParentData.transforms.forEach((transform) {
@@ -97,21 +79,7 @@ class RenderZToBoxAdapter extends RenderZBox
 
   @override
   void performSort() {
-    assert(transformedPath!.isNotEmpty);
-    var pointCount = this.transformedPath!.length;
-    var firstPoint = this.transformedPath![0].endRenderPoint;
-    var lastPoint = this.transformedPath![pointCount - 1].endRenderPoint;
-    // ignore the final point if self closing shape
-    var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
-    if (isSelfClosing) {
-      pointCount -= 1;
-    }
-
-    double sortValueTotal = 0;
-    for (var i = 0; i < pointCount; i++) {
-      sortValueTotal += this.transformedPath![i].endRenderPoint.z;
-    }
-    this.sortValue = sortValueTotal / pointCount;
+    sortValue = origin.z;
   }
 
   @override

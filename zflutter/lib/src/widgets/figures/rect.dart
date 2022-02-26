@@ -20,6 +20,7 @@ class ZRect extends ZShapeBuilder {
           closed: true,
           fill: fill,
           front: front,
+          sortPoint: ZVector.zero,
         );
 
   final double width;
@@ -82,6 +83,7 @@ class ZRoundedRect extends ZShapeBuilder {
           closed: true,
           fill: fill,
           front: front,
+          sortPoint: ZVector.zero,
         );
 
   @override
@@ -192,6 +194,7 @@ class ZCircle extends ZShapeBuilder {
           closed: closed,
           fill: fill,
           front: front,
+          sortPoint: ZVector.zero,
         );
 
   @override
@@ -229,6 +232,7 @@ class ZEllipse extends ZShapeBuilder {
           closed: false,
           fill: fill,
           front: front,
+          sortPoint: ZVector.zero,
         );
 
   @override
@@ -330,6 +334,7 @@ class ZPolygon extends ZShapeBuilder {
           closed: true,
           fill: fill,
           front: front,
+          sortPoint: ZVector.zero,
         );
 
   @override

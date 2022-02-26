@@ -115,7 +115,6 @@ class RenderZCone extends RenderZShape {
   void performTransformation() {
     super.performTransformation();
     final ZParentData anchorParentData = parentData as ZParentData;
-    matrix4.setIdentity();
 
     apex = ZVector.only(z: length);
     anchorParentData.transforms.reversed.forEach((matrix4) {
@@ -137,14 +136,17 @@ class RenderZCone extends RenderZShape {
     super.render(renderer);
   }
 
+  @override
+  bool get needsDirection => true;
+
   void _renderConeSurface(ZRenderer renderer) {
     if (!visible) {
       return;
     }
     renderApex = apex! - origin;
-    final scale = normalVector!.magnitude();
+    final scale = normalVector.magnitude();
     final apexDistance = renderApex.magnitude2d();
-    final normalDistance = normalVector!.magnitude2d();
+    final normalDistance = normalVector.magnitude2d();
     // eccentricity
     final eccenAngle = math.acos(normalDistance / scale);
     final eccen = math.sin(eccenAngle);
@@ -155,7 +157,7 @@ class RenderZCone extends RenderZShape {
       return;
     }
 
-    final apexAngle = (math.atan2(normalVector!.y, normalVector!.x) + tau / 2);
+    final apexAngle = (math.atan2(normalVector.y, normalVector.x) + tau / 2);
     final projectLength = apexDistance / eccen;
     final projectAngle = math.acos(radius / projectLength);
 

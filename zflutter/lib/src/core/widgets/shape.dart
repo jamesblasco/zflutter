@@ -55,6 +55,10 @@ abstract class ZShapeBuilder extends SingleChildRenderObjectWidget
   /// If false the shape won't be painted
   final bool visible;
 
+  /// Position used for z-sorting
+  /// If null the center of the path will be used instead
+  final ZVector? sortPoint;
+
   const ZShapeBuilder({
     Key? key,
     required this.color,
@@ -64,6 +68,7 @@ abstract class ZShapeBuilder extends SingleChildRenderObjectWidget
     this.closed = true,
     this.fill = false,
     this.visible = true,
+    this.sortPoint,
   })  : assert(stroke >= 0),
         super(key: key);
 
@@ -75,15 +80,15 @@ abstract class ZShapeBuilder extends SingleChildRenderObjectWidget
   @override
   RenderZShape createRenderObject(BuildContext context) {
     return RenderZShape(
-      color: color,
-      pathBuilder: buildPath(),
-      stroke: stroke,
-      close: closed,
-      fill: fill,
-      visible: visible,
-      backfaceColor: backfaceColor,
-      front: front,
-    );
+        color: color,
+        pathBuilder: buildPath(),
+        stroke: stroke,
+        close: closed,
+        fill: fill,
+        visible: visible,
+        backfaceColor: backfaceColor,
+        front: front,
+        sortPoint: sortPoint);
   }
 
   @override
@@ -96,6 +101,7 @@ abstract class ZShapeBuilder extends SingleChildRenderObjectWidget
     renderObject..backfaceColor = backfaceColor;
     renderObject..front = front;
     renderObject..visible = visible;
+    renderObject..sortPoint = sortPoint;
   }
 
   @override
