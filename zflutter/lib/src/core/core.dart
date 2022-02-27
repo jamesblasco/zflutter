@@ -1,6 +1,6 @@
 //@dart=2.12
 //import 'dart:ui';
-
+import 'package:vector_math/vector_math_64.dart' as vector;
 import 'dart:ui';
 
 import 'dart:math' as math;
@@ -188,6 +188,37 @@ class ZVector {
   @override
   String toString() {
     return 'V($x, $y, $z)';
+  }
+
+  vector.Vector3 asVector3() {
+    return vector.Vector3(x, y, z);
+  }
+
+  ZVector applyMatrix4(vector.Matrix4 arg) {
+    final argStorage = arg.storage;
+    final v0 = x;
+    final v1 = y;
+    final v2 = z;
+    return ZVector(
+      argStorage[0] * v0 +
+          argStorage[4] * v1 +
+          argStorage[8] * v2 +
+          argStorage[12],
+      argStorage[1] * v0 +
+          argStorage[5] * v1 +
+          argStorage[9] * v2 +
+          argStorage[13],
+      argStorage[2] * v0 +
+          argStorage[6] * v1 +
+          argStorage[10] * v2 +
+          argStorage[14],
+    );
+  }
+}
+
+extension ZVector3 on vector.Vector3 {
+  ZVector asVector() {
+    return ZVector(x, y, z);
   }
 }
 

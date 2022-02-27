@@ -174,9 +174,9 @@ class RenderZCone extends RenderZShape {
       ZLine.vector(apex!),
       ZLine.vector(tangentB),
     ];
+    final builder = ZPathBuilder()..renderPath(path);
 
-    renderer.renderPath(path);
-    if (stroke > 0) renderer.stroke(color, stroke);
-    if (fill) renderer.fill(color);
+    if (stroke > 0) renderer.stroke(builder.path, color, stroke);
+    if (fill) renderer.fill(builder.path, color);
   }
 }

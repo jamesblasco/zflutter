@@ -1,7 +1,7 @@
 //@dart=2.12
 
 import 'core.dart';
-
+import 'package:vector_math/vector_math_64.dart' as vector;
 // TODO: This Paths needs to be immutable;
 
 abstract class ZPathCommand {
@@ -9,15 +9,16 @@ abstract class ZPathCommand {
 
   const ZPathCommand();
 
-  ZPathCommand transform(ZVector translation, ZVector rotate, ZVector scale);
+  ZPathCommand transform(vector.Matrix4 transformation);
 
-  void render(ZRenderer renderer);
+  void render(
+    ZPathBuilder renderer,
+    ZVector previousPoint,
+  );
 
   ZVector point({index = 0});
 
   ZVector renderPoint({int index = 0});
-
-  set previous(ZVector previousPoint) {}
 }
 
 class ZMove extends ZPathCommand {
@@ -32,11 +33,11 @@ class ZMove extends ZPathCommand {
   ZMove.only({double x = 0, double y = 0, double z = 0})
       : _point = ZVector(x, y, z);
 
-  ZPathCommand transform(ZVector translation, ZVector rotate, ZVector scale) {
-    return ZMove.vector(_point.transform(translation, rotate, scale));
+  ZPathCommand transform(vector.Matrix4 transformation) {
+    return ZMove.vector(_point.applyMatrix4(transformation));
   }
 
-  void render(ZRenderer renderer) {
+  void render(ZPathBuilder renderer, ZVector previousPoint) {
     renderer.move(_point);
   }
 
@@ -70,11 +71,11 @@ class ZLine extends ZPathCommand {
     _renderPoint = ZVector(x, y, z);
   }
 
-  ZPathCommand transform(ZVector translation, ZVector rotate, ZVector scale) {
-    return ZLine.vector(_renderPoint.transform(translation, rotate, scale));
+  ZPathCommand transform(vector.Matrix4 transformation) {
+    return ZLine.vector(_renderPoint.applyMatrix4(transformation));
   }
 
-  void render(ZRenderer renderer) {
+  void render(ZPathBuilder renderer, ZVector previousPoint) {
     renderer.line(_renderPoint);
   }
 
@@ -98,13 +99,13 @@ class ZBezier extends ZPathCommand {
     renderPoints = points.map((e) => e.copy()).toList();
   }
 
-  ZPathCommand transform(ZVector translation, ZVector rotate, ZVector scale) {
+  ZPathCommand transform(vector.Matrix4 transformation) {
     return ZBezier(renderPoints.map((point) {
-      return point.transform(translation, rotate, scale);
+      return point.applyMatrix4(transformation);
     }).toList());
   }
 
-  void render(ZRenderer renderer) {
+  void render(ZPathBuilder renderer, ZVector previousPoint) {
     renderer.bezier(renderPoints[0], renderPoints[1], renderPoints[2]);
   }
 
@@ -121,20 +122,16 @@ const double _arcHandleLength = 9 / 16;
 
 class ZArc extends ZPathCommand {
   late List<ZVector> points;
-  late ZVector _previous = ZVector.zero;
 
   late List<ZVector> renderPoints;
 
   ZVector get endRenderPoint => renderPoints.last;
 
-  ZArc.list(this.points, [ZVector? previous])
-      : _previous = previous ?? ZVector.zero {
+  ZArc.list(this.points, [ZVector? previous]) {
     renderPoints = points.map((e) => e.copy()).toList();
   }
 
-  ZArc({required ZVector corner, required ZVector end, ZVector? previous}) {
-    _previous = previous ?? ZVector.zero;
-
+  ZArc({required ZVector corner, required ZVector end}) {
     points = [corner, end];
 
     renderPoints = points.map((e) => e.copy()).toList();
@@ -146,14 +143,14 @@ class ZArc extends ZPathCommand {
     renderPoints = List.generate(renderPoints.length, (i) => points[i]);
   }
 
-  ZPathCommand transform(ZVector translation, ZVector rotate, ZVector scale) {
+  ZPathCommand transform(vector.Matrix4 transformation) {
     return ZArc.list(renderPoints.map((point) {
-      return point.transform(translation, rotate, scale);
+      return point.applyMatrix4(transformation);
     }).toList());
   }
 
-  void render(ZRenderer renderer) {
-    var prev = _previous;
+  void render(ZPathBuilder renderer, ZVector previousPoint) {
+    var prev = previousPoint;
     var corner = renderPoints[0];
     var end = renderPoints[1];
     var a = ZVector.lerp(prev, corner, _arcHandleLength);
@@ -167,10 +164,5 @@ class ZArc extends ZPathCommand {
 
   ZVector renderPoint({index = 0}) {
     return renderPoints[index];
-  }
-
-  @override
-  set previous(ZVector previousPoint) {
-    _previous = previousPoint;
   }
 }

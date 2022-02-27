@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/zflutter.dart';
-
 import '../core.dart';
 
 class RenderZShape extends RenderZBox {
@@ -151,79 +150,31 @@ class RenderZShape extends RenderZBox {
 
   @override
   void performTransformation() {
-    final ZParentData anchorParentData = parentData as ZParentData;
-
-    final transformations = anchorParentData.transforms.reversed;
-
-    origin = ZVector.zero;
-    transformations.forEach((matrix4) {
-      origin = origin.transform(
-        matrix4.translate,
-        matrix4.rotate,
-        matrix4.scale,
-      );
-    });
+    origin = ZVector.zero.applyMatrix4(matrix);
 
     /// To optimize we calculate the sort point position
     if (sortPoint == ZVector.zero) {
       transformedSortPoint = origin;
     } else if (sortPoint == ZVector.zero) {
-      transformedSortPoint = sortPoint;
-      transformations.forEach((matrix4) {
-        transformedSortPoint = origin.transform(
-          matrix4.translate,
-          matrix4.rotate,
-          matrix4.scale,
-        );
-      });
+      transformedSortPoint = sortPoint!.applyMatrix4(matrix);
     } else {
       transformedSortPoint = null;
     }
 
-    transformedPath = path;
-    transformations.forEach((matrix4) {
-      transformedPath = transformedPath
-          .map((e) => e.transform(
-                matrix4.translate,
-                matrix4.rotate,
-                matrix4.scale,
-              ))
-          .toList();
-    });
-
-    performPathCommands();
+    transformedPath = <ZPathCommand>[
+      if (path.isEmpty)
+        ZMove(0, 0, 0)
+      else if (path.first is! ZMove)
+        ZMove.vector(path.first.point()),
+      ...path,
+    ].map((e) => e.transform(matrix)).toList();
 
     if (needsDirection) {
-      var _transformedFront = front;
-      transformations.forEach((matrix4) {
-        _transformedFront = _transformedFront.transform(
-          matrix4.translate,
-          matrix4.rotate,
-          matrix4.scale,
-        );
-      });
-      _normalVector = origin - _transformedFront;
+      _normalVector = origin - front.applyMatrix4(matrix);
     }
   }
 
   List<ZPathCommand> transformedPath = [];
-
-  void performPathCommands() {
-    ZVector previousPoint = origin;
-    if (transformedPath.isEmpty) {
-      transformedPath.add(ZMove.vector(origin));
-    } else {
-      final first = transformedPath.first;
-      //Todo: Check this, I think not needed and can cause error
-      if (!(first is ZMove)) {
-        transformedPath[0] = ZMove.vector(first.point());
-      }
-      transformedPath.forEach((it) {
-        it.previous = previousPoint;
-        previousPoint = it.endRenderPoint;
-      });
-    }
-  }
 
   @override
   void performSort() {
@@ -276,10 +227,11 @@ class RenderZShape extends RenderZBox {
       final isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
       var isClosed = !isTwoPoints && _close == true;
       final color = renderColor;
+      final builder = ZPathBuilder()
+        ..renderPath(transformedPath, isClosed: isClosed);
 
-      renderer.renderPath(transformedPath, isClosed: isClosed);
-      if (stroke > 0) renderer.stroke(color, stroke);
-      if (fill == true) renderer.fill(color);
+      if (stroke > 0) renderer.stroke(builder.path, color, stroke);
+      if (fill == true) renderer.fill(builder.path, color);
     }
 
     //  context.canvas.restore();
@@ -292,22 +244,23 @@ class RenderZShape extends RenderZBox {
     final color = renderColor;
 
     final point = transformedPath.first.endRenderPoint;
-    renderer.begin();
+    final builder = ZPathBuilder();
+    builder.begin();
     final radius = stroke / 2;
-    renderer.circle(point.x, point.y, radius);
-    renderer.closePath();
-    renderer.fill(color);
+    builder.circle(point.x, point.y, radius);
+    builder.closePath();
+    renderer.fill(builder.path, color);
   }
 
   void render(ZRenderer renderer) {}
 
   @override
   bool hitTestSelf(Offset position) {
-    final renderer = ZRenderer(null);
     var isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
     var isClosed = !isTwoPoints && _close == true;
-    renderer.renderPath(transformedPath, isClosed: isClosed);
-    final hit = path.contains(position);
+    final builder = ZPathBuilder();
+    builder.renderPath(transformedPath, isClosed: isClosed);
+    final hit = builder.path.contains(position);
     return hit;
   }
 

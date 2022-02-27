@@ -135,12 +135,12 @@ class _RenderZHemisphere extends RenderZShape {
 
     final startAngle = contourAngle + tau / 4;
     final endAnchor = contourAngle - tau / 4;
-
-    renderer.begin();
-    renderer.move(origin);
-    renderer.arc(x, y, demoRadius, startAngle, endAnchor);
-    renderer.closePath();
-    if (stroke > 0) renderer.stroke(color, stroke);
-    if (fill) renderer.fill(color);
+    final builder = ZPathBuilder();
+    builder.begin();
+    builder.move(origin);
+    builder.arc(x, y, demoRadius, startAngle, endAnchor);
+    builder.closePath();
+    if (stroke > 0) renderer.stroke(builder.path, color, stroke);
+    if (fill) renderer.fill(builder.path, color);
   }
 }

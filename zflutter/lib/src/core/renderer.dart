@@ -1,10 +1,9 @@
 //@dart=2.12
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/core.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ZRenderer {
-  Path path = Path();
-
   Paint paint = Paint()
     ..isAntiAlias = true
     ..strokeCap = StrokeCap.round
@@ -17,6 +16,25 @@ class ZRenderer {
   void setLineCap(StrokeCap value) {
     paint.strokeCap = value;
   }
+
+  void stroke(Path path, Color color, double lineWidth) {
+    paint.color = color;
+    paint.strokeWidth = lineWidth;
+    paint.style = PaintingStyle.stroke;
+    canvas?.drawPath(path, paint);
+  }
+
+  void fill(Path path, Color color) {
+    paint.color = color;
+    paint.style = PaintingStyle.fill;
+    canvas?.drawPath(path, paint);
+  }
+}
+
+class ZPathBuilder {
+  Path path = Path();
+
+  ZPathBuilder();
 
   void begin() {
     path.reset();
@@ -56,33 +74,17 @@ class ZRenderer {
     path.close();
   }
 
-  void renderToPath(Path path, List<ZPathCommand> pathCommands, bool isClosed) {
-    var previousPath = this.path;
-    this.path = path;
-    renderPath(pathCommands, isClosed: isClosed);
-    this.path = previousPath;
-  }
-
-  void renderPath(List<ZPathCommand> pathCommands, {bool isClosed = false}) {
+  Path renderPath(List<ZPathCommand> pathCommands, {bool isClosed = false}) {
     begin();
+    ZVector previousPoint = ZVector.zero;
     pathCommands.forEach((it) {
-      it.render(this);
+      it.render(this, previousPoint);
+      previousPoint = it.endRenderPoint;
     });
+
     if (isClosed) {
       closePath();
     }
-  }
-
-  void stroke(Color color, double lineWidth) {
-    paint.color = color;
-    paint.strokeWidth = lineWidth;
-    paint.style = PaintingStyle.stroke;
-    canvas?.drawPath(path, paint);
-  }
-
-  void fill(Color color) {
-    paint.color = color;
-    paint.style = PaintingStyle.fill;
-    canvas?.drawPath(path, paint);
+    return path;
   }
 }

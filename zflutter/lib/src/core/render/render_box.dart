@@ -15,9 +15,35 @@ abstract class RenderZBox extends RenderBox {
   @mustCallSuper
   void performLayout() {
     _debugTransformedValue = false;
+    _buildMatrix();
     performTransformation();
     _debugTransformedValue = true;
     sort();
+  }
+
+  Matrix4? _matrix;
+  Matrix4 get matrix {
+    assert(_matrix != null, 'Matrix accessed before performing layout');
+    return _matrix!;
+  }
+
+  _buildMatrix() {
+    final anchorParentData = parentData;
+
+    _matrix = Matrix4.identity();
+    if (anchorParentData is ZParentData) {
+      anchorParentData.transforms.forEach((transform) {
+        final matrix4 = Matrix4.translationValues(transform.translate.x,
+            transform.translate.y, transform.translate.z);
+
+        matrix4.rotateX(transform.rotate.x);
+        matrix4.rotateY(-transform.rotate.y);
+        matrix4.rotateZ(transform.rotate.z);
+
+        matrix4.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+        matrix..multiply(matrix4);
+      });
+    }
   }
 
   @override
@@ -131,19 +157,7 @@ class RenderMultiChildZBox extends RenderZBox
     final children = _getFlatChildren();
     if (sortMode == SortMode.stack || sortMode == SortMode.update) {
       if (sortPoint != null) {
-        final ZParentData anchorParentData = parentData as ZParentData;
-
-        ZVector origin = _sortPoint!;
-        anchorParentData.transforms.reversed.forEach(
-          (matrix4) {
-            origin = origin.transform(
-              matrix4.translate,
-              matrix4.rotate,
-              matrix4.scale,
-            );
-          },
-        );
-        sortValue = origin.z;
+        sortValue = _sortPoint!.applyMatrix4(matrix).z;
       } else {
         sortValue = children.fold<double>(0, (previousValue, element) {
               return (previousValue + element.sortValue);

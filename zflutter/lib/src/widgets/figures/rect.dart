@@ -265,7 +265,6 @@ class EllipsePathBuilder extends PathBuilder {
     var path = [
       ZLine.vector(ZVector.only(x: 0, y: -y)),
       ZArc(
-        previous: ZVector.only(x: 0, y: -y),
         corner: ZVector.only(x: x, y: -y),
         end: ZVector.only(x: x, y: 0),
       ),
@@ -274,7 +273,6 @@ class EllipsePathBuilder extends PathBuilder {
     if (quarters > 1) {
       path.add(
         ZArc(
-          previous: ZVector.only(x: x, y: 0),
           corner: ZVector.only(x: x, y: y),
           end: ZVector.only(x: 0, y: y),
         ),
@@ -283,7 +281,6 @@ class EllipsePathBuilder extends PathBuilder {
     if (quarters > 2) {
       path.add(
         ZArc(
-          previous: ZVector.only(x: 0, y: y),
           corner: ZVector.only(x: -x, y: y),
           end: ZVector.only(x: -x, y: 0),
         ),
@@ -292,7 +289,6 @@ class EllipsePathBuilder extends PathBuilder {
     if (quarters > 3) {
       path.add(
         ZArc(
-          previous: ZVector.only(x: -x, y: 0),
           corner: ZVector.only(x: -x, y: -y),
           end: ZVector.only(x: 0, y: -y),
         ),
