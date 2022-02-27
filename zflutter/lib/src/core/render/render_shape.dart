@@ -132,7 +132,7 @@ class RenderZShape extends RenderZBox {
   bool get sizedByParent => true;
 
   /// With this markNeedsPaint will only repaint this core object and not their ancestors
-  bool get isRepaintBoundary => true;
+  //bool get isRepaintBoundary => true;
 
   bool get needsDirection => backfaceColor != null;
 
