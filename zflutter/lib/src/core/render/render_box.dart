@@ -27,6 +27,10 @@ abstract class RenderZBox extends RenderBox {
 
   void performSort();
 
+  int compareSort(RenderZBox renderBox) {
+    return sortValue.compareTo(renderBox.sortValue);
+  }
+
   @mustCallSuper
   void sort() {
     _debugSortedValue = true;
@@ -148,7 +152,7 @@ class RenderMultiChildZBox extends RenderZBox
       }
     }
     if (sortMode == SortMode.update) {
-      children..sort((a, b) => a.sortValue.compareTo(b.sortValue));
+      children..sort((a, b) => a.compareSort(b));
     }
     sortedChildren = children;
   }
