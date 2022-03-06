@@ -68,13 +68,13 @@ class RenderZIllustration extends RenderMultiChildZBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (_clipBehavior == Clip.none) {
+    if (_clipBehavior != Clip.none) {
       context.pushClipRect(
         needsCompositing,
         offset,
         Offset.zero & size,
         paintIllustration,
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: _clipBehavior,
       );
     } else {
       paintIllustration(context, offset);
