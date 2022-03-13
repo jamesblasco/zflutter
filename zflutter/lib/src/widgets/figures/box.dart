@@ -41,7 +41,7 @@ class ZBox extends StatelessWidget {
         child: ZRect(
           color: frontColor ?? color,
           fill: fill,
-          stroke: 1,
+          stroke: stroke,
           width: width,
           height: height,
         ),
@@ -55,7 +55,7 @@ class ZBox extends StatelessWidget {
           height: height,
           color: rearColor ?? color,
           fill: fill,
-          stroke: 1,
+          stroke: stroke,
         ),
       );
 
@@ -65,7 +65,7 @@ class ZBox extends StatelessWidget {
         child: ZRect(
           width: depth,
           height: height,
-          stroke: 1,
+          stroke: stroke,
           color: leftColor ?? color,
           fill: fill,
         ),
@@ -78,7 +78,7 @@ class ZBox extends StatelessWidget {
           width: depth,
           color: rightColor ?? color,
           height: height,
-          stroke: 1,
+          stroke: stroke,
           fill: fill,
         ),
       );
@@ -90,7 +90,7 @@ class ZBox extends StatelessWidget {
           width: width,
           color: topColor ?? color,
           height: depth,
-          stroke: 1,
+          stroke: stroke,
           fill: fill,
         ),
       );
@@ -101,7 +101,7 @@ class ZBox extends StatelessWidget {
         child: ZRect(
           width: width,
           color: bottomColor ?? color,
-          stroke: 1,
+          stroke: stroke,
           fill: fill,
           height: depth,
         ),
@@ -167,7 +167,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
             : ZRect(
                 color: color,
                 fill: fill,
-                stroke: 1,
+                stroke: stroke,
                 width: width,
                 height: height,
               ),
@@ -187,7 +187,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
                 height: height,
                 color: color,
                 fill: fill,
-                stroke: 1,
+                stroke: stroke,
               ),
       );
 
@@ -203,7 +203,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
             : ZRect(
                 width: depth,
                 height: height,
-                stroke: 1,
+                stroke: stroke,
                 color: color,
                 fill: fill,
               ),
@@ -222,7 +222,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
                 width: depth,
                 height: height,
                 color: color,
-                stroke: 1,
+                stroke: stroke,
                 fill: fill,
               ),
       );
@@ -240,7 +240,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
                 width: width,
                 height: depth,
                 color: color,
-                stroke: 1,
+                stroke: stroke,
                 fill: fill,
               ),
       );
@@ -258,7 +258,7 @@ class ZBoxToBoxAdapter extends StatelessWidget {
                 width: width,
                 height: depth,
                 color: color,
-                stroke: 1,
+                stroke: stroke,
                 fill: fill,
               ),
       );
