@@ -10,11 +10,11 @@ class ZCylinder extends StatelessWidget {
   final double stroke;
   final bool fill;
 
-  final Color color;
-  final bool visible;
+  final Color? color;
+  final bool? visible;
 
-  final Color backface;
-  final Color frontface;
+  final Color? backface;
+  final Color? frontface;
 
   ZCylinder({
     this.diameter = 1,
@@ -76,16 +76,16 @@ class ZCylinder extends StatelessWidget {
 }
 
 class _ZCylinderMiddle extends ZShape {
-  final double diameter;
+  final double? diameter;
 
   _ZCylinderMiddle(
-      {this.diameter, List<ZPathCommand> path, double stroke = 1, Color color})
+      {this.diameter, List<ZPathCommand>? path, double stroke = 1, Color? color})
       : super(path: path, stroke: stroke, color: color);
 
   @override
   RenderZCylinder createRenderObject(BuildContext context) {
     return RenderZCylinder(
-        path: path, stroke: stroke, diameter: diameter, color: color);
+        path: path!, stroke: stroke, diameter: diameter, color: color);
   }
 
   @override
@@ -98,11 +98,11 @@ class _ZCylinderMiddle extends ZShape {
 }
 
 class RenderZCylinder extends RenderZShape {
-  double _diameter;
+  double? _diameter;
 
-  double get diameter => _diameter;
+  double? get diameter => _diameter;
 
-  set diameter(double value) {
+  set diameter(double? value) {
     if (_diameter == value) return;
     _diameter = value;
 
@@ -110,18 +110,18 @@ class RenderZCylinder extends RenderZShape {
   }
 
   RenderZCylinder(
-      {List<ZPathCommand> path, double diameter, double stroke, Color color})
+      {required List<ZPathCommand> path, double? diameter, double? stroke, Color? color})
       : _diameter = diameter,
         super(path: path, stroke: stroke, color: color);
 
   @override
   void render(ZRenderer renderer) {
     var scale = normalVector.magnitude();
-    var strokeWidth = diameter * scale + stroke;
+    var strokeWidth = diameter! * scale + stroke!;
 
     renderer.setLineCap(StrokeCap.butt);
-    renderer.renderPath(transformedPath);
-    renderer.stroke(color, strokeWidth);
+    renderer.renderPath(transformedPath!);
+    renderer.stroke(color!, strokeWidth);
     renderer.setLineCap(StrokeCap.round);
     super.render(renderer);
   }

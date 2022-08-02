@@ -29,12 +29,12 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
   /// The path that will define the shape of the Widget
   /// It is an ordered list of path commands : [ZMove], [ZLine], [ZArc] & [ZBezier]
   /// See some prebuilt shapes as examples:  [ZRect], [ZRounderRect], [ZEllipse]
-  final List<ZPathCommand> path;
+  final List<ZPathCommand>? path;
 
   /// The color of the shape. If [stroke] is more than 0, the path will be painted
   /// with a stroke of this color. If [fill] is true, it will paint the inside of
   /// the path with this color
-  final Color color;
+  final Color? color;
 
   /// The width that will be used to paint the path
   final double stroke;
@@ -52,13 +52,13 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
 
   /// An optional parameter to define a different color for the
   /// back face of the shape
-  final Color backfaceColor;
+  final Color? backfaceColor;
 
   /// If false the shape won't be painted
   final bool visible;
 
   ZShape({
-    Key key,
+    Key? key,
     this.path,
     this.color,
     this.front = const ZVector.only(z: 1),
@@ -67,11 +67,7 @@ class ZShape extends SingleChildRenderObjectWidget with ZWidget {
     this.closed = true,
     this.fill = false,
     this.visible = true,
-  })  : assert(closed != null),
-        assert(front != null),
-        assert(visible != null),
-        assert(fill != null),
-        assert(stroke != null && stroke >= 0),
+  })  : assert(stroke >= 0),
         super(key: key);
 
   @override

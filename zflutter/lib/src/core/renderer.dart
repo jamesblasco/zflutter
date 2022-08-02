@@ -22,21 +22,21 @@ class ZRenderer {
   }
 
   void move(ZVector point) {
-    path.moveTo(point.x, point.y);
+    path.moveTo(point.x!, point.y!);
   }
 
   void line(ZVector point) {
-    path.lineTo(point.x, point.y);
+    path.lineTo(point.x!, point.y!);
   }
 
   void bezier(ZVector cp0, ZVector cp1, ZVector end) {
     path.cubicTo(
-      cp0.x,
-      cp0.y,
-      cp1.x,
-      cp1.y,
-      end.x,
-      end.y,
+      cp0.x!,
+      cp0.y!,
+      cp1.x!,
+      cp1.y!,
+      end.x!,
+      end.y!,
     );
   }
 

@@ -6,26 +6,26 @@ import '../../zflutter.dart';
 import '../core/core.dart';
 
 typedef DragWidgetBuilder = Widget Function(
-    BuildContext context, ZDragController controller);
+    BuildContext context, ZDragController? controller);
 
 class ZDragDetector extends StatefulWidget {
-  final DragWidgetBuilder builder;
+  final DragWidgetBuilder? builder;
 
-  const ZDragDetector({Key key, this.builder}) : super(key: key);
+  const ZDragDetector({Key? key, this.builder}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ZDragDetectorState();
 }
 
 class _ZDragDetectorState extends State<ZDragDetector> {
-  ZDragController controller;
+  ZDragController? controller;
   Offset dragStart = Offset.zero;
   Offset dragStartR = Offset.zero;
 
   @override
   void initState() {
     controller = ZDragController(ZVector.zero);
-    controller.addListener(update);
+    controller!.addListener(update);
     super.initState();
   }
 
@@ -36,8 +36,8 @@ class _ZDragDetectorState extends State<ZDragDetector> {
     return GestureDetector(
         onPanStart: (event) {
           dragStartR = Offset(
-            controller.rotate.x,
-            controller.rotate.y,
+            controller!.rotate.x!,
+            controller!.rotate.y!,
           );
           dragStart = Offset(event.localPosition.dx, event.localPosition.dy);
         },
@@ -49,12 +49,12 @@ class _ZDragDetectorState extends State<ZDragDetector> {
           var minSize = min(displaySize.width, displaySize.height);
           var moveRY = moveX / minSize * tau;
           var moveRX = moveY / minSize * tau;
-          controller._rotate = ZVector.only(
+          controller!._rotate = ZVector.only(
             x: this.dragStartR.dx - moveRX,
             y: this.dragStartR.dy - moveRY,
           );
         },
-        child: widget.builder(
+        child: widget.builder!(
           context,
           controller,
         ));
@@ -62,8 +62,8 @@ class _ZDragDetectorState extends State<ZDragDetector> {
 
   @override
   void dispose() {
-    controller.removeListener(update);
-    controller.dispose();
+    controller!.removeListener(update);
+    controller!.dispose();
     super.dispose();
   }
 }

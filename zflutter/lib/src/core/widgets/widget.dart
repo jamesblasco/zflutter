@@ -25,7 +25,7 @@ class ZSingleChildRenderObjectElement extends SingleChildRenderObjectElement {
 
 abstract class ZMultiChildWidget extends MultiChildRenderObjectWidget
     with ZWidget {
-  ZMultiChildWidget({List<Widget> children}) : super(children: children);
+  ZMultiChildWidget({required List<Widget> children}) : super(children: children);
 
   @override
   RenderZMultiChildBox createRenderObject(BuildContext context) {

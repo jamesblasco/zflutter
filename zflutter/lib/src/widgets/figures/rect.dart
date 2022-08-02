@@ -7,16 +7,15 @@ class ZRect extends ZShape {
   final double height;
 
   ZRect({
-    Key key,
-    @required this.width,
-    @required this.height,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.width,
+    required this.height,
+    Color? color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(width != null && height != null),
-        super(
+  })  : super(
             key: key,
             color: color,
             backfaceColor: backfaceColor,
@@ -44,18 +43,16 @@ class ZRoundedRect extends ZShape {
   final double borderRadius;
 
   ZRoundedRect({
-    Key key,
-    @required this.width,
-    @required this.height,
-    @required this.borderRadius,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.width,
+    required this.height,
+    required this.borderRadius,
+    Color? color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(width != null && height != null),
-        assert(borderRadius != null),
-        super(
+  })  : super(
             key: key,
             color: color,
             backfaceColor: backfaceColor,
@@ -132,17 +129,16 @@ class ZCircle extends ZShape {
   final int quarters;
 
   ZCircle({
-    Key key,
-    @required this.diameter,
+    Key? key,
+    required this.diameter,
     this.quarters = 4,
-    Color color,
+    Color? color,
     bool closed = false,
-    Color backfaceColor,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(diameter != null),
-        assert(quarters != null && quarters >= 0 && quarters <= 4),
+  })  : assert(quarters >= 0 && quarters <= 4),
         super(
             key: key,
             color: color,
@@ -161,17 +157,16 @@ class ZEllipse extends ZShape {
   final int quarters;
 
   ZEllipse({
-    Key key,
-    @required this.width,
-    @required this.height,
+    Key? key,
+    required this.width,
+    required this.height,
     this.quarters = 4,
-    Color color,
-    Color backfaceColor,
+    Color? color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(width != null && height != null),
-        assert(quarters != null && quarters >= 0 && quarters <= 4),
+  })  : assert(quarters >= 0 && quarters <= 4),
         super(
             key: key,
             color: color,
@@ -235,16 +230,16 @@ class ZPolygon extends ZShape {
   final double radius;
 
   ZPolygon({
-    Key key,
-    @required this.sides,
-    @required this.radius,
-    Color color,
-    Color backfaceColor,
+    Key? key,
+    required this.sides,
+    required this.radius,
+    Color? color,
+    Color? backfaceColor,
     double stroke = 1,
     bool fill = false,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(sides != null && sides > 2),
-        assert(radius != null && radius > 0),
+  })  : assert(sides > 2),
+        assert(radius > 0),
         super(
             key: key,
             color: color,

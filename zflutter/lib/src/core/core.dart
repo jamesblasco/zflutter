@@ -19,17 +19,17 @@ const tau = math.pi * 2;
 // A immutable 3D vector
 // Todo: Add unit test for this. It is important
 class ZVector {
-  final double x;
-  final double y;
-  final double z;
+  final double? x;
+  final double? y;
+  final double? z;
 
   const ZVector(this.x, this.y, this.z)
-      : assert(x != null && y != null && y != null);
+      : assert(x != null && y != null);
 
   const ZVector.only({this.x = 0, this.y = 0, this.z = 0})
-      : assert(x != null && y != null && y != null);
+      : assert(x != null && y != null);
 
-  const ZVector.all(double value)
+  const ZVector.all(double? value)
       : assert(value != null),
         this.x = value,
         this.y = value,
@@ -42,54 +42,54 @@ class ZVector {
   int get hashCode => hash3(x.hashCode, y.hashCode, z.hashCode);
 
   ZVector add({double x = 0, double y = 0, double z = 0}) {
-    return ZVector(this.x + x, this.y + y, this.z + z);
+    return ZVector(this.x! + x, this.y! + y, this.z! + z);
   }
 
   ZVector subtract({double x = 0, double y = 0, double z = 0}) {
-    return ZVector(this.x - x, this.y - y, this.z - z);
+    return ZVector(this.x! - x, this.y! - y, this.z! - z);
   }
 
   ZVector subtractVector(ZVector v) {
-    return ZVector(this.x - v.x, this.y - v.y, this.z - v.z);
+    return ZVector(this.x! - v.x!, this.y! - v.y!, this.z! - v.z!);
   }
 
   ZVector addVector(ZVector v) {
-    return ZVector(this.x + v.x, this.y + v.y, this.z + v.z);
+    return ZVector(this.x! + v.x!, this.y! + v.y!, this.z! + v.z!);
   }
 
-  ZVector rotate(ZVector rotation) {
+  ZVector rotate(ZVector? rotation) {
     if (rotation == null) return this;
 
     return this.rotateZ(rotation.z).rotateY(rotation.y).rotateX(rotation.x);
   }
 
-  ZVector rotateZ(double angle) {
+  ZVector rotateZ(double? angle) {
     return _rotateProperty(angle, Axis.x, Axis.y);
   }
 
-  ZVector rotateX(double angle) {
+  ZVector rotateX(double? angle) {
     return _rotateProperty(angle, Axis.y, Axis.z);
   }
 
-  ZVector rotateY(double angle) {
+  ZVector rotateY(double? angle) {
     return _rotateProperty(angle, Axis.x, Axis.z);
   }
 
-  ZVector _rotateProperty(double angle, Axis propA, Axis propB) {
+  ZVector _rotateProperty(double? angle, Axis propA, Axis propB) {
     if (angle == null || angle % tau == 0) {
       return this;
     }
     var cos = math.cos(angle);
     var sin = math.sin(angle);
-    var a = toMap[propA];
-    var b = toMap[propB];
+    var a = toMap[propA]!;
+    var b = toMap[propB]!;
 
     return replaceAxisInMap(
         {propA: a * cos - b * sin, propB: b * cos + a * sin});
   }
 
   replaceAxisInMap(Map<Axis, double> axis) {
-    double x, y, z;
+    double? x, y, z;
     axis.forEach((key, value) {
       if (key == Axis.x) x = value;
       if (key == Axis.y) y = value;
@@ -98,39 +98,39 @@ class ZVector {
     return ZVector(x ?? this.x, y ?? this.y, z ?? this.z);
   }
 
-  Map<Axis, double> get toMap => {
+  Map<Axis, double?> get toMap => {
         Axis.x: x,
         Axis.y: y,
         Axis.z: z,
       };
 
-  ZVector multiply(ZVector scale) {
+  ZVector multiply(ZVector? scale) {
     if (scale == null) return this;
-    final mx = scale?.x ?? 1;
-    final my = scale?.y ?? 1;
-    final mz = scale?.z ?? 1;
-    return ZVector(x * mx, y * my, z * mz);
+    final mx = scale.x ?? 1;
+    final my = scale.y ?? 1;
+    final mz = scale.z ?? 1;
+    return ZVector(x! * mx, y! * my, z! * mz);
   }
 
-  ZVector divide(ZVector scale) {
+  ZVector divide(ZVector? scale) {
     if (scale == null) return this;
-    final mx = scale?.x ?? 1;
-    final my = scale?.y ?? 1;
-    final mz = scale?.z ?? 1;
-    return ZVector(x / mx, y / my, z / mz);
+    final mx = scale.x ?? 1;
+    final my = scale.y ?? 1;
+    final mz = scale.z ?? 1;
+    return ZVector(x! / mx, y! / my, z! / mz);
   }
 
-  ZVector multiplyScalar(num scale) {
+  ZVector multiplyScalar(num? scale) {
     if (scale == null) return this;
-    final m = scale ?? 1;
-    return ZVector(x * m, y * m, z * m);
+    final m = scale;
+    return ZVector(x! * m, y! * m, z! * m);
   }
 
   ZVector transform(ZVector translation, ZVector rotation, ZVector scale) {
     return this.multiply(scale).rotate(rotation).addVector(translation);
   }
 
-  static ZVector lerp(ZVector a, ZVector b, double t) {
+  static ZVector lerp(ZVector a, ZVector? b, double t) {
     final x = lerpDouble(a.x, b?.x ?? 0.0, t);
     final y = lerpDouble(a.y, b?.y ?? 0.0, t);
     final z = lerpDouble(a.z, b?.z ?? 0.0, t);
@@ -138,7 +138,7 @@ class ZVector {
   }
 
   double magnitude() {
-    var sum = this.x * this.x + this.y * this.y + this.z * this.z;
+    var sum = this.x! * this.x! + this.y! * this.y! + this.z! * this.z!;
     return getMagnitudeSqrt(sum);
   }
 
@@ -151,7 +151,7 @@ class ZVector {
   }
 
   double magnitude2d() {
-    var sum = this.x * this.x + this.y * this.y;
+    var sum = this.x! * this.x! + this.y! * this.y!;
     return getMagnitudeSqrt(sum);
   }
 
@@ -159,7 +159,7 @@ class ZVector {
     return ZVector(this.x, this.y, this.z);
   }
 
-  ZVector copyWith({double x, double y, double z}) {
+  ZVector copyWith({double? x, double? y, double? z}) {
     return ZVector(x ?? this.x, y ?? this.y, z ?? this.z);
   }
 
@@ -173,12 +173,12 @@ class ZVector {
 
   /// Cross product.
   ZVector cross(ZVector other) {
-    final double _x = x;
-    final double _y = y;
-    final double _z = z;
-    final double ox = other.x;
-    final double oy = other.y;
-    final double oz = other.z;
+    final double _x = x!;
+    final double _y = y!;
+    final double _z = z!;
+    final double ox = other.x!;
+    final double oy = other.y!;
+    final double oz = other.z!;
     return ZVector.only(
       x: _y * oz - _z * oy,
       y: _z * ox - _x * oz,
@@ -188,7 +188,7 @@ class ZVector {
 
   ZVector unit() {
     var total = magnitude();
-    return ZVector(x / total, y / total, z / total);
+    return ZVector(x! / total, y! / total, z! / total);
   }
 
   @override

@@ -6,7 +6,7 @@ abstract class ZUpdateParentDataWidget<T extends ParentData>
     extends ProxyWidget {
   /// Abstract const constructor. This constructor enables subclasses to provide
   /// const constructors so that they can be used in const expressions.
-  const ZUpdateParentDataWidget({Key key, Widget child})
+  const ZUpdateParentDataWidget({Key? key, required Widget child})
       : super(key: key, child: child);
 
   @override
@@ -171,7 +171,6 @@ class UpdateParentDataElement<T extends ParentData> extends ProxyElement {
   /// It is more efficient than requesting an additional frame just for the
   /// purpose of updating the [KeepAlive] widget.
   void applyWidgetOutOfTurn(ZUpdateParentDataWidget<T> newWidget) {
-    assert(newWidget != null);
     assert(newWidget.debugCanApplyOutOfTurn());
     assert(newWidget.child == widget.child);
     _updateParentData(newWidget, widget);
