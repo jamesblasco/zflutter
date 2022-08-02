@@ -1,14 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PhotoShareBottomSheet extends StatelessWidget {
-  final ScrollController scrollController;
 
-  const PhotoShareBottomSheet({Key key, this.scrollController})
+  const PhotoShareBottomSheet({Key key})
       : super(key: key);
 
   @override
@@ -25,7 +23,7 @@ class PhotoShareBottomSheet extends StatelessWidget {
               appBar: appBar(context),
               body: CustomScrollView(
                 physics: ClampingScrollPhysics(),
-                controller: scrollController,
+                //controller: scrollController,
                 slivers: <Widget>[
                   SliverSafeArea(
                     bottom: false,
@@ -516,7 +514,7 @@ class _SliverGroupElement extends RenderObjectElement {
   }
 
   @override
-  void insertChildRenderObject(RenderObject child, int slot) {
+  void insertRenderObjectChild(RenderObject child, int slot) {
     final _RenderSliverGroup renderObject = this.renderObject;
     if (slot == 0) renderObject.decoration = child;
     if (slot == 1) renderObject.foregroundDecoration = child;
@@ -525,12 +523,12 @@ class _SliverGroupElement extends RenderObjectElement {
   }
 
   @override
-  void moveChildRenderObject(RenderObject child, slot) {
+  void moveRenderObjectChild(RenderObject child, slot, newSlot) {
     assert(false);
   }
 
   @override
-  void removeChildRenderObject(RenderObject child) {
+  void removeRenderObjectChild(RenderObject child, slot) {
     final _RenderSliverGroup renderObject = this.renderObject;
     if (renderObject.decoration == child) renderObject.decoration = null;
     if (renderObject.foregroundDecoration == child)

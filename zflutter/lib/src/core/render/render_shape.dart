@@ -1,11 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/zflutter.dart';
 
 import '../core.dart';
-import '../path_command.dart';
-import '../renderer.dart';
 
 class RenderZShape extends RenderZBox {
   Color _color;

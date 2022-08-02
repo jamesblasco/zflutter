@@ -10,6 +10,9 @@ class RenderZBox extends RenderBox {
   void performSort() {
     sortValue = this.origin.z;
   }
+
+  @override
+  Size computeDryLayout(BoxConstraints constraints) => constraints.biggest;
 }
 
 enum SortMode { inherit, stack, update }
