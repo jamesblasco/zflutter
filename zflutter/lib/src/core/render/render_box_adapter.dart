@@ -96,7 +96,7 @@ class RenderZToBoxAdapter extends RenderZBox
     anchorParentData.transforms.forEach((transform) {
       final matrix4 = Matrix4.translationValues(
           transform.translate.x!, transform.translate.y!, transform.translate.z!);
-
+      matrix.setEntry(3, 2, 0.01);
       matrix4.rotateX(transform.rotate.x!);
       matrix4.rotateY(-transform.rotate.y!);
       matrix4.rotateZ(transform.rotate.z!);
