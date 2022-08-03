@@ -14,9 +14,9 @@ class FlutterAnchor extends StatelessWidget {
               topRight: ZVector.only(x: 20, y: -16.8),
               topLeft: ZVector.only(x: 12.37, y: -16.8),
               z: -5,
-              front: Colors.blue[400],
-              side: Colors.blue[500],
-              inside: Colors.blue[600],
+              front: Colors.blue[400]!,
+              side: Colors.blue[500]!,
+              inside: Colors.blue[600]!,
             ),
             ZPositioned(
               translate: ZVector.only(x: 5.7, y: 6.2),
@@ -27,9 +27,9 @@ class FlutterAnchor extends StatelessWidget {
                   topRight: ZVector.only(x: 14.27, y: -10.5),
                   topLeft: ZVector.only(x: 6.65, y: -10.5),
                   z: -5,
-                  front: Colors.blue[400],
-                  side: Colors.blue[500],
-                  inside: Colors.blue[600],
+                  front: Colors.blue[400]!,
+                  side: Colors.blue[500]!,
+                  inside: Colors.blue[600]!,
                 ),
               ]),
             ),
@@ -43,10 +43,10 @@ class FlutterAnchor extends StatelessWidget {
                   topLeft: ZVector.only(x: 0, y: 3.8),
                   middleRight: ZVector.only(x: 7.6, y: 3.8),
                   z: -5,
-                  back: Colors.blue[400],
-                  front: Colors.blue[900],
-                  side: Colors.blue[900],
-                  inside: Colors.blue[600],
+                  back: Colors.blue[400]!,
+                  front: Colors.blue[900]!,
+                  side: Colors.blue[900]!,
+                  inside: Colors.blue[600]!,
                 ),
               ]),
             ),
@@ -66,16 +66,17 @@ class ZLineTop extends StatelessWidget {
   final Color inside;
   final Color side;
 
-  ZLineTop(
-      {this.translate,
-      this.bottomLeft,
-      this.bottomRight,
-      this.topRight,
-      this.topLeft,
-      this.z,
-      this.front,
-      this.inside,
-      this.side});
+  ZLineTop({
+    this.translate = ZVector.zero,
+    required this.bottomLeft,
+    required this.bottomRight,
+    required this.topRight,
+    required this.topLeft,
+    required this.z,
+    required this.front,
+    required this.inside,
+    required this.side,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -199,16 +200,17 @@ class MiddleZLine extends StatelessWidget {
   final Color inside;
   final Color side;
 
-  MiddleZLine(
-      {this.translate,
-      this.bottomLeft,
-      this.bottomRight,
-      this.topRight,
-      this.topLeft,
-      this.z,
-      this.front,
-      this.inside,
-      this.side});
+  MiddleZLine({
+    this.translate = ZVector.zero,
+    required this.bottomLeft,
+    required this.bottomRight,
+    required this.topRight,
+    required this.topLeft,
+    required this.z,
+    required this.front,
+    required this.inside,
+    required this.side,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -316,18 +318,19 @@ class BottomZLine extends StatelessWidget {
   final Color back;
   final ZVector middleRight;
 
-  BottomZLine(
-      {this.translate,
-      this.middleRight,
-      this.back,
-      this.bottomLeft,
-      this.bottomRight,
-      this.topRight,
-      this.topLeft,
-      this.z,
-      this.front,
-      this.inside,
-      this.side});
+  BottomZLine({
+    this.translate = ZVector.zero,
+    required this.middleRight,
+    required this.back,
+    required this.bottomLeft,
+    required this.bottomRight,
+    required this.topRight,
+    required this.topLeft,
+    required this.z,
+    required this.front,
+    required this.inside,
+    required this.side,
+  });
 
   @override
   Widget build(BuildContext context) {

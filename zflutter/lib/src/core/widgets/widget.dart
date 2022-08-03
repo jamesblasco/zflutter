@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/widgets/update_parent_data.dart';
@@ -16,7 +17,7 @@ class ZSingleChildRenderObjectElement extends SingleChildRenderObjectElement {
 
     visitAncestorElements((element) {
       if (element is UpdateParentDataElement<ZParentData>) {
-        element.startParentData(renderObject, element.transform);
+        element.startParentData(renderObject);
       }
       return element.widget is! RenderObjectWidget;
     });
@@ -25,34 +26,31 @@ class ZSingleChildRenderObjectElement extends SingleChildRenderObjectElement {
 
 abstract class ZMultiChildWidget extends MultiChildRenderObjectWidget
     with ZWidget {
-  ZMultiChildWidget({required List<Widget> children}) : super(children: children);
+  ZMultiChildWidget({required List<Widget> children})
+      : super(children: children);
 
   @override
-  RenderZMultiChildBox createRenderObject(BuildContext context) {
-    return RenderZMultiChildBox();
+  RenderMultiChildZBox createRenderObject(BuildContext context) {
+    return RenderMultiChildZBox();
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderZMultiChildBox renderObject) {}
+      BuildContext context, RenderMultiChildZBox renderObject) {}
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    /* properties.add(EnumProperty<AxisDirection>('axisDirection', axisDirection));
-   properties.add(EnumProperty<AxisDirection>('crossAxisDirection', crossAxisDirection, defaultValue: null));
-   properties.add(DiagnosticsProperty<ViewportOffset>('offset', offset));*/
   }
 
   @override
-  AnchorMultipleChildRenderObjectElement createElement() =>
-      AnchorMultipleChildRenderObjectElement(this);
+  ZMultiChildRenderObjectElement createElement() =>
+      ZMultiChildRenderObjectElement(this);
 }
 
-class AnchorMultipleChildRenderObjectElement
-    extends MultiChildRenderObjectElement {
+class ZMultiChildRenderObjectElement extends MultiChildRenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
-  AnchorMultipleChildRenderObjectElement(MultiChildRenderObjectWidget widget)
+  ZMultiChildRenderObjectElement(MultiChildRenderObjectWidget widget)
       : assert(!debugChildrenHaveDuplicateKeys(widget, widget.children)),
         super(widget);
 
@@ -62,7 +60,7 @@ class AnchorMultipleChildRenderObjectElement
 
     visitAncestorElements((element) {
       if (element is UpdateParentDataElement<ZParentData>) {
-        element.startParentData(renderObject, element.transform);
+        element.startParentData(renderObject);
       }
       return element.widget is! RenderObjectWidget;
     });

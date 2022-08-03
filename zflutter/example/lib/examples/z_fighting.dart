@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:zflutter/zflutter.dart';
 
 class ZFighting extends StatelessWidget {
@@ -29,7 +29,7 @@ class ZFighting extends StatelessWidget {
 class _Group extends StatelessWidget {
   final isFixed;
 
-  const _Group({Key key, this.isFixed}) : super(key: key);
+  const _Group({Key? key, this.isFixed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,7 @@ class _Group extends StatelessWidget {
             ZPositioned(
               translate: ZVector.only(x: -x, y: d),
               child: ZShape(
+                color: Colors.transparent,
                 stroke: 20,
                 visible: false,
               ),

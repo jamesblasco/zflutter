@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zflutter/src/core/widgets/update_parent_data.dart';
@@ -40,7 +41,7 @@ class ZTransform {
 ///
 class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
   /// Creates a widget that controls where a child of a [ZStack] is positioned.
-  ZPositioned({
+  const ZPositioned({
     Key? key,
     this.scale = ZVector.identity,
     this.translate = ZVector.zero,
@@ -97,49 +98,37 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
       RenderObject renderObject, ZPositioned oldWidget, ZTransform transform) {
     assert(renderObject.parentData is ZParentData);
 
-    final ZParentData? parentData = renderObject.parentData as ZParentData?;
+    final ZParentData parentData = renderObject.parentData as ZParentData;
     bool needsLayout = false;
-
+    //  assert(parentData.transforms.contains(transform));
     transform.scale = scale;
     transform.rotate = rotate;
     transform.translate = translate;
 
-    if (scale != oldWidget.scale) {
-      final dif = scale / oldWidget.scale;
-      parentData!.scale *= dif;
-
+    if (scale != oldWidget.scale ||
+        rotate != oldWidget.rotate ||
+        translate != oldWidget.translate) {
       needsLayout = true;
     }
 
-    if (rotate != oldWidget.rotate) {
-      final dif = rotate - oldWidget.rotate;
-      parentData!.rotate += dif;
-
-      needsLayout = true;
-    }
-
-    if (translate != oldWidget.translate) {
-      final dif = translate - oldWidget.translate;
-      parentData!.translate = dif;
-
-      needsLayout = true;
-    }
-
-    if (renderObject is RenderZMultiChildBox) {
+    if (renderObject is RenderMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {
-        final ZParentData? childParentData = child.parentData as ZParentData?;
+        final ZParentData childParentData = child.parentData as ZParentData;
         updateParentData(child, oldWidget, transform);
-        child = childParentData?.nextSibling;
-        needsLayout = true;
+        child = childParentData.nextSibling;
       }
     }
 
     if (needsLayout) {
       renderObject.markNeedsLayout();
-      final AbstractNode? targetParent = renderObject.parent;
-      if (targetParent is RenderObject) targetParent.markNeedsLayout();
+      AbstractNode? targetParent = renderObject.parent;
+
+      while (targetParent is RenderZBox) {
+        targetParent.markNeedsLayout();
+        targetParent = targetParent.parent;
+      }
     }
   }
 
@@ -157,19 +146,13 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     parentData.transforms.add(transform);
 
-    parentData.rotate += rotate;
-
-    parentData.translate += translate;
-
-    parentData.scale *= scale;
-
-    if (renderObject is RenderZMultiChildBox) {
+    if (renderObject is RenderMultiChildZBox) {
       RenderZBox? child = renderObject.firstChild;
 
       while (child != null) {
-        final ZParentData? childParentData = child.parentData as ZParentData?;
+        final ZParentData childParentData = child.parentData as ZParentData;
         startParentData(child, transform);
-        child = childParentData?.nextSibling;
+        child = childParentData.nextSibling;
       }
     }
 
@@ -177,14 +160,8 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
     if (targetParent is RenderObject) targetParent.markNeedsLayout();
   }
 
-/*  @override
+  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('left', left, defaultValue: null));
-    properties.add(DoubleProperty('top', top, defaultValue: null));
-    properties.add(DoubleProperty('right', right, defaultValue: null));
-    properties.add(DoubleProperty('bottom', bottom, defaultValue: null));
-    properties.add(DoubleProperty('width', width, defaultValue: null));
-    properties.add(DoubleProperty('height', height, defaultValue: null));
-  }*/
+  }
 }

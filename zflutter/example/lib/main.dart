@@ -13,65 +13,67 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Colors.grey[200],
-        appBarTheme: AppBarTheme(elevation: 0),
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      routes: {
-        ...[...Examples.list, ...BasicSamples.list, ...GettingStartedSamples.list].asMap().map(
-              (key, example) => MapEntry(
-                example.route,
-                (context) => Scaffold(
-                  backgroundColor: example.backgroundColor,
-                  appBar: example.route == '/logo'
-                      ? null
-                      : AppBar(
-                          centerTitle: true,
-                          title: Text(example.title),
-                        ),
-                  body: MadeWithFlutterContainer(
-                    child: example.builder(context),
-                    logoStyle: example.logoStyle ?? FlutterLogoColor.original,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: Colors.grey[200],
+          appBarTheme: AppBarTheme(elevation: 0),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        routes: {
+          ...[
+            ...Examples.list,
+            ...BasicSamples.list,
+            ...GettingStartedSamples.list
+          ].asMap().map(
+                (key, example) => MapEntry(
+                  example.route,
+                  (context) => Scaffold(
+                    backgroundColor: example.backgroundColor,
+                    appBar: example.route == '/logo'
+                        ? null
+                        : AppBar(
+                            centerTitle: true,
+                            title: Text(example.title),
+                          ),
+                    body: MadeWithFlutterContainer(
+                      child: example.builder(context),
+                      logoStyle: example.logoStyle ?? FlutterLogoColor.original,
+                    ),
                   ),
                 ),
               ),
-            ),
-        // Demos for the website
-        ...[...Examples.list, ...BasicSamples.list, ...GettingStartedSamples.list].asMap().map(
-              (key, example) => MapEntry(
-                  '/demo${example.route}',
-                  (context) => Container(
-                        color: example.backgroundColor ?? Color(0xffF5F6FA),
-                        child: Transform.scale(
-                          scale: 0.45,
-                          child: example.builder(context),
-                        ),
-                      )),
-            ),
-      },
-      home: MyHomePage()
-    );
+          // Demos for the website
+          ...[
+            ...Examples.list,
+            ...BasicSamples.list,
+            ...GettingStartedSamples.list
+          ].asMap().map((key, example) => MapEntry(
+                '/demo${example.route}',
+                (context) => Container(
+                    color: example.backgroundColor ?? Color(0xffF5F6FA),
+                    child: example.builder(context)),
+              )),
+        },
+        home: MyHomePage());
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -95,13 +97,20 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Stack(
                 children: [
-                  Transform.scale(
-                      scale: 0.2,
+                  FittedBox(
+                    fit: BoxFit.fill,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.longestSide,
+                      width: MediaQuery.of(context).size.longestSide,
                       child: TickerMode(
-                          enabled: false, child: item.builder(context))),
+                        enabled: false,
+                        child: item.builder(context),
+                      ),
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.all(8),
-                    color: Colors.grey[100].withOpacity(0.8),
+                    color: Colors.grey[100]?.withOpacity(0.8),
                     child: Center(
                         child: Text(
                       item.title,
@@ -123,9 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Example> get examples => [
-        ...Examples.list,
-        ...BasicSamples.list,
-        ...GettingStartedSamples.list
-      ];
+  List<Example> get examples =>
+      [...Examples.list, ...BasicSamples.list, ...GettingStartedSamples.list];
+
 }
+

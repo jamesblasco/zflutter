@@ -1,14 +1,15 @@
+//@dart=2.12
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/zflutter.dart';
-
 import '../core.dart';
 
 class RenderZShape extends RenderZBox {
-  Color? _color;
+  Color _color;
 
-  Color? get color => _color;
+  Color get color => _color;
 
-  set color(Color? value) {
+  set color(Color value) {
     if (_color == value) return;
     _color = value;
     markNeedsPaint();
@@ -20,6 +21,10 @@ class RenderZShape extends RenderZBox {
 
   set backfaceColor(Color? value) {
     if (_backfaceColor == value) return;
+    if (_backfaceColor == null) {
+      // It needs to calculate normalVector when there is backface color
+      return markNeedsLayout();
+    }
     _backfaceColor = value;
     markNeedsPaint();
   }
@@ -51,28 +56,35 @@ class RenderZShape extends RenderZBox {
   set front(ZVector value) {
     if (_front == value) return;
     _front = value;
-    //TODO: Transform front here so no need to rebuild layout a
-    // markNeedsPaint();
     markNeedsLayout();
   }
 
-  List<ZPathCommand>? _path;
-
-  List<ZPathCommand>? get path => _path;
-
-  set path(List<ZPathCommand>? value) {
+  List<ZPathCommand> _path;
+  List<ZPathCommand> get path => _path;
+  set path(List<ZPathCommand> value) {
     if (_path == value) return;
     _path = value;
 
     markNeedsLayout();
   }
 
-  double? _sortValue;
-  double? get sortValue => _sortValue;
+  PathBuilder _pathBuilder;
+  PathBuilder get pathBuilder => _pathBuilder;
+  set pathBuilder(PathBuilder value) {
+    if (_pathBuilder == value) return;
+    if (_pathBuilder.shouldRebuildPath(value)) {
+      path = _pathBuilder.buildPath();
+    }
+    _pathBuilder = value;
+  }
 
-  set sortValue(double? value) {
-    if (_sortValue == value) return;
-    _sortValue = value;
+  ZVector? _sortPoint;
+  ZVector? get sortPoint => _sortPoint;
+
+  set sortPoint(ZVector? value) {
+    if (_sortPoint == value) return;
+    _sortPoint = value;
+    markNeedsLayout();
   }
 
   bool _visible;
@@ -84,26 +96,27 @@ class RenderZShape extends RenderZBox {
     _visible = value;
   }
 
-  double? _stroke;
+  double _stroke;
 
-  double? get stroke => _stroke;
+  double get stroke => _stroke;
 
-  set stroke(double? value) {
-    assert(value != null && value >= 0);
+  set stroke(double value) {
+    assert(value >= 0);
     if (_stroke == value) return;
     _stroke = value;
   }
 
   RenderZShape({
-    Color? color,
+    required Color color,
     Color? backfaceColor,
     ZVector front = const ZVector.only(z: 1),
     bool close = false,
     bool visible = true,
     bool fill = false,
-    double? stroke = 1,
-    List<ZPathCommand> path = const [],
-  })  : assert(stroke != null && stroke >= 0),
+    double stroke = 1,
+    PathBuilder pathBuilder = PathBuilder.empty,
+    ZVector? sortPoint,
+  })  : assert(stroke >= 0),
         _stroke = stroke,
         _visible = visible,
         _backfaceColor = backfaceColor,
@@ -111,137 +124,152 @@ class RenderZShape extends RenderZBox {
         _close = close,
         _fill = fill,
         _color = color,
-        _path = path;
+        _pathBuilder = pathBuilder,
+        _path = pathBuilder.buildPath(),
+        _sortPoint = sortPoint;
 
   @override
   bool get sizedByParent => true;
 
   /// With this markNeedsPaint will only repaint this core object and not their ancestors
-  bool get isRepaintBoundary => true;
+  //bool get isRepaintBoundary => true;
 
-  late ZVector _transformedFront;
-  late ZVector normalVector;
-  final Matrix4 matrix4 = Matrix4.identity();
+  bool get needsDirection => backfaceColor != null;
+
+  ZVector? _normalVector;
+  ZVector get normalVector {
+    assert(needsDirection,
+        'needs direction needs to be true so normal vector can be retrieved');
+    debugTransformed();
+    return _normalVector!;
+  }
+
+  ZVector origin = ZVector.zero;
+
+  ZVector? transformedSortPoint;
 
   @override
-  void performLayout() {
-    final ZParentData anchorParentData = parentData as ZParentData;
+  void performTransformation() {
+    origin = ZVector.zero.applyMatrix4(matrix);
 
-    matrix4.setIdentity();
-
-    origin = ZVector.zero;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
-      origin =
-          origin.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
-    });
-
-    _transformedFront = front;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
-      _transformedFront = _transformedFront.transform(
-          matrix4.translate, matrix4.rotate, matrix4.scale);
-    });
-
-    normalVector = origin - _transformedFront;
-    transformedPath = path;
-    anchorParentData.transforms.reversed.forEach((matrix4) {
-      transformedPath = transformedPath!
-          .map((e) =>
-              e.transform(matrix4.translate, matrix4.rotate, matrix4.scale))
-          .toList();
-    });
-
-    performPathCommands();
-    performSort();
-  }
-
-  List<ZPathCommand>? transformedPath = [];
-
-  void performPathCommands() {
-    ZVector? previousPoint = origin;
-    if (transformedPath!.isEmpty) {
-      transformedPath!.add(ZMove.vector(origin));
+    /// To optimize we calculate the sort point position
+    if (sortPoint == ZVector.zero) {
+      transformedSortPoint = origin;
+    } else if (sortPoint == ZVector.zero) {
+      transformedSortPoint = sortPoint!.applyMatrix4(matrix);
     } else {
-      final first = transformedPath!.first;
-      //Todo: Check this, I think not needed and can cause error
-      if (!(first is ZMove)) {
-        transformedPath![0] = ZMove.vector(first.point()!);
-      }
-      transformedPath!.forEach((it) {
-        it.previous = previousPoint;
-        previousPoint = it.endRenderPoint;
-      });
+      transformedSortPoint = null;
+    }
+
+    transformedPath = <ZPathCommand>[
+      if (path.isEmpty)
+        ZMove(0, 0, 0)
+      else if (path.first is! ZMove)
+        ZMove.vector(path.first.point()),
+      ...path,
+    ].map((e) => e.transform(matrix)).toList();
+
+    if (needsDirection) {
+      _normalVector = origin - front.applyMatrix4(matrix);
     }
   }
+
+  List<ZPathCommand> transformedPath = [];
 
   @override
   void performSort() {
-    assert(transformedPath!.isNotEmpty);
-    var pointCount = this.transformedPath!.length;
-    var firstPoint = this.transformedPath![0].endRenderPoint;
-    var lastPoint = this.transformedPath![pointCount - 1].endRenderPoint;
-    // ignore the final point if self closing shape
-    var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
-    if (isSelfClosing) {
-      pointCount -= 1;
-    }
+    if (transformedSortPoint != null) {
+      sortValue = transformedSortPoint!.z;
+    } else {
+      assert(transformedPath.isNotEmpty);
+      var pointCount = this.transformedPath.length;
+      final firstPoint = this.transformedPath[0].endRenderPoint;
+      final lastPoint = this.transformedPath[pointCount - 1].endRenderPoint;
+      // ignore the final point if self closing shape
+      var isSelfClosing = pointCount > 2 && firstPoint == lastPoint;
+      if (isSelfClosing) {
+        pointCount -= 1;
+      }
 
-    double sortValueTotal = 0;
-    for (var i = 0; i < pointCount; i++) {
-      sortValueTotal += this.transformedPath![i].endRenderPoint!.z!;
+      double sortValueTotal = 0;
+      for (var i = 0; i < pointCount; i++) {
+        sortValueTotal += this.transformedPath[i].endRenderPoint.z;
+      }
+      this.sortValue = sortValueTotal / pointCount;
     }
-    this.sortValue = sortValueTotal / pointCount;
   }
 
-  bool isFacingBack = false;
+  bool get isFacingBack => normalVector.z > 0;
   bool showBackFace = true;
 
-  Color? get renderColor {
+  Color get renderColor {
     final isBackFaceColor = backfaceColor != null && isFacingBack;
-    return isBackFaceColor ? backfaceColor : color;
+    return (isBackFaceColor ? backfaceColor : color) ?? color;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    super.paint(context, offset);
     assert(parentData is ZParentData);
-    if (!visible) return;
+
+    if (!visible || renderColor == Colors.transparent) return;
 
     final renderer = ZRenderer(context.canvas);
     render(renderer);
-    final length = path!.length;
+    final length = path.length;
     if (length <= 1) {
       paintDot(renderer);
     } else {
-      isFacingBack = normalVector.z! > 0;
       if (!showBackFace && isFacingBack) {
         return super.paint(context, offset);
       }
 
-      var isTwoPoints = transformedPath!.length == 2 && (path![1] is ZLine);
+      final isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
       var isClosed = !isTwoPoints && _close == true;
       final color = renderColor;
+      final builder = ZPathBuilder()
+        ..renderPath(transformedPath, isClosed: isClosed);
 
-      renderer.renderPath(transformedPath!, isClosed: isClosed);
-      if (stroke != null && stroke! > 0) renderer.stroke(color!, stroke!);
-      if (fill == true) renderer.fill(color!);
+      if (stroke > 0) renderer.stroke(builder.path, color, stroke);
+      if (fill == true) renderer.fill(builder.path, color);
     }
 
     //  context.canvas.restore();
-    super.paint(context, offset);
   }
 
   void paintDot(ZRenderer renderer) {
     if (stroke == 0.0) {
       return;
     }
-    final color = renderColor!;
+    final color = renderColor;
 
-    final point = transformedPath!.first.endRenderPoint ?? origin;
-    renderer.begin();
-    final radius = stroke! / 2;
-    renderer.circle(point.x!, point.y!, radius);
-    renderer.closePath();
-    renderer.fill(color);
+    final point = transformedPath.first.endRenderPoint;
+    final builder = ZPathBuilder();
+    builder.begin();
+    final radius = stroke / 2;
+    builder.circle(point.x, point.y, radius);
+    builder.closePath();
+    renderer.fill(builder.path, color);
   }
 
   void render(ZRenderer renderer) {}
+
+  @override
+  bool hitTestSelf(Offset position) {
+    var isTwoPoints = transformedPath.length == 2 && (path[1] is ZLine);
+    var isClosed = !isTwoPoints && _close == true;
+    final builder = ZPathBuilder();
+    builder.renderPath(transformedPath, isClosed: isClosed);
+    final hit = builder.path.contains(position);
+    return hit;
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    if (hitTestSelf(position)) {
+      result.add(BoxHitTestEntry(this, position));
+      return true;
+    }
+    return false;
+  }
 }

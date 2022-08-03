@@ -1,3 +1,4 @@
+//@dart=2.12
 import 'package:flutter/widgets.dart';
 import 'package:zflutter/src/core/render/render_box_adapter.dart';
 import 'package:zflutter/zflutter.dart';
@@ -11,16 +12,16 @@ import 'package:zflutter/zflutter.dart';
 ///
 class ZToBoxAdapter extends SingleChildRenderObjectWidget with ZWidget {
   // Height of the box widget
-  final double? height;
+  final double height;
 
   // Width of the box widget
-  final double? width;
+  final double width;
 
   /// Creates a ZWidget that contains a single box widget.
   const ZToBoxAdapter({
     Key? key,
-    this.height,
-    this.width,
+    required this.height,
+    required this.width,
     Widget? child,
   }) : super(key: key, child: child);
 

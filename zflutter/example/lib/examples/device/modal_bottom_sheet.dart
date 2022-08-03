@@ -10,9 +10,6 @@ class ModalBottomSheetExample extends StatefulWidget {
 }
 
 class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
-
-  final ScrollController scrollController = new ScrollController();
-
   @override
   void initState() {
     showModal();
@@ -28,7 +25,9 @@ class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
         context: context,
         backgroundColor: Colors.transparent,
         builder: (context) => Close(
-          child: PhotoShareBottomSheet(),
+          child: PhotoShareBottomSheet(
+            scrollController: ModalScrollController.of(context)!,
+          ),
         ),
       );
     });
@@ -81,8 +80,9 @@ class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
                 expand: true,
                 context: context,
                 backgroundColor: Colors.transparent,
-                builder: (context) =>
-                    PhotoShareBottomSheet(),
+                builder: (context) => PhotoShareBottomSheet(
+                  scrollController: ModalScrollController.of(context)!,
+                ),
               );
             },
           ),
@@ -103,7 +103,7 @@ class _ModalBottomSheetExampleState extends State<ModalBottomSheetExample> {
 class Close extends StatefulWidget {
   final Widget child;
 
-  const Close({Key key, this.child}) : super(key: key);
+  const Close({Key? key, required this.child}) : super(key: key);
   @override
   State<StatefulWidget> createState() => CloseState();
 }

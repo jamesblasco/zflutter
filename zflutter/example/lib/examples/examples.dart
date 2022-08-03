@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:z_flutter_example/examples/widget_box.dart';
+
 import 'package:z_flutter_example/examples/z_fighting.dart';
 
 import 'package:zflutter/zflutter.dart';
@@ -14,21 +14,22 @@ import 'device/modal_bottom_sheet.dart';
 import 'dice/dice.dart';
 import 'dude.dart';
 import 'flutter_logo/widget.dart';
+import 'ink_well.dart';
 import 'on_the_go.dart';
 
 class Example {
   final String title;
   final String route;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final WidgetBuilder builder;
-  final FlutterLogoColor logoStyle;
+  final FlutterLogoColor? logoStyle;
 
   Example({
     this.logoStyle,
-    @required this.title,
-    @required this.route,
+    required this.title,
+    required this.route,
     this.backgroundColor,
-    @required this.builder,
+    required this.builder,
   });
 }
 
@@ -71,6 +72,13 @@ class Examples {
       builder: (_) => FlutterAnimation(),
       logoStyle: FlutterLogoColor.black);
 
+  static final Example widgetHitTest3D = Example(
+      title: 'InkWell 3D',
+      route: '/ink_well',
+      backgroundColor: Colors.black,
+      builder: (_) => InkWell3D(),
+      logoStyle: FlutterLogoColor.white);
+
   static final Example dice = Example(
     title: 'Dice',
     route: '/dice',
@@ -82,6 +90,7 @@ class Examples {
         iphone,
         flutterLogo,
         dice,
+    widgetHitTest3D
       ];
 }
 
@@ -414,28 +423,28 @@ class BasicSamples {
                   width: 200,
                   depth: 200,
                   color: Color(0xffCC2255),
-                  frontChild: Container(
+                  front: Material(
                     color: Color(0xffCC2255),
-                    child: Center(
-                      child: InkWell(
+                    child: InkWell(
                         onTap: () => print('tapped'),
-                        child: Text('😝'),
-                      ),
+                        child:Center(
+                          child:  Text('😝'),
+                      )
                     ),
                   ),
-                  topChild: Container(
+                  top: Material(
                     color: Colors.yellow,
-                    child: Center(
                       child: InkWell(
                         onTap: () => print('tapped'),
-                        child: Text('😝'),
+                        child:Center(
+                          child:  Text('😝'),
                       ),
                     ),
                   ),
-                  leftChild: Container(color: Colors.green),
-                  rightChild: Container(color: Colors.blue),
-                  bottomChild: Container(color: Colors.orange),
-                  rearChild: Container(color: Colors.red),
+                  left: Container(color: Colors.green),
+                  right: Container(color: Colors.blue),
+                  bottom: Container(color: Colors.orange),
+                  rear: Container(color: Colors.red),
                 ),
               )
             ]),
@@ -528,13 +537,13 @@ class BasicSamples {
 class Template extends StatelessWidget {
   final List<Widget> Function() childrenBuilder;
 
-  const Template({Key key, this.childrenBuilder}) : super(key: key);
+  const Template({Key? key, required this.childrenBuilder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Spin(
       builder: (context, rotate) => ZDragDetector(
-        key: key,
+        key: Key('template'),
         builder: (context, controller) {
           return ZIllustration(
             zoom: 3,

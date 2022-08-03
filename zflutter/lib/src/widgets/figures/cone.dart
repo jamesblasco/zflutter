@@ -4,13 +4,13 @@ import 'dart:math' as math;
 
 class ZCone extends ZCircle {
   final double diameter;
-  final double? length;
+  final double length;
 
   ZCone({
-    this.length,
+    required this.length,
     Key? key,
     required this.diameter,
-    Color? color,
+    required Color color,
     bool closed = false,
     Color? backfaceColor,
     double stroke = 1,
@@ -30,7 +30,7 @@ class ZCone extends ZCircle {
   RenderZCone createRenderObject(BuildContext context) {
     return RenderZCone(
         color: color,
-        path: path!,
+        pathBuilder: buildPath(),
         stroke: stroke,
         close: closed,
         fill: fill,
@@ -38,13 +38,13 @@ class ZCone extends ZCircle {
         backfaceColor: backfaceColor,
         front: front,
         diameter: diameter,
-        length: length!);
+        length: length);
   }
 
   @override
   void updateRenderObject(BuildContext context, RenderZCone renderObject) {
     renderObject..color = color;
-    renderObject..path = path;
+    renderObject..pathBuilder = buildPath();
     renderObject..stroke = stroke;
     renderObject..close = closed;
     renderObject..fill = fill;
@@ -57,12 +57,12 @@ class ZCone extends ZCircle {
 }
 
 class RenderZCone extends RenderZShape {
-  double? _length;
+  double _length;
 
-  double? get length => _length;
+  double get length => _length;
 
-  set length(double? value) {
-    assert(value != null && value >= 0);
+  set length(double value) {
+    assert(value >= 0);
     if (_length == value) return;
     _length = value;
     markNeedsLayout();
@@ -82,25 +82,26 @@ class RenderZCone extends RenderZShape {
   RenderZCone({
     required double length,
     required double diameter,
-    Color? color,
+    required Color color,
     Color? backfaceColor,
     ZVector front = const ZVector.only(z: 1),
     bool close = false,
     bool visible = true,
     bool fill = false,
     double stroke = 1,
-    List<ZPathCommand> path = const [],
+    PathBuilder pathBuilder = PathBuilder.empty,
   })  : _length = length,
         _diameter = diameter,
         super(
-            color: color,
-            backfaceColor: backfaceColor,
-            front: front,
-            close: close,
-            visible: visible,
-            fill: fill,
-            stroke: stroke,
-            path: path);
+          color: color,
+          backfaceColor: backfaceColor,
+          front: front,
+          close: close,
+          visible: visible,
+          fill: fill,
+          stroke: stroke,
+          pathBuilder: pathBuilder,
+        );
 
   ZVector tangentA = ZVector.zero;
   ZVector tangentB = ZVector.zero;
@@ -108,15 +109,14 @@ class RenderZCone extends RenderZShape {
   ZVector? apex;
 
   @override
-  void performLayout() {
+  void performTransformation() {
+    super.performTransformation();
     final ZParentData anchorParentData = parentData as ZParentData;
-    matrix4.setIdentity();
 
     apex = ZVector.only(z: length);
     anchorParentData.transforms.reversed.forEach((matrix4) {
       apex = apex!.transform(matrix4.translate, matrix4.rotate, matrix4.scale);
     });
-    super.performLayout();
   }
 
   @override
@@ -132,6 +132,9 @@ class RenderZCone extends RenderZShape {
     _renderConeSurface(renderer);
     super.render(renderer);
   }
+
+  @override
+  bool get needsDirection => true;
 
   void _renderConeSurface(ZRenderer renderer) {
     if (!visible) {
@@ -151,7 +154,7 @@ class RenderZCone extends RenderZShape {
       return;
     }
 
-    final apexAngle = (math.atan2(normalVector.y!, normalVector.x!) + tau / 2);
+    final apexAngle = (math.atan2(normalVector.y, normalVector.x) + tau / 2);
     final projectLength = apexDistance / eccen;
     final projectAngle = math.acos(radius / projectLength);
 
@@ -168,9 +171,9 @@ class RenderZCone extends RenderZShape {
       ZLine.vector(apex!),
       ZLine.vector(tangentB),
     ];
+    final builder = ZPathBuilder()..renderPath(path);
 
-    renderer.renderPath(path);
-    if (stroke! > 0) renderer.stroke(color!, stroke!);
-    if (fill) renderer.fill(color!);
+    if (stroke > 0) renderer.stroke(builder.path, color, stroke);
+    if (fill) renderer.fill(builder.path, color);
   }
 }
