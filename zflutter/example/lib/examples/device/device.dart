@@ -296,8 +296,7 @@ class FrameThemeData {
   const FrameThemeData.raw({
     required this.frameColor,
     required this.statusBarBrightness,
-  })  : assert(frameColor != null),
-        assert(statusBarBrightness != null);
+  });
 
   Color get statusBarColor =>
       statusBarBrightness == Brightness.dark ? Colors.white : Colors.black;

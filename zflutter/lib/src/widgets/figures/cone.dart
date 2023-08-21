@@ -16,8 +16,7 @@ class ZCone extends ZCircle {
     double stroke = 1,
     bool fill = true,
     ZVector front = const ZVector.only(z: 1),
-  })  : assert(diameter != null),
-        super(
+  })  : super(
             key: key,
             color: color,
             backfaceColor: backfaceColor,
@@ -91,9 +90,7 @@ class RenderZCone extends RenderZShape {
     bool fill = false,
     double stroke = 1,
     PathBuilder pathBuilder = PathBuilder.empty,
-  })  : assert(length != null),
-        assert(diameter != null),
-        _length = length,
+  })  : _length = length,
         _diameter = diameter,
         super(
           color: color,

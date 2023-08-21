@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zflutter/zflutter.dart';
 
-import '../core.dart';
-
 /// A zWidget that paints a shape in a 3D space.
 ///
 /// zWidget are special-purpose widgets that can be combined using a

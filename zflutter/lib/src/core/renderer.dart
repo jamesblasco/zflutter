@@ -1,7 +1,6 @@
 //@dart=2.12
 import 'package:flutter/material.dart';
 import 'package:zflutter/src/core/core.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ZRenderer {
   Paint paint = Paint()
