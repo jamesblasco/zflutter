@@ -123,7 +123,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
 
     if (needsLayout) {
       renderObject.markNeedsLayout();
-      AbstractNode? targetParent = renderObject.parent;
+      RenderObject? targetParent = renderObject.parent;
 
       while (targetParent is RenderZBox) {
         targetParent.markNeedsLayout();
@@ -156,7 +156,7 @@ class ZPositioned extends ZUpdateParentDataWidget<ZParentData> with ZWidget {
       }
     }
 
-    final AbstractNode? targetParent = renderObject.parent;
+    final RenderObject? targetParent = renderObject.parent;
     if (targetParent is RenderObject) targetParent.markNeedsLayout();
   }
 
